@@ -1,0 +1,179 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "news": "News",
+    "gallery": "Gallery",
+    "contact": "Contact"
+  },
+  "home": {
+    "hero": {
+      "title": "Welcome to Mihai Eminescu Romanian School Wellingborough",
+      "subtitle": "Keeping Romanian culture and language alive for our children",
+      "description": "Romanian language education for children in Northamptonshire",
+      "contactBtn": "Contact Us",
+      "learnBtn": "Learn More"
+    },
+    "about": {
+      "title": "About Our School",
+      "content": "Mihai Eminescu Romanian School in Wellingborough is dedicated to preserving and promoting Romanian language, culture, and traditions for children in the Romanian community of Northamptonshire. We provide quality education in a friendly and inclusive environment.",
+      "readMore": "Read More"
+    },
+    "benefits": {
+      "title": "Why Choose Us?",
+      "language": {
+        "title": "Romanian Language",
+        "desc": "Structured Romanian language lessons for all ages"
+      },
+      "education": {
+        "title": "Quality Education",
+        "desc": "Qualified teachers with teaching experience"
+      },
+      "culture": {
+        "title": "Culture & Traditions",
+        "desc": "We celebrate and learn about Romanian traditions"
+      },
+      "community": {
+        "title": "Community",
+        "desc": "A safe space for Romanian children in Northamptonshire"
+      }
+    },
+    "schedule": {
+      "title": "Our Schedule",
+      "day": "Day:",
+      "dayValue": "Saturdays",
+      "time": "Time:",
+      "timeValue": "9:00 AM - 1:00 PM",
+      "age": "Age:",
+      "ageValue": "5-10 years (initially)",
+      "location": "Location:",
+      "locationValue": "Wellingborough, Northamptonshire"
+    },
+    "galleryPreview": {
+      "title": "Photo Gallery",
+      "viewBtn": "View Gallery"
+    },
+    "testimonials": {
+      "title": "What Parents Say",
+      "coming": "Parent testimonials coming soon!"
+    },
+    "cta": {
+      "title": "Enroll Your Child Today!",
+      "subtitle": "Join our community and give your child the opportunity to learn Romanian language and culture.",
+      "contactBtn": "Contact Us"
+    }
+  },
+  "about": {
+    "hero": "About Us",
+    "mission": {
+      "title": "Our Mission",
+      "content1": "Mihai Eminescu Romanian School in Wellingborough is dedicated to preserving and promoting Romanian language, culture, and traditions for children in the Romanian community of Northamptonshire.",
+      "content2": "Our mission is to provide quality education in Romanian language, in a friendly and inclusive environment where children can learn and grow together. We believe that maintaining connection with cultural roots is essential for the development of our children's identity."
+    },
+    "curriculum": {
+      "title": "Curriculum & Schedule",
+      "age": "5-10 years (initially, will expand in the future)",
+      "schedule": "Saturdays, 9:00 AM - 1:00 PM",
+      "location": "Wellingborough, Northamptonshire"
+    },
+    "subjects": {
+      "title": "What We Teach",
+      "language": {
+        "title": "Romanian Language",
+        "desc": "Grammar, vocabulary, reading and writing"
+      },
+      "history": {
+        "title": "Romanian History",
+        "desc": "Romanian history and geography"
+      },
+      "culture": {
+        "title": "Culture & Traditions",
+        "desc": "Holidays, customs and Romanian folklore"
+      },
+      "arts": {
+        "title": "Arts & Music",
+        "desc": "Traditional art and Romanian music"
+      }
+    },
+    "teacher": {
+      "title": "Our Teacher",
+      "name": "Laura Nan",
+      "role": "Founder & Teacher",
+      "bio1": "Laura Nan is the founder and teacher of Mihai Eminescu Romanian School. With extensive teaching experience gained in Romania, where she taught for many years, Laura dedicates her time and energy to providing Romanian children in the UK with authentic education in Romanian language and culture.",
+      "bio2": "For the past two years, Laura has been teaching at a Romanian school in Northampton, where she strengthened her passion for maintaining the cultural identity of children in the diaspora. Her vision is to create a safe and inspiring space where every child can discover the beauty of the Romanian language and stay connected to their roots.",
+      "bio3": "Laura brings not only solid pedagogical knowledge but also a deep love for the Romanian community in the United Kingdom."
+    },
+    "areas": {
+      "title": "Serving Communities In",
+      "contactBtn": "Contact Us"
+    }
+  },
+  "news": {
+    "hero": "News",
+    "subtitle": "Stay updated with our latest events and announcements",
+    "filters": {
+      "all": "All",
+      "announcements": "Announcements",
+      "events": "Events",
+      "activities": "Activities",
+      "holidays": "Holidays"
+    },
+    "empty": "News will be published soon! Follow this page for updates about our school's events and activities.",
+    "readMore": "Read More",
+    "backToNews": "Back to News",
+    "viewOnFacebook": "View on Facebook"
+  },
+  "gallery": {
+    "hero": "Photo Gallery",
+    "empty": {
+      "title": "Our photo gallery will be available soon!",
+      "subtitle": "Here you will find images from our school's events and activities. Follow this page for updates!"
+    }
+  },
+  "contact": {
+    "hero": "Contact Us",
+    "subtitle": "We're here to answer your questions",
+    "form": {
+      "title": "Send us a message",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "method": "Preferred Contact Method",
+      "methodOptions": {
+        "whatsapp": "WhatsApp",
+        "phone": "Phone",
+        "email": "Email"
+      },
+      "message": "Message",
+      "submit": "Send Message",
+      "success": "Thank you! Your message has been sent successfully. We will contact you soon.",
+      "error": "An error occurred. Please try again.",
+      "required": "This field is required",
+      "invalidEmail": "Invalid email",
+      "minLength": "Message must be at least 10 characters"
+    },
+    "info": {
+      "title": "Contact Information",
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "whatsappValue": "Number available soon",
+      "location": "Location",
+      "locationValue": "Exact address will be announced soon",
+      "schedule": "Schedule",
+      "scheduleValue": "Saturdays: 9:00 AM - 1:00 PM"
+    },
+    "social": {
+      "title": "Follow Us on Social Media",
+      "coming": "Our social media pages will be available soon!"
+    }
+  },
+  "footer": {
+    "description": "Keeping Romanian culture and language alive for our children in Northamptonshire.",
+    "quickLinks": "Quick Links",
+    "contact": "Contact",
+    "copyright": "© 2025 Mihai Eminescu Romanian School Wellingborough. All rights reserved."
+  },
+  "whatsapp": {
+    "tooltip": "Contact us on WhatsApp"
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "nav": {
+    "home": "Acasă",
+    "about": "Despre Noi",
+    "news": "Noutăți",
+    "gallery": "Galerie",
+    "contact": "Contact"
+  },
+  "home": {
+    "hero": {
+      "title": "Bun venit la Școala Românească Mihai Eminescu Wellingborough",
+      "subtitle": "Păstrăm vie cultura și limba română pentru copiii noștri",
+      "description": "Educație în limba română pentru copii în Northamptonshire",
+      "contactBtn": "Contactează-ne",
+      "learnBtn": "Află mai multe"
+    },
+    "about": {
+      "title": "Despre Școala Noastră",
+      "content": "Școala Românească Mihai Eminescu din Wellingborough este dedicată păstrării și promovării limbii, culturii și tradițiilor românești pentru copiii din comunitatea română din Northamptonshire. Oferim o educație de calitate într-un mediu prietenos și incluziv.",
+      "readMore": "Citește mai mult"
+    },
+    "benefits": {
+      "title": "De ce să ne alegi?",
+      "language": {
+        "title": "Limba Română",
+        "desc": "Lecții structurate în limba română pentru toate vârstele"
+      },
+      "education": {
+        "title": "Educație de Calitate",
+        "desc": "Profesori calificați cu experiență în predare"
+      },
+      "culture": {
+        "title": "Cultură și Tradiții",
+        "desc": "Sărbătorim și învățăm despre tradițiile românești"
+      },
+      "community": {
+        "title": "Comunitate",
+        "desc": "Un spațiu sigur pentru copiii români din Northamptonshire"
+      }
+    },
+    "schedule": {
+      "title": "Programul Nostru",
+      "day": "Zi:",
+      "dayValue": "Sâmbăta",
+      "time": "Orar:",
+      "timeValue": "9:00 - 13:00",
+      "age": "Vârsta:",
+      "ageValue": "5-10 ani (inițial)",
+      "location": "Locație:",
+      "locationValue": "Wellingborough, Northamptonshire"
+    },
+    "galleryPreview": {
+      "title": "Galerie Foto",
+      "viewBtn": "Vezi Galeria"
+    },
+    "testimonials": {
+      "title": "Ce spun părinții",
+      "coming": "Mărturiile părinților vor fi adăugate în curând!"
+    },
+    "cta": {
+      "title": "Înscrie-ți copilul astăzi!",
+      "subtitle": "Alătură-te comunității noastre și oferă-i copilului tău șansa de a învăța limba și cultura română.",
+      "contactBtn": "Contactează-ne"
+    }
+  },
+  "about": {
+    "hero": "Despre Noi",
+    "mission": {
+      "title": "Misiunea Noastră",
+      "content1": "Școala Românească Mihai Eminescu din Wellingborough este dedicată păstrării și promovării limbii, culturii și tradițiilor românești pentru copiii din comunitatea română din Northamptonshire.",
+      "content2": "Misiunea noastră este să oferim o educație de calitate în limba română, într-un mediu prietenos și incluziv, unde copiii pot învăța și crește împreună. Credem că menținerea legăturii cu rădăcinile culturale este esențială pentru dezvoltarea identității copiilor noștri."
+    },
+    "curriculum": {
+      "title": "Curriculum și Program",
+      "age": "5-10 ani (inițial, vom extinde în viitor)",
+      "schedule": "Sâmbăta, 9:00 - 13:00",
+      "location": "Wellingborough, Northamptonshire"
+    },
+    "subjects": {
+      "title": "Ce Predăm",
+      "language": {
+        "title": "Limba Română",
+        "desc": "Gramatică, vocabular, citit și scris"
+      },
+      "history": {
+        "title": "Istorie Românească",
+        "desc": "Istoria și geografia României"
+      },
+      "culture": {
+        "title": "Cultură și Tradiții",
+        "desc": "Sărbători, obiceiuri și folclor românesc"
+      },
+      "arts": {
+        "title": "Arte și Muzică",
+        "desc": "Artă tradițională și muzică românească"
+      }
+    },
+    "teacher": {
+      "title": "Profesoara Noastră",
+      "name": "Laura Nan",
+      "role": "Fondator și Profesor",
+      "bio1": "Laura Nan este fondatoarea și profesoara Școlii Românești Mihai Eminescu. Cu o experiență bogată în predare, dobândită în România, unde a fost profesoară timp de mai mulți ani, Laura își dedică timpul și energia pentru a oferi copiilor români din Marea Britanie o educație autentică în limba și cultura română.",
+      "bio2": "În ultimii doi ani, Laura a predat la o școală românească din Northampton, unde și-a consolidat pasiunea pentru menținerea identității culturale a copiilor din diaspora. Viziunea ei este de a crea un spațiu sigur și inspirațional unde fiecare copil poate descoperi frumusețea limbii române și poate rămâne conectat la rădăcinile sale.",
+      "bio3": "Laura aduce cu sine nu doar cunoștințe pedagogice solide, ci și o dragoste profundă pentru comunitatea românească din Marea Britanie."
+    },
+    "areas": {
+      "title": "Servim Comunitățile Din",
+      "contactBtn": "Contactează-ne"
+    }
+  },
+  "news": {
+    "hero": "Noutăți",
+    "subtitle": "Rămâi la curent cu ultimele evenimente și anunțuri",
+    "filters": {
+      "all": "Toate",
+      "announcements": "Anunțuri",
+      "events": "Evenimente",
+      "activities": "Activități",
+      "holidays": "Sărbători"
+    },
+    "empty": "Noutățile vor fi publicate în curând! Urmărește această pagină pentru actualizări despre evenimentele și activitățile școlii noastre.",
+    "readMore": "Citește mai mult",
+    "backToNews": "Înapoi la Noutăți",
+    "viewOnFacebook": "Vezi pe Facebook"
+  },
+  "gallery": {
+    "hero": "Galerie Foto",
+    "empty": {
+      "title": "Galeria noastră foto va fi disponibilă în curând!",
+      "subtitle": "Aici veți găsi imagini de la evenimentele și activitățile școlii noastre. Urmărește această pagină pentru actualizări!"
+    }
+  },
+  "contact": {
+    "hero": "Contactează-ne",
+    "subtitle": "Suntem aici să răspundem la întrebările tale",
+    "form": {
+      "title": "Trimite-ne un mesaj",
+      "name": "Nume",
+      "email": "Email",
+      "phone": "Telefon",
+      "method": "Metoda preferată de contact",
+      "methodOptions": {
+        "whatsapp": "WhatsApp",
+        "phone": "Telefon",
+        "email": "Email"
+      },
+      "message": "Mesaj",
+      "submit": "Trimite Mesajul",
+      "success": "Mulțumim! Mesajul tău a fost trimis cu succes. Te vom contacta în curând.",
+      "error": "A apărut o eroare. Te rugăm să încerci din nou.",
+      "required": "Acest câmp este obligatoriu",
+      "invalidEmail": "Email invalid",
+      "minLength": "Mesajul trebuie să aibă cel puțin 10 caractere"
+    },
+    "info": {
+      "title": "Informații de Contact",
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "whatsappValue": "Număr disponibil în curând",
+      "location": "Locație",
+      "locationValue": "Adresa exactă va fi anunțată în curând",
+      "schedule": "Program",
+      "scheduleValue": "Sâmbăta: 9:00 - 13:00"
+    },
+    "social": {
+      "title": "Urmărește-ne pe Rețelele Sociale",
+      "coming": "Paginile noastre de social media vor fi disponibile în curând!"
+    }
+  },
+  "footer": {
+    "description": "Păstrăm vie cultura și limba română pentru copiii noștri din Northamptonshire.",
+    "quickLinks": "Link-uri Rapide",
+    "contact": "Contact",
+    "copyright": "© 2025 Școala Românească Mihai Eminescu Wellingborough. Toate drepturile rezervate."
+  },
+  "whatsapp": {
+    "tooltip": "Contactează-ne pe WhatsApp"
+  }
+}
