@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import logo from '@/assets/logo.jpg';
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -17,9 +18,8 @@ const Header = () => {
     { key: 'contact', path: '/contact' },
   ];
 
-  const toggleLanguage = () => {
-    const newLang = i18n.language === 'ro' ? 'en' : 'ro';
-    i18n.changeLanguage(newLang);
+  const changeLanguage = (lang: string) => {
+    i18n.changeLanguage(lang);
   };
 
   const isActive = (path: string) => location.pathname === path;
@@ -31,26 +31,35 @@ const Header = () => {
         <div className="container mx-auto px-4 py-4">
           {/* Language Switcher - Top Right */}
           <div className="flex justify-end mb-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleLanguage}
-              className="flex items-center gap-2 hover:bg-primary/10"
-            >
-              <span className="text-2xl">{i18n.language === 'ro' ? '🇷🇴' : '🇬🇧'}</span>
-              <span className="text-sm font-medium">{i18n.language === 'ro' ? 'RO' : 'EN'}</span>
-            </Button>
+            <div className="flex items-center gap-2 border border-border rounded-lg p-1">
+              <Button
+                variant={i18n.language === 'ro' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => changeLanguage('ro')}
+                className="flex items-center gap-2"
+              >
+                <span className="text-xl">🇷🇴</span>
+                <span className="text-sm font-medium">RO</span>
+              </Button>
+              <Button
+                variant={i18n.language === 'en' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => changeLanguage('en')}
+                className="flex items-center gap-2"
+              >
+                <span className="text-xl">🇬🇧</span>
+                <span className="text-sm font-medium">EN</span>
+              </Button>
+            </div>
           </div>
 
           {/* Logo - Centered */}
           <Link to="/" className="flex justify-center mb-6">
-            <div className="text-center">
-              <h1 className="text-2xl lg:text-3xl font-bold text-primary">
-                Școala Românească
-              </h1>
-              <p className="text-lg font-semibold text-accent">Mihai Eminescu</p>
-              <p className="text-sm text-muted-foreground">Wellingborough, UK</p>
-            </div>
+            <img 
+              src={logo} 
+              alt="Școala Românească Mihai Eminescu Wellingborough" 
+              className="h-32 w-auto"
+            />
           </Link>
 
           {/* Navigation - Below Logo */}
@@ -80,10 +89,11 @@ const Header = () => {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           {/* Logo - Left */}
           <Link to="/" className="flex items-center">
-            <div>
-              <h1 className="text-lg font-bold text-primary">Școala Românească</h1>
-              <p className="text-xs font-semibold text-accent">Mihai Eminescu</p>
-            </div>
+            <img 
+              src={logo} 
+              alt="Școala Românească Mihai Eminescu" 
+              className="h-12 w-auto"
+            />
           </Link>
 
           {/* Hamburger Menu - Right */}
@@ -118,18 +128,32 @@ const Header = () => {
                   </li>
                 ))}
                 <li className="pt-4 border-t border-border">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      toggleLanguage();
-                      setMobileMenuOpen(false);
-                    }}
-                    className="w-full justify-start gap-2"
-                  >
-                    <span className="text-2xl">{i18n.language === 'ro' ? '🇬🇧' : '🇷🇴'}</span>
-                    <span>Switch to {i18n.language === 'ro' ? 'English' : 'Română'}</span>
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      variant={i18n.language === 'ro' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => {
+                        changeLanguage('ro');
+                        setMobileMenuOpen(false);
+                      }}
+                      className="flex-1 gap-2"
+                    >
+                      <span className="text-xl">🇷🇴</span>
+                      <span>RO</span>
+                    </Button>
+                    <Button
+                      variant={i18n.language === 'en' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => {
+                        changeLanguage('en');
+                        setMobileMenuOpen(false);
+                      }}
+                      className="flex-1 gap-2"
+                    >
+                      <span className="text-xl">🇬🇧</span>
+                      <span>EN</span>
+                    </Button>
+                  </div>
                 </li>
               </ul>
             </nav>
