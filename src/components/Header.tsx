@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import logo from '@/assets/logo.jpg';
+import flagRo from '@/assets/flag-romania.png';
+import flagUk from '@/assets/flag-uk.png';
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -31,25 +33,43 @@ const Header = () => {
         <div className="container mx-auto px-4 py-4">
           {/* Language Switcher - Top Right */}
           <div className="flex justify-end mb-4">
-            <div className="flex items-center gap-2 border border-border rounded-lg p-1">
-              <Button
-                variant={i18n.language === 'ro' ? 'default' : 'ghost'}
-                size="sm"
+            <div className="flex items-center gap-1 border border-border rounded-lg overflow-hidden">
+              <button
                 onClick={() => changeLanguage('ro')}
-                className="flex items-center gap-2"
+                className={`relative px-4 py-2 text-sm font-bold transition-all ${
+                  i18n.language === 'ro' 
+                    ? 'text-white' 
+                    : 'text-foreground/60 hover:text-foreground'
+                }`}
+                style={{
+                  backgroundImage: `url(${flagRo})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
               >
-                <span className="text-xl">🇷🇴</span>
-                <span className="text-sm font-medium">RO</span>
-              </Button>
-              <Button
-                variant={i18n.language === 'en' ? 'default' : 'ghost'}
-                size="sm"
+                <span className="relative z-10 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">RO</span>
+                {i18n.language !== 'ro' && (
+                  <div className="absolute inset-0 bg-card/60 backdrop-blur-[2px]" />
+                )}
+              </button>
+              <button
                 onClick={() => changeLanguage('en')}
-                className="flex items-center gap-2"
+                className={`relative px-4 py-2 text-sm font-bold transition-all ${
+                  i18n.language === 'en' 
+                    ? 'text-white' 
+                    : 'text-foreground/60 hover:text-foreground'
+                }`}
+                style={{
+                  backgroundImage: `url(${flagUk})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
               >
-                <span className="text-xl">🇬🇧</span>
-                <span className="text-sm font-medium">EN</span>
-              </Button>
+                <span className="relative z-10 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">EN</span>
+                {i18n.language !== 'en' && (
+                  <div className="absolute inset-0 bg-card/60 backdrop-blur-[2px]" />
+                )}
+              </button>
             </div>
           </div>
 
@@ -129,30 +149,48 @@ const Header = () => {
                 ))}
                 <li className="pt-4 border-t border-border">
                   <div className="flex gap-2">
-                    <Button
-                      variant={i18n.language === 'ro' ? 'default' : 'outline'}
-                      size="sm"
+                    <button
                       onClick={() => {
                         changeLanguage('ro');
                         setMobileMenuOpen(false);
                       }}
-                      className="flex-1 gap-2"
+                      className={`relative flex-1 px-4 py-3 rounded-md text-sm font-bold transition-all ${
+                        i18n.language === 'ro' 
+                          ? 'text-white' 
+                          : 'text-foreground/60'
+                      }`}
+                      style={{
+                        backgroundImage: `url(${flagRo})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                      }}
                     >
-                      <span className="text-xl">🇷🇴</span>
-                      <span>RO</span>
-                    </Button>
-                    <Button
-                      variant={i18n.language === 'en' ? 'default' : 'outline'}
-                      size="sm"
+                      <span className="relative z-10 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">RO</span>
+                      {i18n.language !== 'ro' && (
+                        <div className="absolute inset-0 bg-card/60 backdrop-blur-[2px] rounded-md" />
+                      )}
+                    </button>
+                    <button
                       onClick={() => {
                         changeLanguage('en');
                         setMobileMenuOpen(false);
                       }}
-                      className="flex-1 gap-2"
+                      className={`relative flex-1 px-4 py-3 rounded-md text-sm font-bold transition-all ${
+                        i18n.language === 'en' 
+                          ? 'text-white' 
+                          : 'text-foreground/60'
+                      }`}
+                      style={{
+                        backgroundImage: `url(${flagUk})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                      }}
                     >
-                      <span className="text-xl">🇬🇧</span>
-                      <span>EN</span>
-                    </Button>
+                      <span className="relative z-10 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">EN</span>
+                      {i18n.language !== 'en' && (
+                        <div className="absolute inset-0 bg-card/60 backdrop-blur-[2px] rounded-md" />
+                      )}
+                    </button>
                   </div>
                 </li>
               </ul>
