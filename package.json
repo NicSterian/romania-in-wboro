@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@contentful/rich-text-react-renderer": "^15.22.11",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",
@@ -43,6 +44,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
+    "contentful": "^10.15.1",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.6.0",
     "i18next": "^25.6.0",

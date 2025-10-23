@@ -7,6 +7,7 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import News from "./pages/News";
+import NewsPost from "./pages/NewsPost";
 import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
@@ -19,11 +20,12 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner position="top-center" />
-      <Layout>
+        <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/news" element={<News />} />
+            <Route path="/news/:slug" element={<NewsPost />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<NotFound />} />
