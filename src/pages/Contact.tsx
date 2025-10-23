@@ -6,6 +6,7 @@ import * as z from 'zod';
 import { Mail, MessageCircle, MapPin, Clock, Facebook, Instagram } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import logo from '@/assets/logo.jpg';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import {
@@ -74,6 +75,11 @@ const Contact = () => {
       {/* Hero Section */}
       <section className="hero-gradient text-primary-foreground py-20 md:py-32">
         <div className="container mx-auto px-4 text-center">
+          <img 
+            src={logo} 
+            alt="Școala Românească Mihai Eminescu" 
+            className="h-24 w-auto mx-auto mb-6"
+          />
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
             {t('contact.hero')}
           </h1>

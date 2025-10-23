@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Mail, Facebook, Instagram } from 'lucide-react';
+import logo from '@/assets/logo.jpg';
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -20,11 +21,15 @@ const Footer = () => {
 
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* About Column */}
+          {/* About Column with Logo */}
           <div>
-            <h3 className="text-xl font-bold text-primary mb-4">
-              Școala Românească Mihai Eminescu
-            </h3>
+            <Link to="/" className="inline-block mb-4">
+              <img 
+                src={logo} 
+                alt="Școala Românească Mihai Eminescu" 
+                className="h-16 w-auto"
+              />
+            </Link>
             <p className="text-sm text-muted-foreground mb-4">
               {t('footer.description')}
             </p>

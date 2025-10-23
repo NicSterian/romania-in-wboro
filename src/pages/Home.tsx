@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { BookOpen, GraduationCap, Heart, Users, Calendar, Clock, MapPin, User } from 'lucide-react';
+import logo from '@/assets/logo.jpg';
 
 const Home = () => {
   const { t } = useTranslation();
@@ -85,16 +86,33 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {benefits.map((benefit, index) => {
               const Icon = benefit.icon;
+              // Define styles for each card based on index
+              const cardStyles = [
+                { bg: 'bg-primary', text: 'text-white', iconBg: 'bg-white/20' }, // Romanian Language - Blue
+                { bg: 'bg-secondary', text: 'text-foreground', iconBg: 'bg-foreground/10' }, // Quality Education - Yellow
+                { bg: 'bg-accent', text: 'text-white', iconBg: 'bg-white/20' }, // Culture & Traditions - Red
+                { bg: '', text: 'text-white', iconBg: 'bg-white/20', logoBackground: true }, // Community - Logo background
+              ];
+              const style = cardStyles[index];
+              
               return (
-                <Card key={index} className="hover-lift border-primary/20">
+                <Card 
+                  key={index} 
+                  className={`hover-lift border-primary/20 overflow-hidden ${style.bg}`}
+                  style={style.logoBackground ? {
+                    backgroundImage: `linear-gradient(rgba(0, 43, 127, 0.85), rgba(0, 43, 127, 0.85)), url(${logo})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  } : undefined}
+                >
                   <CardContent className="p-6 text-center">
-                    <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Icon className="h-8 w-8 text-primary" />
+                    <div className={`w-16 h-16 mx-auto mb-4 ${style.iconBg} rounded-full flex items-center justify-center`}>
+                      <Icon className={`h-8 w-8 ${style.text}`} />
                     </div>
-                    <h3 className="text-xl font-semibold mb-3 text-foreground">
+                    <h3 className={`text-xl font-semibold mb-3 ${style.text}`}>
                       {benefit.title}
                     </h3>
-                    <p className="text-muted-foreground">{benefit.desc}</p>
+                    <p className={style.text}>{benefit.desc}</p>
                   </CardContent>
                 </Card>
               );

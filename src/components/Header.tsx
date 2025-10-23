@@ -31,12 +31,41 @@ const Header = () => {
       {/* Desktop Header */}
       <div className="hidden md:block">
         <div className="container mx-auto px-4 py-4">
-          {/* Language Switcher - Top Right */}
-          <div className="flex justify-end mb-4">
+          <div className="flex items-center justify-between">
+            {/* Logo - Left */}
+            <Link to="/" className="flex items-center">
+              <img 
+                src={logo} 
+                alt="Școala Românească Mihai Eminescu Wellingborough" 
+                className="h-20 w-auto"
+              />
+            </Link>
+
+            {/* Navigation - Center */}
+            <nav className="flex-1 flex justify-center">
+              <ul className="flex items-center gap-8">
+                {navItems.map((item) => (
+                  <li key={item.key}>
+                    <Link
+                      to={item.path}
+                      className={`text-sm font-medium transition-colors hover:text-primary relative pb-1 ${
+                        isActive(item.path)
+                          ? 'text-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary'
+                          : 'text-foreground/80'
+                      }`}
+                    >
+                      {t(`nav.${item.key}`)}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            {/* Language Switcher - Right */}
             <div className="flex items-center gap-1 border border-border rounded-lg overflow-hidden">
               <button
                 onClick={() => changeLanguage('ro')}
-                className={`relative px-4 py-2 text-sm font-bold transition-all ${
+                className={`relative px-3 py-1.5 text-xs font-bold transition-all ${
                   i18n.language === 'ro' 
                     ? 'text-white' 
                     : 'text-foreground/60 hover:text-foreground'
@@ -54,7 +83,7 @@ const Header = () => {
               </button>
               <button
                 onClick={() => changeLanguage('en')}
-                className={`relative px-4 py-2 text-sm font-bold transition-all ${
+                className={`relative px-3 py-1.5 text-xs font-bold transition-all ${
                   i18n.language === 'en' 
                     ? 'text-white' 
                     : 'text-foreground/60 hover:text-foreground'
@@ -72,35 +101,6 @@ const Header = () => {
               </button>
             </div>
           </div>
-
-          {/* Logo - Centered */}
-          <Link to="/" className="flex justify-center mb-6">
-            <img 
-              src={logo} 
-              alt="Școala Românească Mihai Eminescu Wellingborough" 
-              className="h-32 w-auto"
-            />
-          </Link>
-
-          {/* Navigation - Below Logo */}
-          <nav className="flex justify-center">
-            <ul className="flex items-center gap-8">
-              {navItems.map((item) => (
-                <li key={item.key}>
-                  <Link
-                    to={item.path}
-                    className={`text-sm font-medium transition-colors hover:text-primary relative pb-1 ${
-                      isActive(item.path)
-                        ? 'text-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary'
-                        : 'text-foreground/80'
-                    }`}
-                  >
-                    {t(`nav.${item.key}`)}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
         </div>
       </div>
 
