@@ -1,11 +1,17 @@
 import { createClient } from 'contentful';
 import { translateText, translateRichText } from './translate';
 
-// IMPORTANT: Never hardcode credentials here - always use environment variables
-const client = createClient({
-  space: import.meta.env.VITE_CONTENTFUL_SPACE_ID || '',
-  accessToken: import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN || '',
-});
+// Check if Contentful credentials are configured
+const spaceId = import.meta.env.VITE_CONTENTFUL_SPACE_ID;
+const accessToken = import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN;
+
+const hasCredentials = spaceId && accessToken;
+
+// Only create client if credentials exist
+const client = hasCredentials ? createClient({
+  space: spaceId,
+  accessToken: accessToken,
+}) : null;
 
 export interface NewsPost {
   id: string;
@@ -83,6 +89,11 @@ async function autoTranslateGalleryAlbum(item: any): Promise<GalleryAlbum> {
 }
 
 export async function getNewsPosts(): Promise<NewsPost[]> {
+  if (!client) {
+    console.warn('Contentful credentials not configured');
+    return [];
+  }
+  
   try {
     const response = await client.getEntries({
       content_type: 'newsPost',
@@ -100,6 +111,11 @@ export async function getNewsPosts(): Promise<NewsPost[]> {
 }
 
 export async function getNewsPostBySlug(slug: string): Promise<NewsPost | null> {
+  if (!client) {
+    console.warn('Contentful credentials not configured');
+    return null;
+  }
+  
   try {
     const response = await client.getEntries({
       content_type: 'newsPost',
@@ -118,6 +134,11 @@ export async function getNewsPostBySlug(slug: string): Promise<NewsPost | null> 
 }
 
 export async function getGalleryAlbums(): Promise<GalleryAlbum[]> {
+  if (!client) {
+    console.warn('Contentful credentials not configured');
+    return [];
+  }
+  
   try {
     const response = await client.getEntries({
       content_type: 'galleryAlbum',
