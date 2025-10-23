@@ -13,6 +13,10 @@ type ContentfulAsset = {
 
 type ImageField = string | ContentfulAsset | Array<string | ContentfulAsset>;
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
 function transformExternalImageUrl(url: string): string {
   const trimmed = url.trim();
   if (!trimmed) return trimmed;
@@ -101,10 +105,37 @@ function resolveImageUrl(imageField: ImageField | undefined): string | undefined
 
 function normalizeImageArray(images: ImageField[] | undefined): string[] {
   if (!images) return [];
-
   return images
     .map((image) => resolveImageUrl(image))
     .filter((url): url is string => Boolean(url));
+}
+
+function describeContentfulError(error: unknown): string | null {
+  if (!isRecord(error)) return null;
+
+  const sys = error['sys'];
+  if (isRecord(sys) && typeof sys['id'] === 'string') {
+    const id = sys['id'];
+    if (id === 'UnknownContentType') {
+      return 'Unknown Content Type – ensure VITE_CONTENTFUL_*_CONTENT_TYPE matches your model ID in Contentful.';
+    }
+    return `Contentful error ${id}`;
+  }
+
+  if (typeof error['message'] === 'string') {
+    return error['message'];
+  }
+
+  return null;
+}
+
+function logContentfulError(context: string, error: unknown) {
+  const helpfulMessage = describeContentfulError(error);
+  if (helpfulMessage) {
+    console.error(`${context}: ${helpfulMessage}`, error);
+  } else {
+    console.error(context, error);
+  }
 }
 
 // Check if Contentful credentials are configured
@@ -158,7 +189,7 @@ async function autoTranslateNewsPost(item: Entry<NewsPostFields>): Promise<NewsP
   const titleEn = item.fields.titleEn || await translateText(item.fields.title);
   const excerptEn = item.fields.excerptEn || await translateText(item.fields.excerpt);
   const contentEn = item.fields.contentEn || await translateRichText(item.fields.content);
-  
+
   return {
     id: item.sys.id,
     title: item.fields.title,
@@ -167,8 +198,8 @@ async function autoTranslateNewsPost(item: Entry<NewsPostFields>): Promise<NewsP
     category: item.fields.category,
     publicationDate: item.fields.publicationDate,
     featuredImageUrl:
-    resolveImageUrl(item.fields.featuredImage) ||
-    resolveImageUrl(item.fields.featuredImageUrl) ||
+      resolveImageUrl(item.fields.featuredImage) ||
+      resolveImageUrl(item.fields.featuredImageUrl) ||
       '',
     excerpt: item.fields.excerpt,
     excerptEn,
@@ -182,10 +213,10 @@ async function autoTranslateNewsPost(item: Entry<NewsPostFields>): Promise<NewsP
 
 async function autoTranslateGalleryAlbum(item: Entry<GalleryAlbumFields>): Promise<GalleryAlbum> {
   const albumTitleEn = item.fields.albumTitleEn || await translateText(item.fields.albumTitle);
-  const descriptionEn = item.fields.description 
+  const descriptionEn = item.fields.description
     ? (item.fields.descriptionEn || await translateText(item.fields.description))
     : undefined;
-  
+
   return {
     id: item.sys.id,
     albumTitle: item.fields.albumTitle,
@@ -208,10 +239,10 @@ export async function getNewsPosts(): Promise<NewsPost[]> {
     console.warn('Contentful credentials not configured');
     return [];
   }
-  
+
   try {
     const response = await client.getEntries({
-           content_type: newsContentType,
+      content_type: newsContentType,
       'fields.published': true,
       order: ['-fields.publicationDate'],
     });
@@ -220,7 +251,7 @@ export async function getNewsPosts(): Promise<NewsPost[]> {
       response.items.map(autoTranslateNewsPost)
     );
   } catch (error) {
-    console.error('Error fetching news posts:', error);
+    logContentfulError('Error fetching news posts', error);
     return [];
   }
 }
@@ -230,7 +261,7 @@ export async function getNewsPostBySlug(slug: string): Promise<NewsPost | null> 
     console.warn('Contentful credentials not configured');
     return null;
   }
-  
+
   try {
     const response = await client.getEntries({
       content_type: newsContentType,
@@ -243,7 +274,7 @@ export async function getNewsPostBySlug(slug: string): Promise<NewsPost | null> 
 
     return await autoTranslateNewsPost(response.items[0]);
   } catch (error) {
-    console.error('Error fetching news post:', error);
+    logContentfulError('Error fetching news post', error);
     return null;
   }
 }
@@ -253,10 +284,10 @@ export async function getGalleryAlbums(): Promise<GalleryAlbum[]> {
     console.warn('Contentful credentials not configured');
     return [];
   }
-  
+
   try {
     const response = await client.getEntries({
-      content_type: galleryContentType,,
+      content_type: galleryContentType,
       'fields.published': true,
       order: ['-fields.date'],
     });
@@ -265,7 +296,7 @@ export async function getGalleryAlbums(): Promise<GalleryAlbum[]> {
       response.items.map(autoTranslateGalleryAlbum)
     );
   } catch (error) {
-    console.error('Error fetching gallery albums:', error);
+    logContentfulError('Error fetching gallery albums', error);
     return [];
   }
 }
