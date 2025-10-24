@@ -1,4 +1,5 @@
-import { createClient, type Entry } from 'contentful';
+import { createClient } from 'contentful';
+import type { Entry } from 'contentful';
 import type { Document } from '@contentful/rich-text-types';
 import { translateText, translateRichText } from './translate';
 
@@ -11,11 +12,8 @@ type ContentfulAsset = {
   url?: string;
 };
 
-type ImageLike = string | ContentfulAsset;
-type ImageField = ImageLike | ImageLike[];
 type ImageValue = string | ContentfulAsset;
 type ImageField = ImageValue | ImageValue[];
-type ImageField = string | ContentfulAsset | Array<string | ContentfulAsset>;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
@@ -56,7 +54,7 @@ function transformExternalImageUrl(url: string): string {
   return trimmed;
 }
 
-type NewsPostFields = {
+interface NewsPostFields {
   title: string;
   titleEn?: string;
   slug: string;
@@ -69,81 +67,23 @@ type NewsPostFields = {
   content: Document;
   contentEn?: Document;
   additionalImages?: ImageField;
-  additionalImages?: ImageField[];
   facebookLink?: string;
   published: boolean;
-};
+}
 
-type GalleryAlbumFields = {
+interface GalleryAlbumFields {
   albumTitle: string;
   albumTitleEn?: string;
   category: string;
   coverImage?: ImageField;
   coverImageUrl?: string;
   images?: ImageField;
-  images?: ImageField[];
   description?: string;
   descriptionEn?: string;
   date?: string;
   published: boolean;
-};
-
-function collectImageValues(imageField: ImageField | undefined): ImageLike[] {
-  if (!imageField) return [];
-
-  const values = Array.isArray(imageField) ? imageField : [imageField];
-
-  return values.flatMap((value) => {
-    if (typeof value === 'string') {
-      return value
-        .split(/[\n,;]+/)
-        .map((part) => part.trim())
-        .filter(Boolean);
-    }
-
-    return value ? [value] : [];
-  });
 }
 
-function resolveImageLike(imageLike: ImageLike | undefined): string | undefined {
-  if (!imageLike) return undefined;
-
-  if (typeof imageLike === 'string') {
-    const trimmed = imageLike.trim();
-    if (!trimmed) return undefined;
-
-    if (trimmed.startsWith('//')) {
-      return transformExternalImageUrl(`https:${trimmed}`);
-    }
-
-    return transformExternalImageUrl(trimmed);
-  }
-
-  const assetUrl = imageLike.fields?.file?.url || imageLike.url;
-  if (!assetUrl) return undefined;
-
-  const normalized = assetUrl.startsWith('//') ? `https:${assetUrl}` : assetUrl;
-  return transformExternalImageUrl(normalized);
-}
-
-function normalizeImageArray(images: ImageField | undefined): string[] {
-  const urls = collectImageValues(images)
-    .map((image) => resolveImageLike(image))
-    .filter((url): url is string => Boolean(url));
-
-  return Array.from(new Set(urls));
-}
-
-function resolveFirstImageUrl(...imageFields: (ImageField | undefined)[]): string | undefined {
-  for (const field of imageFields) {
-    const urls = normalizeImageArray(field);
-    if (urls.length > 0) {
-      return urls[0];
-    }
-  }
-
-  return undefined;
-function resolveImageUrl(imageField: ImageValue | undefined): string | undefined {
 function resolveImageUrl(imageField: ImageField | undefined): string | undefined {
   if (!imageField) return undefined;
 
@@ -195,17 +135,18 @@ function expandImageField(imageField: ImageField | undefined): ImageValue[] {
 
 function normalizeImageArray(images: ImageField | undefined): string[] {
   return expandImageField(images)
-function normalizeImageArray(images: ImageField[] | undefined): string[] {
-  if (!images) return [];
-
-  return images
     .map((image) => resolveImageUrl(image))
     .filter((url): url is string => Boolean(url));
 }
 
-function resolveFirstImageUrl(imageField: ImageField | undefined): string | undefined {
-  const [first] = expandImageField(imageField);
-  return resolveImageUrl(first);
+function resolveFirstImageUrl(...imageFields: (ImageField | undefined)[]): string | undefined {
+  for (const field of imageFields) {
+    const urls = normalizeImageArray(field);
+    if (urls.length > 0) {
+      return urls[0];
+    }
+  }
+  return undefined;
 }
 
 function describeContentfulError(error: unknown): string | null {
@@ -251,7 +192,7 @@ const client = hasCredentials ? createClient({
   accessToken: accessToken,
 }) : null;
 
-type NewsPostResult = {
+export interface NewsPost {
   id: string;
   title: string;
   titleEn: string;
@@ -266,9 +207,9 @@ type NewsPostResult = {
   additionalImages?: string[];
   facebookLink?: string;
   published: boolean;
-};
+}
 
-type GalleryAlbumResult = {
+export interface GalleryAlbum {
   id: string;
   albumTitle: string;
   albumTitleEn: string;
@@ -279,57 +220,58 @@ type GalleryAlbumResult = {
   descriptionEn?: string;
   date?: string;
   published: boolean;
-};
-
-export type NewsPost = NewsPostResult;
-export type GalleryAlbum = GalleryAlbumResult;
+}
 
 // Auto-translate Romanian content to English if English fields are empty
-async function autoTranslateNewsPost(item: Entry<NewsPostFields>): Promise<NewsPost> {
+async function autoTranslateNewsPost(item: any): Promise<NewsPost> {
+  const fields = item.fields;
+  
   // Use existing English translation if available, otherwise auto-translate from Romanian
-  const titleEn = item.fields.titleEn || await translateText(item.fields.title);
-  const excerptEn = item.fields.excerptEn || await translateText(item.fields.excerpt);
-  const contentEn = item.fields.contentEn || await translateRichText(item.fields.content);
+  const titleEn = fields.titleEn || await translateText(fields.title);
+  const excerptEn = fields.excerptEn || await translateText(fields.excerpt);
+  const contentEn = fields.contentEn || await translateRichText(fields.content);
 
   return {
     id: item.sys.id,
-    title: item.fields.title,
+    title: fields.title,
     titleEn,
-    slug: item.fields.slug,
-    category: item.fields.category,
-    publicationDate: item.fields.publicationDate,
+    slug: fields.slug,
+    category: fields.category,
+    publicationDate: fields.publicationDate,
     featuredImageUrl:
-      resolveFirstImageUrl(item.fields.featuredImage, item.fields.featuredImageUrl) ||
+      resolveFirstImageUrl(fields.featuredImage, fields.featuredImageUrl) ||
       '',
-    excerpt: item.fields.excerpt,
+    excerpt: fields.excerpt,
     excerptEn,
-    content: item.fields.content,
+    content: fields.content,
     contentEn,
-    additionalImages: normalizeImageArray(item.fields.additionalImages),
-    facebookLink: item.fields.facebookLink,
-    published: item.fields.published,
+    additionalImages: normalizeImageArray(fields.additionalImages),
+    facebookLink: fields.facebookLink,
+    published: fields.published,
   };
 }
 
-async function autoTranslateGalleryAlbum(item: Entry<GalleryAlbumFields>): Promise<GalleryAlbum> {
-  const albumTitleEn = item.fields.albumTitleEn || await translateText(item.fields.albumTitle);
-  const descriptionEn = item.fields.description
-    ? (item.fields.descriptionEn || await translateText(item.fields.description))
+async function autoTranslateGalleryAlbum(item: any): Promise<GalleryAlbum> {
+  const fields = item.fields;
+  
+  const albumTitleEn = fields.albumTitleEn || await translateText(fields.albumTitle);
+  const descriptionEn = fields.description
+    ? (fields.descriptionEn || await translateText(fields.description))
     : undefined;
 
   return {
     id: item.sys.id,
-    albumTitle: item.fields.albumTitle,
+    albumTitle: fields.albumTitle,
     albumTitleEn,
-    category: item.fields.category,
+    category: fields.category,
     coverImageUrl:
-      resolveFirstImageUrl(item.fields.coverImage, item.fields.coverImageUrl) ||
+      resolveFirstImageUrl(fields.coverImage, fields.coverImageUrl) ||
       '',
-    images: normalizeImageArray(item.fields.images),
-    description: item.fields.description,
+    images: normalizeImageArray(fields.images),
+    description: fields.description,
     descriptionEn,
-    date: item.fields.date,
-    published: item.fields.published,
+    date: fields.date,
+    published: fields.published,
   };
 }
 

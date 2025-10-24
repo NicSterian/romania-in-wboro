@@ -1,4 +1,5 @@
-import type { Document, RichTextContent, Text as RichTextText } from '@contentful/rich-text-types';
+import type { Document, Text as RichTextText, TopLevelBlock } from '@contentful/rich-text-types';
+import { BLOCKS } from '@contentful/rich-text-types';
 
 function getCache(key: string): string | null {
   if (typeof window === 'undefined') return null;
@@ -89,18 +90,17 @@ export async function translateText(text: string): Promise<string> {
 export async function translateRichText(richTextContent: Document | undefined): Promise<Document> {
   if (!richTextContent) {
     return {
-      nodeType: 'document',
+      nodeType: BLOCKS.DOCUMENT,
       data: {},
       content: [],
     };
   }
 
-  const translateNode = async (node: RichTextContent): Promise<RichTextContent> => {
+  const translateNode = async (node: any): Promise<any> => {
     if (node.nodeType === 'text') {
-      const textNode = node as RichTextText;
       return {
-        ...textNode,
-        value: await translateText(textNode.value),
+        ...node,
+        value: await translateText(node.value),
       };
     }
 
@@ -108,14 +108,16 @@ export async function translateRichText(richTextContent: Document | undefined): 
       return {
         ...node,
         content: await Promise.all(node.content.map(translateNode)),
-      } as RichTextContent;
+      };
     }
 
     return node;
   };
 
+  const translatedContent = await Promise.all(richTextContent.content.map(translateNode));
+
   return {
     ...richTextContent,
-    content: await Promise.all(richTextContent.content.map(translateNode)),
+    content: translatedContent as TopLevelBlock[],
   };
 }
