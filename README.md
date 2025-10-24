@@ -60,6 +60,24 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
+## Environment configuration
+
+Create a `.env` file in the project root and add the following variables to connect your integrations:
+
+```
+VITE_SUPABASE_URL=
+VITE_SUPABASE_ANON_KEY=
+VITE_GOOGLE_MAPS_API_KEY=
+VITE_I18N_BACKEND_URL=https://romania-in-wboro-i18n-production.up.railway.app
+VITE_CONTENTFUL_SPACE_ID=
+VITE_CONTENTFUL_ACCESS_TOKEN=
+VITE_CONTENTFUL_NEWS_CONTENT_TYPE=newsPost
+VITE_CONTENTFUL_GALLERY_CONTENT_TYPE=galleryAlbum
+VITE_TRANSLATION_API_URL=https://translate.argosopentech.com/translate
+```
+
+> **Tip:** If your Contentful space uses custom content type IDs for news posts or gallery albums, update `VITE_CONTENTFUL_NEWS_CONTENT_TYPE` and `VITE_CONTENTFUL_GALLERY_CONTENT_TYPE` accordingly. You can also point `VITE_TRANSLATION_API_URL` to a self-hosted LibreTranslate-compatible endpoint for better reliability.
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/be45ff6a-1537-4ec9-af7a-37953bfe94b0) and click on Share -> Publish.
