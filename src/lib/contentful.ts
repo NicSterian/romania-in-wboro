@@ -13,6 +13,7 @@ type ContentfulAsset = {
 
 type ImageValue = string | ContentfulAsset;
 type ImageField = ImageValue | ImageValue[];
+type ImageField = string | ContentfulAsset | Array<string | ContentfulAsset>;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
@@ -66,6 +67,7 @@ type NewsPostFields = {
   content: Document;
   contentEn?: Document;
   additionalImages?: ImageField;
+  additionalImages?: ImageField[];
   facebookLink?: string;
   published: boolean;
 };
@@ -77,6 +79,7 @@ type GalleryAlbumFields = {
   coverImage?: ImageField;
   coverImageUrl?: string;
   images?: ImageField;
+  images?: ImageField[];
   description?: string;
   descriptionEn?: string;
   date?: string;
@@ -84,10 +87,18 @@ type GalleryAlbumFields = {
 };
 
 function resolveImageUrl(imageField: ImageValue | undefined): string | undefined {
+function resolveImageUrl(imageField: ImageField | undefined): string | undefined {
   if (!imageField) return undefined;
 
   if (typeof imageField === 'string') {
     return transformExternalImageUrl(imageField);
+  }
+
+  if (Array.isArray(imageField)) {
+    const firstUrl = imageField
+      .map((item) => resolveImageUrl(item))
+      .find((url): url is string => Boolean(url));
+    return firstUrl;
   }
 
   const assetUrl = imageField.fields?.file?.url || imageField.url;
@@ -127,6 +138,10 @@ function expandImageField(imageField: ImageField | undefined): ImageValue[] {
 
 function normalizeImageArray(images: ImageField | undefined): string[] {
   return expandImageField(images)
+function normalizeImageArray(images: ImageField[] | undefined): string[] {
+  if (!images) return [];
+
+  return images
     .map((image) => resolveImageUrl(image))
     .filter((url): url is string => Boolean(url));
 }
@@ -214,11 +229,12 @@ export type GalleryAlbum = GalleryAlbumResult;
 
 // Auto-translate Romanian content to English if English fields are empty
 async function autoTranslateNewsPost(item: Entry<NewsPostFields>): Promise<NewsPostResult> {
+async function autoTranslateNewsPost(item: Entry<NewsPostFields>): Promise<NewsPost> {
   // Use existing English translation if available, otherwise auto-translate from Romanian
   const titleEn = item.fields.titleEn || await translateText(item.fields.title);
   const excerptEn = item.fields.excerptEn || await translateText(item.fields.excerpt);
   const contentEn = item.fields.contentEn || await translateRichText(item.fields.content);
-  
+
   return {
     id: item.sys.id,
     title: item.fields.title,
@@ -229,6 +245,8 @@ async function autoTranslateNewsPost(item: Entry<NewsPostFields>): Promise<NewsP
     featuredImageUrl:
       resolveFirstImageUrl(item.fields.featuredImage) ||
       resolveFirstImageUrl(item.fields.featuredImageUrl) ||
+      resolveImageUrl(item.fields.featuredImage) ||
+      resolveImageUrl(item.fields.featuredImageUrl) ||
       '',
     excerpt: item.fields.excerpt,
     excerptEn,
@@ -241,11 +259,12 @@ async function autoTranslateNewsPost(item: Entry<NewsPostFields>): Promise<NewsP
 }
 
 async function autoTranslateGalleryAlbum(item: Entry<GalleryAlbumFields>): Promise<GalleryAlbumResult> {
+async function autoTranslateGalleryAlbum(item: Entry<GalleryAlbumFields>): Promise<GalleryAlbum> {
   const albumTitleEn = item.fields.albumTitleEn || await translateText(item.fields.albumTitle);
-  const descriptionEn = item.fields.description 
+  const descriptionEn = item.fields.description
     ? (item.fields.descriptionEn || await translateText(item.fields.description))
     : undefined;
-  
+
   return {
     id: item.sys.id,
     albumTitle: item.fields.albumTitle,
@@ -254,6 +273,8 @@ async function autoTranslateGalleryAlbum(item: Entry<GalleryAlbumFields>): Promi
     coverImageUrl:
       resolveFirstImageUrl(item.fields.coverImage) ||
       resolveFirstImageUrl(item.fields.coverImageUrl) ||
+      resolveImageUrl(item.fields.coverImage) ||
+      resolveImageUrl(item.fields.coverImageUrl) ||
       '',
     images: normalizeImageArray(item.fields.images),
     description: item.fields.description,
@@ -268,7 +289,7 @@ export async function getNewsPosts(): Promise<NewsPost[]> {
     console.warn('Contentful credentials not configured');
     return [];
   }
-  
+
   try {
     const response = await client.getEntries({
       content_type: newsContentType,
@@ -290,7 +311,7 @@ export async function getNewsPostBySlug(slug: string): Promise<NewsPost | null> 
     console.warn('Contentful credentials not configured');
     return null;
   }
-  
+
   try {
     const response = await client.getEntries({
       content_type: newsContentType,
@@ -313,7 +334,7 @@ export async function getGalleryAlbums(): Promise<GalleryAlbum[]> {
     console.warn('Contentful credentials not configured');
     return [];
   }
-  
+
   try {
     const response = await client.getEntries({
       content_type: galleryContentType,
