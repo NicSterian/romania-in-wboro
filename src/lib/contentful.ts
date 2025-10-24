@@ -105,6 +105,7 @@ function resolveImageUrl(imageField: ImageField | undefined): string | undefined
 
 function normalizeImageArray(images: ImageField[] | undefined): string[] {
   if (!images) return [];
+
   return images
     .map((image) => resolveImageUrl(image))
     .filter((url): url is string => Boolean(url));
