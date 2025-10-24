@@ -11,6 +11,8 @@ type ContentfulAsset = {
   url?: string;
 };
 
+type ImageLike = string | ContentfulAsset;
+type ImageField = ImageLike | ImageLike[];
 type ImageValue = string | ContentfulAsset;
 type ImageField = ImageValue | ImageValue[];
 type ImageField = string | ContentfulAsset | Array<string | ContentfulAsset>;
@@ -86,6 +88,61 @@ type GalleryAlbumFields = {
   published: boolean;
 };
 
+function collectImageValues(imageField: ImageField | undefined): ImageLike[] {
+  if (!imageField) return [];
+
+  const values = Array.isArray(imageField) ? imageField : [imageField];
+
+  return values.flatMap((value) => {
+    if (typeof value === 'string') {
+      return value
+        .split(/[\n,;]+/)
+        .map((part) => part.trim())
+        .filter(Boolean);
+    }
+
+    return value ? [value] : [];
+  });
+}
+
+function resolveImageLike(imageLike: ImageLike | undefined): string | undefined {
+  if (!imageLike) return undefined;
+
+  if (typeof imageLike === 'string') {
+    const trimmed = imageLike.trim();
+    if (!trimmed) return undefined;
+
+    if (trimmed.startsWith('//')) {
+      return transformExternalImageUrl(`https:${trimmed}`);
+    }
+
+    return transformExternalImageUrl(trimmed);
+  }
+
+  const assetUrl = imageLike.fields?.file?.url || imageLike.url;
+  if (!assetUrl) return undefined;
+
+  const normalized = assetUrl.startsWith('//') ? `https:${assetUrl}` : assetUrl;
+  return transformExternalImageUrl(normalized);
+}
+
+function normalizeImageArray(images: ImageField | undefined): string[] {
+  const urls = collectImageValues(images)
+    .map((image) => resolveImageLike(image))
+    .filter((url): url is string => Boolean(url));
+
+  return Array.from(new Set(urls));
+}
+
+function resolveFirstImageUrl(...imageFields: (ImageField | undefined)[]): string | undefined {
+  for (const field of imageFields) {
+    const urls = normalizeImageArray(field);
+    if (urls.length > 0) {
+      return urls[0];
+    }
+  }
+
+  return undefined;
 function resolveImageUrl(imageField: ImageValue | undefined): string | undefined {
 function resolveImageUrl(imageField: ImageField | undefined): string | undefined {
   if (!imageField) return undefined;
@@ -228,7 +285,6 @@ export type NewsPost = NewsPostResult;
 export type GalleryAlbum = GalleryAlbumResult;
 
 // Auto-translate Romanian content to English if English fields are empty
-async function autoTranslateNewsPost(item: Entry<NewsPostFields>): Promise<NewsPostResult> {
 async function autoTranslateNewsPost(item: Entry<NewsPostFields>): Promise<NewsPost> {
   // Use existing English translation if available, otherwise auto-translate from Romanian
   const titleEn = item.fields.titleEn || await translateText(item.fields.title);
@@ -243,10 +299,7 @@ async function autoTranslateNewsPost(item: Entry<NewsPostFields>): Promise<NewsP
     category: item.fields.category,
     publicationDate: item.fields.publicationDate,
     featuredImageUrl:
-      resolveFirstImageUrl(item.fields.featuredImage) ||
-      resolveFirstImageUrl(item.fields.featuredImageUrl) ||
-      resolveImageUrl(item.fields.featuredImage) ||
-      resolveImageUrl(item.fields.featuredImageUrl) ||
+      resolveFirstImageUrl(item.fields.featuredImage, item.fields.featuredImageUrl) ||
       '',
     excerpt: item.fields.excerpt,
     excerptEn,
@@ -258,7 +311,6 @@ async function autoTranslateNewsPost(item: Entry<NewsPostFields>): Promise<NewsP
   };
 }
 
-async function autoTranslateGalleryAlbum(item: Entry<GalleryAlbumFields>): Promise<GalleryAlbumResult> {
 async function autoTranslateGalleryAlbum(item: Entry<GalleryAlbumFields>): Promise<GalleryAlbum> {
   const albumTitleEn = item.fields.albumTitleEn || await translateText(item.fields.albumTitle);
   const descriptionEn = item.fields.description
@@ -271,10 +323,7 @@ async function autoTranslateGalleryAlbum(item: Entry<GalleryAlbumFields>): Promi
     albumTitleEn,
     category: item.fields.category,
     coverImageUrl:
-      resolveFirstImageUrl(item.fields.coverImage) ||
-      resolveFirstImageUrl(item.fields.coverImageUrl) ||
-      resolveImageUrl(item.fields.coverImage) ||
-      resolveImageUrl(item.fields.coverImageUrl) ||
+      resolveFirstImageUrl(item.fields.coverImage, item.fields.coverImageUrl) ||
       '',
     images: normalizeImageArray(item.fields.images),
     description: item.fields.description,
