@@ -194,7 +194,7 @@ const client = hasCredentials ? createClient({
   accessToken: accessToken,
 }) : null;
 
-export interface NewsPost {
+type NewsPostResult = {
   id: string;
   title: string;
   titleEn: string;
@@ -209,9 +209,9 @@ export interface NewsPost {
   additionalImages?: string[];
   facebookLink?: string;
   published: boolean;
-}
+};
 
-export interface GalleryAlbum {
+type GalleryAlbumResult = {
   id: string;
   albumTitle: string;
   albumTitleEn: string;
@@ -222,9 +222,13 @@ export interface GalleryAlbum {
   descriptionEn?: string;
   date?: string;
   published: boolean;
-}
+};
+
+export type NewsPost = NewsPostResult;
+export type GalleryAlbum = GalleryAlbumResult;
 
 // Auto-translate Romanian content to English if English fields are empty
+async function autoTranslateNewsPost(item: Entry<NewsPostFields>): Promise<NewsPostResult> {
 async function autoTranslateNewsPost(item: Entry<NewsPostFields>): Promise<NewsPost> {
   // Use existing English translation if available, otherwise auto-translate from Romanian
   const titleEn = item.fields.titleEn || await translateText(item.fields.title);
@@ -254,6 +258,7 @@ async function autoTranslateNewsPost(item: Entry<NewsPostFields>): Promise<NewsP
   };
 }
 
+async function autoTranslateGalleryAlbum(item: Entry<GalleryAlbumFields>): Promise<GalleryAlbumResult> {
 async function autoTranslateGalleryAlbum(item: Entry<GalleryAlbumFields>): Promise<GalleryAlbum> {
   const albumTitleEn = item.fields.albumTitleEn || await translateText(item.fields.albumTitle);
   const descriptionEn = item.fields.description
