@@ -12,6 +12,70 @@ For production (Netlify), add these as environment variables in Netlify dashboar
 
 **IMPORTANT: Never commit the .env file to GitHub!** The .env file is already included in .gitignore to prevent accidental commits.
 
+## Image Hosting Guide
+
+### ⭐ Recommended: Contentful Assets (Best Option)
+
+The best way to handle images is using Contentful's built-in **Media** field type:
+
+1. In Contentful, edit your content type
+2. Change field types from "Short Text" to "Media"
+3. Set to "One file" for single images or "Many files" for multiple images
+4. Upload images directly in Contentful when creating content
+5. Images are automatically served via CDN and optimized
+
+**Benefits:**
+- ✅ Automatic CDN delivery
+- ✅ Image optimization
+- ✅ No external dependencies
+- ✅ Most reliable
+
+### Alternative: External Image URLs
+
+If you prefer using external URLs with **Short Text** fields:
+
+#### ✅ Supported Sources:
+
+**1. Google Drive (RECOMMENDED for external)**
+- Upload image to Google Drive
+- Right-click → Share → "Anyone with the link can view"
+- Copy the share link (looks like: `https://drive.google.com/file/d/1ABC123xyz456/view?usp=sharing`)
+- Extract the FILE_ID (the part after `/d/` and before `/view`)
+- Use this format in Contentful: `https://drive.google.com/uc?export=view&id=FILE_ID`
+
+**Example:**
+```
+Share URL:  https://drive.google.com/file/d/1ABC123xyz456/view?usp=sharing
+Direct URL: https://drive.google.com/uc?export=view&id=1ABC123xyz456
+           Use this in Contentful ↑
+```
+
+**2. Other Supported Services:**
+- Imgur: `https://i.imgur.com/xxxxx.jpg`
+- Cloudinary: `https://res.cloudinary.com/...`
+- imgBB: Direct image links
+- Any direct image URL ending in `.jpg`, `.png`, `.gif`, `.webp`
+
+#### ❌ NOT Supported:
+
+- **Google Photos**: Cannot be embedded directly (use Google Drive instead)
+- **Facebook**: Requires authentication
+- **Instagram**: Requires authentication
+- **Shortened URLs**: Must be direct links to images
+
+### Current Schema Options
+
+Your current schema uses **Short Text** fields for images:
+- `featuredImageUrl` - Must be a direct image URL (see supported sources above)
+- `additionalImages` - Comma or newline-separated URLs
+
+**To switch to Contentful Assets (recommended):**
+1. Go to Content model in Contentful
+2. Add new fields: `featuredImage` (Media - One file) and `additionalImagesAssets` (Media - Many files)
+3. Migrate your URLs to uploaded assets
+4. Update field names in your content
+5. The code already supports both URL and Asset fields
+
 ## Contentful Content Model Setup
 
 ### News Post Content Type (ID: `newsPost`)

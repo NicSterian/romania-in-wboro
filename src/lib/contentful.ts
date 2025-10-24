@@ -30,22 +30,38 @@ function transformExternalImageUrl(url: string): string {
   try {
     const parsed = new URL(trimmed);
 
+    // Handle Google Drive share links
     if (parsed.hostname.includes('drive.google.com')) {
+      // Convert /file/d/FILE_ID/view to direct download URL
       const match = parsed.pathname.match(/\/file\/d\/([^/]+)/);
       if (match?.[1]) {
         return `https://drive.google.com/uc?export=view&id=${match[1]}`;
       }
+      // Also handle uc?id= format
+      const idParam = parsed.searchParams.get('id');
+      if (idParam) {
+        return `https://drive.google.com/uc?export=view&id=${idParam}`;
+      }
     }
 
+    // Handle Googleusercontent (already direct URLs)
     if (parsed.hostname.includes('googleusercontent.com')) {
       return trimmed;
     }
 
-    if (parsed.hostname.includes('photos.google.com')) {
-      const photoId = parsed.pathname.split('/photo/')[1]?.split('?')[0];
-      if (photoId) {
-        return `https://lh3.googleusercontent.com/${photoId}=w2048`;
-      }
+    // Handle Contentful assets
+    if (parsed.hostname.includes('ctfassets.net') || parsed.hostname.includes('contentful.com')) {
+      return trimmed;
+    }
+
+    // Google Photos URLs are not supported for direct embedding
+    if (parsed.hostname.includes('photos.google.com') || parsed.hostname.includes('photos.app.goo.gl')) {
+      console.warn(
+        '⚠️ Google Photos links are not supported for direct embedding. ' +
+        'Please upload to Contentful Assets or use Google Drive instead. ' +
+        'See SETUP.md for instructions.'
+      );
+      return ''; // Return empty to show placeholder
     }
   } catch (error) {
     console.warn('Could not normalize external image URL:', error);
