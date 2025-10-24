@@ -190,7 +190,7 @@ async function autoTranslateNewsPost(item: Entry<NewsPostFields>): Promise<NewsP
   const titleEn = item.fields.titleEn || await translateText(item.fields.title);
   const excerptEn = item.fields.excerptEn || await translateText(item.fields.excerpt);
   const contentEn = item.fields.contentEn || await translateRichText(item.fields.content);
-  
+
   return {
     id: item.sys.id,
     title: item.fields.title,
@@ -214,10 +214,10 @@ async function autoTranslateNewsPost(item: Entry<NewsPostFields>): Promise<NewsP
 
 async function autoTranslateGalleryAlbum(item: Entry<GalleryAlbumFields>): Promise<GalleryAlbum> {
   const albumTitleEn = item.fields.albumTitleEn || await translateText(item.fields.albumTitle);
-  const descriptionEn = item.fields.description 
+  const descriptionEn = item.fields.description
     ? (item.fields.descriptionEn || await translateText(item.fields.description))
     : undefined;
-  
+
   return {
     id: item.sys.id,
     albumTitle: item.fields.albumTitle,
@@ -240,7 +240,7 @@ export async function getNewsPosts(): Promise<NewsPost[]> {
     console.warn('Contentful credentials not configured');
     return [];
   }
-  
+
   try {
     const response = await client.getEntries({
       content_type: newsContentType,
@@ -262,7 +262,7 @@ export async function getNewsPostBySlug(slug: string): Promise<NewsPost | null> 
     console.warn('Contentful credentials not configured');
     return null;
   }
-  
+
   try {
     const response = await client.getEntries({
       content_type: newsContentType,
@@ -285,7 +285,7 @@ export async function getGalleryAlbums(): Promise<GalleryAlbum[]> {
     console.warn('Contentful credentials not configured');
     return [];
   }
-  
+
   try {
     const response = await client.getEntries({
       content_type: galleryContentType,
