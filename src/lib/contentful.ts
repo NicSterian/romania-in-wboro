@@ -11,6 +11,8 @@ type ContentfulAsset = {
   url?: string;
 };
 
+type ImageValue = string | ContentfulAsset;
+type ImageField = ImageValue | ImageValue[];
 type ImageField = string | ContentfulAsset | Array<string | ContentfulAsset>;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -64,6 +66,7 @@ type NewsPostFields = {
   excerptEn?: string;
   content: Document;
   contentEn?: Document;
+  additionalImages?: ImageField;
   additionalImages?: ImageField[];
   facebookLink?: string;
   published: boolean;
@@ -75,6 +78,7 @@ type GalleryAlbumFields = {
   category: string;
   coverImage?: ImageField;
   coverImageUrl?: string;
+  images?: ImageField;
   images?: ImageField[];
   description?: string;
   descriptionEn?: string;
@@ -82,6 +86,7 @@ type GalleryAlbumFields = {
   published: boolean;
 };
 
+function resolveImageUrl(imageField: ImageValue | undefined): string | undefined {
 function resolveImageUrl(imageField: ImageField | undefined): string | undefined {
   if (!imageField) return undefined;
 
@@ -103,12 +108,47 @@ function resolveImageUrl(imageField: ImageField | undefined): string | undefined
   return transformExternalImageUrl(normalized);
 }
 
+function expandImageField(imageField: ImageField | undefined): ImageValue[] {
+  if (!imageField) return [];
+
+  if (Array.isArray(imageField)) {
+    return imageField.flatMap((item) => expandImageField(item));
+  }
+
+  if (typeof imageField === 'string') {
+    const trimmed = imageField.trim();
+    if (!trimmed) {
+      return [];
+    }
+
+    const separated = trimmed
+      .split(/[\n,;]+/)
+      .map((part) => part.trim())
+      .filter(Boolean);
+
+    if (separated.length > 1) {
+      return Array.from(new Set(separated));
+    }
+
+    return [trimmed];
+  }
+
+  return [imageField];
+}
+
+function normalizeImageArray(images: ImageField | undefined): string[] {
+  return expandImageField(images)
 function normalizeImageArray(images: ImageField[] | undefined): string[] {
   if (!images) return [];
 
   return images
     .map((image) => resolveImageUrl(image))
     .filter((url): url is string => Boolean(url));
+}
+
+function resolveFirstImageUrl(imageField: ImageField | undefined): string | undefined {
+  const [first] = expandImageField(imageField);
+  return resolveImageUrl(first);
 }
 
 function describeContentfulError(error: unknown): string | null {
@@ -199,6 +239,8 @@ async function autoTranslateNewsPost(item: Entry<NewsPostFields>): Promise<NewsP
     category: item.fields.category,
     publicationDate: item.fields.publicationDate,
     featuredImageUrl:
+      resolveFirstImageUrl(item.fields.featuredImage) ||
+      resolveFirstImageUrl(item.fields.featuredImageUrl) ||
       resolveImageUrl(item.fields.featuredImage) ||
       resolveImageUrl(item.fields.featuredImageUrl) ||
       '',
@@ -224,6 +266,8 @@ async function autoTranslateGalleryAlbum(item: Entry<GalleryAlbumFields>): Promi
     albumTitleEn,
     category: item.fields.category,
     coverImageUrl:
+      resolveFirstImageUrl(item.fields.coverImage) ||
+      resolveFirstImageUrl(item.fields.coverImageUrl) ||
       resolveImageUrl(item.fields.coverImage) ||
       resolveImageUrl(item.fields.coverImageUrl) ||
       '',
