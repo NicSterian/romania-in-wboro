@@ -7,6 +7,7 @@ import { formatDate, getCategoryColor } from '@/lib/utils';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { NewsCardSkeleton } from '@/components/NewsCardSkeleton';
 import { Button } from '@/components/ui/button';
+import { translateText } from '@/lib/translate';
 
 const News = () => {
   const { t, i18n } = useTranslation();
@@ -15,6 +16,7 @@ const News = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [translations, setTranslations] = useState<Record<string, { title?: string; excerpt?: string }>>({});
 
   const categories = i18n.language === 'ro' 
     ? ['Toate', 'Anunțuri', 'Evenimente', 'Activități', 'Sărbători']
@@ -52,6 +54,59 @@ const News = () => {
 
     fetchPosts();
   }, [i18n.language]);
+
+  useEffect(() => {
+    if (i18n.language !== 'en') {
+      setTranslations({});
+      return;
+    }
+
+    let cancelled = false;
+
+    const ensureTranslations = async () => {
+      const entries = await Promise.all(
+        posts.map(async (post) => {
+          const existing = translations[post.id] ?? {};
+          if (existing.title && existing.excerpt) {
+            return [post.id, existing] as const;
+          }
+
+          let title = post.titleEn?.trim() || existing.title;
+          let excerpt = post.excerptEn?.trim() || existing.excerpt;
+
+          if (!title) {
+            const sourceTitle = post.originalTitleRo?.trim() || post.title?.trim();
+            if (sourceTitle) {
+              title = await translateText(sourceTitle);
+            }
+          }
+
+          if (!excerpt) {
+            const sourceExcerpt = post.originalExcerptRo?.trim() || post.excerpt?.trim();
+            if (sourceExcerpt) {
+              excerpt = await translateText(sourceExcerpt);
+            }
+          }
+
+          return [post.id, { title, excerpt }] as const;
+        })
+      );
+
+      if (!cancelled) {
+        setTranslations(Object.fromEntries(entries));
+      }
+    };
+
+    if (posts.length > 0) {
+      ensureTranslations();
+    } else {
+      setTranslations({});
+    }
+
+    return () => {
+      cancelled = true;
+    };
+  }, [posts, i18n.language]);
 
   useEffect(() => {
     if (selectedCategory === 'all') {
@@ -161,9 +216,16 @@ const News = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredPosts.map((post) => {
-                const title = i18n.language === 'ro' ? post.title : post.titleEn;
-                const excerpt = i18n.language === 'ro' ? post.excerpt : post.excerptEn;
-                
+                const roTitle = post.originalTitleRo?.trim() || post.title?.trim() || post.titleEn?.trim() || '';
+                const roExcerpt = post.originalExcerptRo?.trim() || post.excerpt?.trim() || post.excerptEn?.trim() || '';
+                const override = translations[post.id];
+                const title = i18n.language === 'ro'
+                  ? roTitle
+                  : (override?.title?.trim() || post.titleEn?.trim() || roTitle);
+                const excerpt = i18n.language === 'ro'
+                  ? roExcerpt
+                  : (override?.excerpt?.trim() || post.excerptEn?.trim() || roExcerpt);
+
                 return (
                   <article
                     key={post.id}
