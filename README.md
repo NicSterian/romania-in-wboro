@@ -62,41 +62,46 @@ This project is built with:
 
 ## Environment configuration
 
-**IMPORTANT: Never commit `.env` files to version control. All credentials must be set as environment variables.**
+**IMPORTANT: Contentful credentials are now server-only. Never commit `.env` files.**
 
 ### Local Development
 
-Create a `.env` file in the project root (already in `.gitignore`) with the following variables:
+Create a `.env` file in the project root (already in `.gitignore`) with:
 
 ```
-VITE_CONTENTFUL_SPACE_ID=
-VITE_CONTENTFUL_ACCESS_TOKEN=
-VITE_CONTENTFUL_NEWS_CONTENT_TYPE=newsPost
-VITE_CONTENTFUL_GALLERY_CONTENT_TYPE=galleryAlbum
+CONTENTFUL_SPACE_ID=your_space_id_here
+CONTENTFUL_ACCESS_TOKEN=your_cda_token_here
+CONTENTFUL_NEWS_CONTENT_TYPE=newsPost
+CONTENTFUL_GALLERY_CONTENT_TYPE=galleryAlbum
 VITE_TRANSLATION_API_URL=/api/translate
 ```
 
-Refer to `.env.example` for the complete list of required variables.
+Note: No `VITE_` prefix on Contentful credentials - they stay server-side only.
 
 ### Production (Netlify)
 
-**Do not add credentials to any files.** Set all environment variables in:
-- Netlify Dashboard → Site settings → Environment variables
+**Set these in Netlify Dashboard → Site settings → Environment variables:**
 
-Required variables:
-- `VITE_CONTENTFUL_SPACE_ID` - Your Contentful space ID
-- `VITE_CONTENTFUL_ACCESS_TOKEN` - Your Contentful Content Delivery API token
-- `VITE_CONTENTFUL_NEWS_CONTENT_TYPE` - Content type ID (default: `newsPost`)
-- `VITE_CONTENTFUL_GALLERY_CONTENT_TYPE` - Content type ID (default: `galleryAlbum`)
-- `VITE_TRANSLATION_API_URL` - Translation endpoint (default: `/api/translate`)
-- `LT_URL` - (Optional) External translation service URL for Netlify Function
+**Required server-only secrets:**
+- `CONTENTFUL_SPACE_ID` - Your Contentful space ID
+- `CONTENTFUL_ACCESS_TOKEN` - Your Contentful Content Delivery API (CDA) token
+
+**Optional server-only:**
+- `CONTENTFUL_NEWS_CONTENT_TYPE` - Content type ID (default: `newsPost`)
+- `CONTENTFUL_GALLERY_CONTENT_TYPE` - Content type ID (default: `galleryAlbum`)
+- `LT_URL` - External translation service URL (default: Argos OpenTech)
+
+**Client-safe (can be VITE_ prefixed):**
+- `VITE_TRANSLATION_API_URL=/api/translate` - Translation API endpoint
 
 ### Security Notice
 
-**Never commit secrets to Git.** If you accidentally exposed credentials:
-1. Immediately rotate the tokens in Contentful
+**All Contentful fetching now happens through Netlify Functions.** Client bundle contains no secrets.
+
+If any tokens were previously exposed:
+1. Rotate them immediately in Contentful
 2. Update environment variables in Netlify
-3. Remove the exposed values from Git history
+3. Never use `VITE_` prefix for secrets
 
 ## How can I deploy this project?
 
