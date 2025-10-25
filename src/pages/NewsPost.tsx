@@ -50,7 +50,7 @@ const NewsPostPage = () => {
 
   const emptyDoc = useMemo<Document>(
     () => ({
-      nodeType: 'document',
+      nodeType: BLOCKS.DOCUMENT,
       data: {},
       content: [],
     }),
@@ -226,7 +226,7 @@ const NewsPostPage = () => {
       [BLOCKS.OL_LIST]: (_node: unknown, children: ReactNode) => (
         <ol className="list-decimal list-inside mb-4 space-y-2">{children}</ol>
       ),
-      [INLINES.HYPERLINK]: (node: { data: { uri: string } }, children: ReactNode) => (
+      [INLINES.HYPERLINK]: (node: any, children: ReactNode) => (
         <a
           href={node.data.uri}
           target="_blank"
