@@ -82,6 +82,9 @@ type NewsPost = {
   additionalImages?: string[];
   facebookLink?: string;
   published: boolean;
+  originalTitleRo?: string;
+  originalExcerptRo?: string;
+  originalContentRo?: Document;
 };
 
 function transformExternalImageUrl(url: string): string {
@@ -298,7 +301,7 @@ async function mapNewsPost(item: Entry<ContentfulNewsFields>, lang: string): Pro
     published: typeof published === 'boolean' ? published : fallbackPublished,
     originalTitleRo: roTitle || undefined,
     originalExcerptRo: roExcerpt || undefined,
-    originalContentRo: roContent ?? emptyDoc,
+    originalContentRo: hasContent(roContent) ? roContent! : emptyDoc,
   };
 }
 
@@ -320,16 +323,22 @@ export const handler: Handler = async (event) => {
   }
 
   const client = createClient({ space: spaceId, accessToken });
-  const lang = event.queryStringParameters?.lang || 'en';
-  const slug = event.path.split('/').pop();
+  const lang = event.queryStringParameters?.lang === 'ro' ? 'ro' : 'en';
+  const slugParam = event.queryStringParameters?.slug?.trim();
+  const normalizedPath = (event.path || '').replace(/\/$/, '');
+  const pathSegments = normalizedPath.split('/').filter(Boolean);
+  const lastSegment = pathSegments[pathSegments.length - 1];
+  const inferredSlug = slugParam
+    || (lastSegment && !['news', 'contentful-news'].includes(lastSegment)
+      ? decodeURIComponent(lastSegment)
+      : undefined);
 
   try {
-    // If path has a slug (not just /api/news), fetch single post
-    if (slug && slug !== 'news' && !event.path.endsWith('/api/news')) {
+    // If we detected a slug (e.g. /api/news/:slug), fetch single post
+    if (inferredSlug) {
       const response = await client.getEntries({
         content_type: newsContentType,
-        'fields.slug': slug,
-        'fields.published': true,
+        'fields.slug': inferredSlug,
         limit: 1,
         locale: '*',
         include: 2,
@@ -354,18 +363,19 @@ export const handler: Handler = async (event) => {
     // Fetch all posts
     const response = await client.getEntries({
       content_type: newsContentType,
-      'fields.published': true,
-      order: ['-fields.publicationDate'],
+      order: '-fields.publicationDate',
       locale: '*',
       include: 2,
+      limit: 1000,
     });
 
     const posts = await Promise.all(response.items.map((item) => mapNewsPost(item, lang)));
+    const publishedPosts = posts.filter((post) => post.published);
 
     return {
       statusCode: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      body: JSON.stringify(posts),
+      body: JSON.stringify(publishedPosts),
     };
   } catch (error) {
     console.error('Contentful API error:', error instanceof Error ? error.message : 'Unknown error');
