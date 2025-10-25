@@ -44,7 +44,6 @@ export async function translateText(text: string): Promise<string> {
     });
 
     if (!response.ok) {
-      console.warn('Translation service unavailable, returning original text');
       return text;
     }
 
@@ -54,7 +53,6 @@ export async function translateText(text: string): Promise<string> {
     setCache(cacheKey, translated);
     return translated;
   } catch (error) {
-    console.warn('Translation error, returning original text');
     return text;
   }
 }

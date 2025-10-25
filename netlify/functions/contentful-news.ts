@@ -205,31 +205,7 @@ function resolveFirstImageUrl(...imageFields: (ImageField | undefined)[]): strin
   return undefined;
 }
 
-// Helper to call internal translate API
-async function translateText(text: string): Promise<string> {
-  try {
-    const response = await fetch(`${process.env.URL || 'http://localhost:8888'}/api/translate`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text, from: 'ro', to: 'en' }),
-    });
-    if (!response.ok) return text;
-    const data = await response.json();
-    return data.translatedText || text;
-  } catch {
-    return text;
-  }
-}
-
-async function translateRichText(content: Document): Promise<Document> {
-  // Simple implementation - in production you'd recursively translate text nodes
-  return content;
-}
-
-async function autoTranslateNewsPost(
-  item: Entry<ContentfulNewsFields>,
-  lang: string
-): Promise<NewsPost> {
+async function mapNewsPost(item: Entry<ContentfulNewsFields>, lang: string): Promise<NewsPost> {
   const f = item.fields as ContentfulNewsFields;
   const emptyDoc: Document = { nodeType: 'document', data: {}, content: [] };
 
@@ -240,31 +216,40 @@ async function autoTranslateNewsPost(
   const roExcerpt = pickRo<string>(f.excerpt) || '';
   const enExcerpt = pickEn<string>(f.excerpt);
 
-  const roContent = pickRo<Document>(f.content) || emptyDoc;
+  const roContent = pickRo<Document>(f.content);
   const enContent = pickEn<Document>(f.content);
+  const hasContent = (doc?: Document) => Boolean(doc && doc.content && doc.content.length > 0);
 
   // Compute display fields per UI language
-  let title = roTitle;
-  let excerpt = roExcerpt;
-  let content = roContent;
+  const displayTitle = lang === 'ro'
+    ? roTitle || enTitle || (typeof f.titleEn === 'string' ? f.titleEn : '') || ''
+    : enTitle || (typeof f.titleEn === 'string' ? f.titleEn : '') || roTitle || '';
 
-  if (lang === 'en') {
-    // Prefer localized EN; if missing, machine-translate from RO
-    title = enTitle ?? (roTitle ? await translateText(roTitle) : '');
-    excerpt = enExcerpt ?? (roExcerpt ? await translateText(roExcerpt) : '');
-    content = enContent ?? (await translateRichText(roContent));
-  }
+  const displayExcerpt = lang === 'ro'
+    ? roExcerpt || enExcerpt || (typeof f.excerptEn === 'string' ? f.excerptEn : '') || ''
+    : enExcerpt || (typeof f.excerptEn === 'string' ? f.excerptEn : '') || roExcerpt || '';
+
+  const legacyContentEn = f.contentEn as Document | undefined;
+
+  const displayContent = lang === 'ro'
+    ? (hasContent(roContent)
+        ? roContent!
+        : hasContent(enContent)
+          ? enContent!
+          : hasContent(legacyContentEn)
+            ? legacyContentEn!
+            : emptyDoc)
+    : (hasContent(enContent)
+        ? enContent!
+        : hasContent(legacyContentEn)
+          ? legacyContentEn!
+          : hasContent(roContent)
+            ? roContent!
+            : emptyDoc);
 
   // Legacy *En fields (keep as secondary fallbacks)
   const legacyTitleEn = f.titleEn as string | undefined;
   const legacyExcerptEn = f.excerptEn as string | undefined;
-  const legacyContentEn = f.contentEn as Document | undefined;
-
-  if (lang === 'en') {
-    if (!title && legacyTitleEn) title = legacyTitleEn;
-    if (!excerpt && legacyExcerptEn) excerpt = legacyExcerptEn;
-    if (!enContent && legacyContentEn) content = legacyContentEn;
-  }
 
   // Images (try any locale and normalize)
   const featured =
@@ -293,19 +278,27 @@ async function autoTranslateNewsPost(
 
   return {
     id: item.sys.id,
-    title,
-    titleEn: legacyTitleEn || enTitle || '',
+    title: displayTitle,
+    titleEn: enTitle || legacyTitleEn || '',
     slug,
     category,
     publicationDate,
     featuredImageUrl: featured,
-    excerpt,
-    excerptEn: legacyExcerptEn || enExcerpt || '',
-    content,
-    contentEn: legacyContentEn || enContent || emptyDoc,
+    excerpt: displayExcerpt,
+    excerptEn: enExcerpt || legacyExcerptEn || '',
+    content: displayContent,
+    contentEn:
+      (hasContent(enContent)
+        ? enContent!
+        : hasContent(legacyContentEn)
+          ? legacyContentEn!
+          : emptyDoc),
     additionalImages: additional,
     facebookLink,
     published: typeof published === 'boolean' ? published : fallbackPublished,
+    originalTitleRo: roTitle || undefined,
+    originalExcerptRo: roExcerpt || undefined,
+    originalContentRo: roContent ?? emptyDoc,
   };
 }
 
@@ -350,7 +343,7 @@ export const handler: Handler = async (event) => {
         };
       }
 
-      const post = await autoTranslateNewsPost(response.items[0], lang);
+      const post = await mapNewsPost(response.items[0], lang);
       return {
         statusCode: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -367,9 +360,7 @@ export const handler: Handler = async (event) => {
       include: 2,
     });
 
-    const posts = await Promise.all(
-      response.items.map((item) => autoTranslateNewsPost(item, lang))
-    );
+    const posts = await Promise.all(response.items.map((item) => mapNewsPost(item, lang)));
 
     return {
       statusCode: 200,

@@ -2,13 +2,12 @@ import { Handler } from '@netlify/functions';
 import { createClient } from 'contentful';
 import type { Entry } from 'contentful';
 
+const EN_PREFS = ['en-GB', 'en-US', 'ro-RO'];
+const RO_PREFS = ['ro-RO', 'en-GB', 'en-US'];
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
-
-const cfLocaleFor = (lang: string): string => {
-  return lang === 'ro' ? 'ro-RO' : 'en-GB';
 };
 
 type ContentfulAsset = {
@@ -142,56 +141,74 @@ function resolveFirstImageUrl(...imageFields: (ImageField | undefined)[]): strin
   return undefined;
 }
 
-async function translateText(text: string): Promise<string> {
-  try {
-    const response = await fetch(`${process.env.URL || 'http://localhost:8888'}/api/translate`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text, from: 'ro', to: 'en' }),
-    });
-    if (!response.ok) return text;
-    const data = await response.json();
-    return data.translatedText || text;
-  } catch {
-    return text;
+function pickLocalized<T = string>(value: unknown, prefs: string[]): T | undefined {
+  if (value == null) return undefined;
+
+  if (typeof value !== 'object' || Array.isArray(value)) return value as T;
+
+  const map = value as Record<string, unknown>;
+
+  for (const locale of prefs) {
+    const candidate = map[locale];
+    if (candidate !== undefined && candidate !== null) {
+      return candidate as T;
+    }
   }
+
+  const first = Object.values(map).find((entry) => Boolean(entry));
+  return first as T | undefined;
 }
 
-async function autoTranslateGalleryAlbum(item: Entry<any>, lang: string): Promise<any> {
-  const fields = item.fields as any;
-  
-  let albumTitle: string;
-  let albumTitleEn: string;
-  let description: string | undefined;
-  let descriptionEn: string | undefined;
+const pickEn = <T,>(v: unknown) => pickLocalized<T>(v, EN_PREFS);
+const pickRo = <T,>(v: unknown) => pickLocalized<T>(v, RO_PREFS);
 
-  if (lang === 'en') {
-    albumTitle = fields.albumTitle || '';
-    albumTitleEn = fields.albumTitle || fields.albumTitleEn || (fields.albumTitle ? await translateText(fields.albumTitle) : '');
-    
-    description = fields.description;
-    descriptionEn = fields.description || fields.descriptionEn || (fields.description ? await translateText(fields.description) : undefined);
-  } else {
-    albumTitle = fields.albumTitle || '';
-    albumTitleEn = fields.albumTitleEn || (fields.albumTitle ? await translateText(fields.albumTitle) : '');
-    
-    description = fields.description;
-    descriptionEn = fields.descriptionEn || (fields.description ? await translateText(fields.description) : undefined);
-  }
+async function mapGalleryAlbum(item: Entry<any>, lang: string): Promise<any> {
+  const fields = item.fields as any;
+
+  const roTitle = pickRo<string>(fields.albumTitle) || '';
+  const enTitle = pickEn<string>(fields.albumTitle);
+  const legacyTitleEn = typeof fields.albumTitleEn === 'string' ? fields.albumTitleEn : undefined;
+
+  const roDescription = pickRo<string>(fields.description) || '';
+  const enDescription = pickEn<string>(fields.description);
+  const legacyDescriptionEn = typeof fields.descriptionEn === 'string' ? fields.descriptionEn : undefined;
+
+  const albumTitle = lang === 'ro'
+    ? roTitle || enTitle || legacyTitleEn || ''
+    : enTitle || legacyTitleEn || roTitle || '';
+
+  const albumTitleEn = enTitle || legacyTitleEn || '';
+
+  const description = lang === 'ro'
+    ? roDescription || enDescription || legacyDescriptionEn || undefined
+    : enDescription || legacyDescriptionEn || roDescription || undefined;
+
+  const descriptionEn = enDescription || legacyDescriptionEn || '';
 
   return {
     id: item.sys.id,
     albumTitle,
     albumTitleEn,
-    category: fields.category,
+    category:
+      pickRo<string>(fields.category) ||
+      pickEn<string>(fields.category) ||
+      (typeof fields.category === 'string' ? fields.category : ''),
     coverImageUrl:
       resolveFirstImageUrl(fields.coverImage, fields.coverImageUrl) ||
       '/news-placeholder.jpg',
     images: normalizeImageArray(fields.images),
     description,
     descriptionEn,
-    date: fields.date,
-    published: fields.published,
+    date:
+      pickRo<string>(fields.date) ||
+      pickEn<string>(fields.date) ||
+      (typeof fields.date === 'string' ? fields.date : undefined),
+    published:
+      typeof fields.published === 'boolean'
+        ? fields.published
+        : Boolean(fields.published),
+    originalAlbumTitleRo: roTitle || undefined,
+    originalDescriptionRo: roDescription || undefined,
   };
 }
 
@@ -220,12 +237,12 @@ export const handler: Handler = async (event) => {
       content_type: galleryContentType,
       'fields.published': true,
       order: ['-fields.date'],
-      locale: cfLocaleFor(lang),
+      locale: '*',
       include: 2,
     });
 
     const albums = await Promise.all(
-      response.items.map((item) => autoTranslateGalleryAlbum(item, lang))
+      response.items.map((item) => mapGalleryAlbum(item, lang))
     );
 
     return {
