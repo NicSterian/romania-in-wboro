@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
@@ -11,10 +11,12 @@ import { Button } from '@/components/ui/button';
 
 const NewsPostPage = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const [post, setPost] = useState<NewsPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [lbOpen, setLbOpen] = useState(false);
+  const [lbIndex, setLbIndex] = useState(0);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -36,24 +38,99 @@ const NewsPostPage = () => {
     fetchPost();
   }, [slug, i18n.language]);
 
+  useEffect(() => {
+    setLbOpen(false);
+    setLbIndex(0);
+  }, [post?.id]);
+
+  const totalImages = post?.additionalImages?.length ?? 0;
+
+  const openLightbox = useCallback(
+    (index: number) => {
+      if (!post?.additionalImages || post.additionalImages.length === 0) return;
+      setLbIndex(index);
+      setLbOpen(true);
+    },
+    [post?.additionalImages]
+  );
+
+  const closeLightbox = useCallback(() => {
+    setLbOpen(false);
+  }, []);
+
+  const prev = useCallback(() => {
+    if (!post?.additionalImages || post.additionalImages.length === 0) return;
+    setLbIndex((i) => (i - 1 + post.additionalImages!.length) % post.additionalImages!.length);
+  }, [post?.additionalImages]);
+
+  const next = useCallback(() => {
+    if (!post?.additionalImages || post.additionalImages.length === 0) return;
+    setLbIndex((i) => (i + 1) % post.additionalImages!.length);
+  }, [post?.additionalImages]);
+
+  useEffect(() => {
+    if (!lbOpen || totalImages === 0) return;
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') prev();
+      if (e.key === 'ArrowRight') next();
+    };
+
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [lbOpen, totalImages, closeLightbox, prev, next]);
+
+  useEffect(() => {
+    if (!lbOpen || totalImages === 0) return;
+    let x0: number | null = null;
+
+    const start = (e: TouchEvent) => {
+      x0 = e.touches[0]?.clientX ?? null;
+    };
+
+    const end = (e: TouchEvent) => {
+      if (x0 == null) return;
+      const dx = (e.changedTouches[0]?.clientX ?? x0) - x0;
+      if (Math.abs(dx) > 40) {
+        if (dx > 0) {
+          prev();
+        } else {
+          next();
+        }
+      }
+      x0 = null;
+    };
+
+    document.addEventListener('touchstart', start);
+    document.addEventListener('touchend', end);
+
+    return () => {
+      document.removeEventListener('touchstart', start);
+      document.removeEventListener('touchend', end);
+    };
+  }, [lbOpen, totalImages, prev, next]);
+
   const richTextOptions = {
     renderNode: {
-      [BLOCKS.PARAGRAPH]: (_node: any, children: any) => (
+      [BLOCKS.PARAGRAPH]: (_node: unknown, children: ReactNode) => (
         <p className="mb-4 text-foreground leading-relaxed">{children}</p>
       ),
-      [BLOCKS.HEADING_2]: (_node: any, children: any) => (
+      [BLOCKS.HEADING_2]: (_node: unknown, children: ReactNode) => (
         <h2 className="text-2xl font-bold mt-8 mb-4 text-primary">{children}</h2>
       ),
-      [BLOCKS.HEADING_3]: (_node: any, children: any) => (
+      [BLOCKS.HEADING_3]: (_node: unknown, children: ReactNode) => (
         <h3 className="text-xl font-bold mt-6 mb-3 text-primary">{children}</h3>
       ),
-      [BLOCKS.UL_LIST]: (_node: any, children: any) => (
+      [BLOCKS.UL_LIST]: (_node: unknown, children: ReactNode) => (
         <ul className="list-disc list-inside mb-4 space-y-2">{children}</ul>
       ),
-      [BLOCKS.OL_LIST]: (_node: any, children: any) => (
+      [BLOCKS.OL_LIST]: (_node: unknown, children: ReactNode) => (
         <ol className="list-decimal list-inside mb-4 space-y-2">{children}</ol>
       ),
-      [INLINES.HYPERLINK]: (node: any, children: any) => (
+      [INLINES.HYPERLINK]: (node: { data: { uri: string } }, children: ReactNode) => (
         <a
           href={node.data.uri}
           target="_blank"
@@ -101,6 +178,7 @@ const NewsPostPage = () => {
 
   const title = i18n.language === 'ro' ? post.title : post.titleEn;
   const content = i18n.language === 'ro' ? post.content : post.contentEn;
+  const lang = i18n.language === 'ro' ? 'ro' : 'en';
 
   return (
     <div className="min-h-screen">
@@ -153,26 +231,84 @@ const NewsPostPage = () => {
           </div>
 
           {/* Additional Images */}
-          {post.additionalImages && post.additionalImages.length > 0 && (
-            <div className="mt-12">
-              <h2 className="text-2xl font-bold mb-6 text-primary">
-                {i18n.language === 'ro' ? 'Galerie foto' : 'Photo Gallery'}
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {post.additionalImages.map((imageUrl, index) => (
-                  <img
-                    key={index}
-                    src={imageUrl || '/news-placeholder.jpg'}
-                    alt={`${title} - ${index + 1}`}
-                    className="w-full h-64 object-cover rounded-lg shadow-md hover:shadow-xl transition-shadow"
-                    onError={(e) => {
-                      e.currentTarget.src = '/news-placeholder.jpg';
-                    }}
-                  />
+          {post.additionalImages?.length ? (
+            <section className="mt-8">
+              <h3 className="text-lg font-semibold mb-3">
+                {lang === 'ro' ? 'Galerie' : 'Gallery'}
+              </h3>
+              <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                {post.additionalImages.map((src, i) => (
+                  <button
+                    key={src + i}
+                    className="group relative aspect-[4/3] overflow-hidden rounded-xl border"
+                    onClick={() => openLightbox(i)}
+                    aria-label={(lang === 'ro' ? 'Deschide imaginea ' : 'Open image ') + (i + 1)}
+                  >
+                    <img
+                      src={src}
+                      alt=""
+                      className="h-full w-full object-cover transition-transform group-hover:scale-[1.02]"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = '/news-placeholder.jpg';
+                      }}
+                      loading="lazy"
+                    />
+                  </button>
                 ))}
               </div>
+            </section>
+          ) : null}
+
+          {lbOpen && post.additionalImages?.length ? (
+            <div
+              className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
+              onClick={closeLightbox}
+              role="dialog"
+              aria-modal="true"
+            >
+              <button
+                className="absolute top-4 right-4 rounded-xl px-3 py-2 bg-white/10 text-white"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  closeLightbox();
+                }}
+              >
+                ✕
+              </button>
+
+              <button
+                className="absolute left-4 md:left-8 rounded-xl px-3 py-2 bg-white/10 text-white"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  prev();
+                }}
+                aria-label="Previous"
+              >
+                ←
+              </button>
+
+              <button
+                className="absolute right-4 md:right-8 rounded-xl px-3 py-2 bg-white/10 text-white"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  next();
+                }}
+                aria-label="Next"
+              >
+                →
+              </button>
+
+              <img
+                src={post.additionalImages?.[lbIndex] || '/news-placeholder.jpg'}
+                alt=""
+                className="max-h-[90vh] max-w-[95vw] object-contain"
+                onClick={(e) => e.stopPropagation()}
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src = '/news-placeholder.jpg';
+                }}
+              />
             </div>
-          )}
+          ) : null}
 
           {/* Facebook Link */}
           {post.facebookLink && (

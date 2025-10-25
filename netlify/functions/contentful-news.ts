@@ -8,22 +8,81 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Map UI language to Contentful locale
-const cfLocaleFor = (lang: string): string => {
-  return lang === 'ro' ? 'ro-RO' : 'en-GB';
-};
-
 type ContentfulAsset = {
   fields?: {
     file?: {
       url?: string;
-      [locale: string]: any;
+      [locale: string]: unknown;
     };
   };
 };
 
 type ImageValue = string | ContentfulAsset;
 type ImageField = ImageValue | ImageValue[];
+
+function isAssetFile(value: unknown): value is { url?: string } {
+  return typeof value === 'object' && value !== null && 'url' in value;
+}
+
+// Given a field that may be a localized map (from locale:'*'), return best value.
+function pickLocalized<T = string>(value: unknown, prefs: string[]): T | undefined {
+  if (value == null) return undefined;
+
+  // If already a scalar (because locale!='*'), return as is
+  if (typeof value !== 'object' || Array.isArray(value)) return value as T;
+
+  const map = value as Record<string, unknown>;
+
+  for (const l of prefs) {
+    const candidate = map[l];
+    if (candidate !== undefined && candidate !== null) return candidate as T;
+  }
+  // Fallback to any available
+  const first = Object.values(map).find((entry) => Boolean(entry));
+  return first as T | undefined;
+}
+
+// Prefer chain builders
+const EN_PREFS = ['en-GB', 'en-US', 'ro-RO'];
+const RO_PREFS = ['ro-RO', 'en-GB', 'en-US'];
+
+// Convenience for strings & rich text
+const pickEn = <T,>(v: unknown) => pickLocalized<T>(v, EN_PREFS);
+const pickRo = <T,>(v: unknown) => pickLocalized<T>(v, RO_PREFS);
+
+type ContentfulNewsFields = {
+  title?: unknown;
+  titleEn?: string;
+  slug?: unknown;
+  category?: unknown;
+  publicationDate?: unknown;
+  featuredImage?: ImageField;
+  featuredImageUrl?: ImageField;
+  excerpt?: unknown;
+  excerptEn?: string;
+  content?: unknown;
+  contentEn?: Document;
+  additionalImages?: ImageField;
+  facebookLink?: unknown;
+  published?: unknown;
+};
+
+type NewsPost = {
+  id: string;
+  title: string;
+  titleEn: string;
+  slug: string;
+  category: string;
+  publicationDate: string;
+  featuredImageUrl: string;
+  excerpt: string;
+  excerptEn: string;
+  content: Document;
+  contentEn: Document;
+  additionalImages?: string[];
+  facebookLink?: string;
+  published: boolean;
+};
 
 function transformExternalImageUrl(url: string): string {
   const trimmed = url.trim();
@@ -79,20 +138,22 @@ function resolveImageUrl(imageField: ImageField | undefined): string | undefined
     return firstUrl;
   }
 
-  const assetFields = (imageField as any).fields;
+  const assetFields = (imageField as ContentfulAsset).fields;
   if (assetFields?.file) {
     const fileField = assetFields.file;
-    
-    if (typeof fileField.url === 'string') {
+
+    if (isAssetFile(fileField) && typeof fileField.url === 'string') {
       const normalized = fileField.url.startsWith('//') ? `https:${fileField.url}` : fileField.url;
       return transformExternalImageUrl(normalized);
     }
-    
-    if (typeof fileField === 'object') {
-      for (const locale in fileField) {
-        const localeFile = fileField[locale];
-        if (localeFile?.url) {
-          const normalized = localeFile.url.startsWith('//') ? `https:${localeFile.url}` : localeFile.url;
+
+    if (typeof fileField === 'object' && fileField !== null) {
+      const localizedFiles = fileField as Record<string, unknown>;
+      for (const locale of Object.keys(localizedFiles)) {
+        const localeFile = localizedFiles[locale];
+        if (isAssetFile(localeFile) && typeof localeFile.url === 'string') {
+          const normalized =
+            localeFile.url.startsWith('//') ? `https:${localeFile.url}` : localeFile.url;
           return transformExternalImageUrl(normalized);
         }
       }
@@ -165,53 +226,86 @@ async function translateRichText(content: Document): Promise<Document> {
   return content;
 }
 
-async function autoTranslateNewsPost(item: Entry<any>, lang: string): Promise<any> {
-  const fields = item.fields as any;
-  
-  let title: string;
-  let excerpt: string;
-  let content: Document;
-  let titleEn: string;
-  let excerptEn: string;
-  let contentEn: Document;
+async function autoTranslateNewsPost(
+  item: Entry<ContentfulNewsFields>,
+  lang: string
+): Promise<NewsPost> {
+  const f = item.fields as ContentfulNewsFields;
+  const emptyDoc: Document = { nodeType: 'document', data: {}, content: [] };
+
+  // Resolve base (RO & EN candidates)
+  const roTitle = pickRo<string>(f.title) || '';
+  const enTitle = pickEn<string>(f.title);
+
+  const roExcerpt = pickRo<string>(f.excerpt) || '';
+  const enExcerpt = pickEn<string>(f.excerpt);
+
+  const roContent = pickRo<Document>(f.content) || emptyDoc;
+  const enContent = pickEn<Document>(f.content);
+
+  // Compute display fields per UI language
+  let title = roTitle;
+  let excerpt = roExcerpt;
+  let content = roContent;
 
   if (lang === 'en') {
-    title = fields.title || '';
-    titleEn = fields.title || fields.titleEn || (fields.title ? await translateText(fields.title) : '');
-    
-    excerpt = fields.excerpt || '';
-    excerptEn = fields.excerpt || fields.excerptEn || (fields.excerpt ? await translateText(fields.excerpt) : '');
-    
-    content = fields.content || { nodeType: 'document', data: {}, content: [] };
-    contentEn = fields.content || fields.contentEn || (fields.content ? await translateRichText(fields.content) : { nodeType: 'document', data: {}, content: [] });
-  } else {
-    title = fields.title || '';
-    titleEn = fields.titleEn || (fields.title ? await translateText(fields.title) : '');
-    
-    excerpt = fields.excerpt || '';
-    excerptEn = fields.excerptEn || (fields.excerpt ? await translateText(fields.excerpt) : '');
-    
-    content = fields.content || { nodeType: 'document', data: {}, content: [] };
-    contentEn = fields.contentEn || (fields.content ? await translateRichText(fields.content) : { nodeType: 'document', data: {}, content: [] });
+    // Prefer localized EN; if missing, machine-translate from RO
+    title = enTitle ?? (roTitle ? await translateText(roTitle) : '');
+    excerpt = enExcerpt ?? (roExcerpt ? await translateText(roExcerpt) : '');
+    content = enContent ?? (await translateRichText(roContent));
   }
+
+  // Legacy *En fields (keep as secondary fallbacks)
+  const legacyTitleEn = f.titleEn as string | undefined;
+  const legacyExcerptEn = f.excerptEn as string | undefined;
+  const legacyContentEn = f.contentEn as Document | undefined;
+
+  if (lang === 'en') {
+    if (!title && legacyTitleEn) title = legacyTitleEn;
+    if (!excerpt && legacyExcerptEn) excerpt = legacyExcerptEn;
+    if (!enContent && legacyContentEn) content = legacyContentEn;
+  }
+
+  // Images (try any locale and normalize)
+  const featured =
+    resolveFirstImageUrl(f.featuredImage, f.featuredImageUrl) || '/news-placeholder.jpg';
+  const additional = normalizeImageArray(f.additionalImages);
+
+  const slug =
+    pickRo<string>(f.slug) ?? pickEn<string>(f.slug) ?? (typeof f.slug === 'string' ? f.slug : '');
+  const category =
+    pickRo<string>(f.category) ??
+    pickEn<string>(f.category) ??
+    (typeof f.category === 'string' ? f.category : '');
+  const publicationDate =
+    pickRo<string>(f.publicationDate) ??
+    pickEn<string>(f.publicationDate) ??
+    (typeof f.publicationDate === 'string' ? f.publicationDate : '');
+  const facebookLink =
+    pickRo<string>(f.facebookLink) ??
+    pickEn<string>(f.facebookLink) ??
+    (typeof f.facebookLink === 'string' ? f.facebookLink : undefined);
+  const published = pickLocalized<boolean>(f.published, RO_PREFS);
+  const fallbackPublished =
+    typeof f.published === 'object' && f.published !== null
+      ? Object.values(f.published).some(Boolean)
+      : Boolean(f.published);
 
   return {
     id: item.sys.id,
     title,
-    titleEn,
-    slug: fields.slug,
-    category: fields.category,
-    publicationDate: fields.publicationDate,
-    featuredImageUrl:
-      resolveFirstImageUrl(fields.featuredImage, fields.featuredImageUrl) ||
-      '/news-placeholder.jpg',
+    titleEn: legacyTitleEn || enTitle || '',
+    slug,
+    category,
+    publicationDate,
+    featuredImageUrl: featured,
     excerpt,
-    excerptEn,
+    excerptEn: legacyExcerptEn || enExcerpt || '',
     content,
-    contentEn,
-    additionalImages: normalizeImageArray(fields.additionalImages),
-    facebookLink: fields.facebookLink,
-    published: fields.published,
+    contentEn: legacyContentEn || enContent || emptyDoc,
+    additionalImages: additional,
+    facebookLink,
+    published: typeof published === 'boolean' ? published : fallbackPublished,
   };
 }
 
@@ -244,7 +338,7 @@ export const handler: Handler = async (event) => {
         'fields.slug': slug,
         'fields.published': true,
         limit: 1,
-        locale: cfLocaleFor(lang),
+        locale: '*',
         include: 2,
       });
 
@@ -269,7 +363,7 @@ export const handler: Handler = async (event) => {
       content_type: newsContentType,
       'fields.published': true,
       order: ['-fields.publicationDate'],
-      locale: cfLocaleFor(lang),
+      locale: '*',
       include: 2,
     });
 
