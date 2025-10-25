@@ -38,7 +38,8 @@ const News = () => {
       setLoading(true);
       setError(false);
       try {
-        const data = await getNewsPosts();
+        const lang = i18n.language === 'ro' ? 'ro' : 'en';
+        const data = await getNewsPosts(lang);
         setPosts(data);
         setFilteredPosts(data);
       } catch (err) {
@@ -50,7 +51,7 @@ const News = () => {
     };
 
     fetchPosts();
-  }, []);
+  }, [i18n.language]);
 
   useEffect(() => {
     if (selectedCategory === 'all') {
@@ -169,9 +170,12 @@ const News = () => {
                     className="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow"
                   >
                     <img
-                      src={post.featuredImageUrl}
+                      src={post.featuredImageUrl || '/news-placeholder.jpg'}
                       alt={title}
                       className="w-full h-48 object-cover"
+                      onError={(e) => {
+                        e.currentTarget.src = '/news-placeholder.jpg';
+                      }}
                     />
                     <div className="p-6">
                       <div className="flex items-center gap-2 mb-3">

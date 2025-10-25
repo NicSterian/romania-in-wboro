@@ -22,7 +22,8 @@ const NewsPostPage = () => {
       setLoading(true);
       setError(false);
       try {
-        const data = await getNewsPostBySlug(slug);
+        const lang = i18n.language === 'ro' ? 'ro' : 'en';
+        const data = await getNewsPostBySlug(slug, lang);
         setPost(data);
       } catch (err) {
         console.error('Error fetching post:', err);
@@ -33,7 +34,7 @@ const NewsPostPage = () => {
     };
 
     fetchPost();
-  }, [slug]);
+  }, [slug, i18n.language]);
 
   const richTextOptions = {
     renderNode: {
@@ -118,9 +119,12 @@ const NewsPostPage = () => {
       {/* Featured Image */}
       <section className="relative w-full h-[400px] md:h-[500px]">
         <img
-          src={post.featuredImageUrl}
+          src={post.featuredImageUrl || '/news-placeholder.jpg'}
           alt={title}
           className="w-full h-full object-cover"
+          onError={(e) => {
+            e.currentTarget.src = '/news-placeholder.jpg';
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
       </section>
@@ -158,9 +162,12 @@ const NewsPostPage = () => {
                 {post.additionalImages.map((imageUrl, index) => (
                   <img
                     key={index}
-                    src={imageUrl}
+                    src={imageUrl || '/news-placeholder.jpg'}
                     alt={`${title} - ${index + 1}`}
                     className="w-full h-64 object-cover rounded-lg shadow-md hover:shadow-xl transition-shadow"
+                    onError={(e) => {
+                      e.currentTarget.src = '/news-placeholder.jpg';
+                    }}
                   />
                 ))}
               </div>

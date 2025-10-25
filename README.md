@@ -62,21 +62,41 @@ This project is built with:
 
 ## Environment configuration
 
-Create a `.env` file in the project root and add the following variables to connect your integrations:
+**IMPORTANT: Never commit `.env` files to version control. All credentials must be set as environment variables.**
+
+### Local Development
+
+Create a `.env` file in the project root (already in `.gitignore`) with the following variables:
 
 ```
-VITE_SUPABASE_URL=
-VITE_SUPABASE_ANON_KEY=
-VITE_GOOGLE_MAPS_API_KEY=
-VITE_I18N_BACKEND_URL=https://romania-in-wboro-i18n-production.up.railway.app
 VITE_CONTENTFUL_SPACE_ID=
 VITE_CONTENTFUL_ACCESS_TOKEN=
 VITE_CONTENTFUL_NEWS_CONTENT_TYPE=newsPost
 VITE_CONTENTFUL_GALLERY_CONTENT_TYPE=galleryAlbum
-VITE_TRANSLATION_API_URL=https://translate.argosopentech.com/translate
+VITE_TRANSLATION_API_URL=/api/translate
 ```
 
-> **Tip:** If your Contentful space uses custom content type IDs for news posts or gallery albums, update `VITE_CONTENTFUL_NEWS_CONTENT_TYPE` and `VITE_CONTENTFUL_GALLERY_CONTENT_TYPE` accordingly. You can also point `VITE_TRANSLATION_API_URL` to a self-hosted LibreTranslate-compatible endpoint for better reliability.
+Refer to `.env.example` for the complete list of required variables.
+
+### Production (Netlify)
+
+**Do not add credentials to any files.** Set all environment variables in:
+- Netlify Dashboard → Site settings → Environment variables
+
+Required variables:
+- `VITE_CONTENTFUL_SPACE_ID` - Your Contentful space ID
+- `VITE_CONTENTFUL_ACCESS_TOKEN` - Your Contentful Content Delivery API token
+- `VITE_CONTENTFUL_NEWS_CONTENT_TYPE` - Content type ID (default: `newsPost`)
+- `VITE_CONTENTFUL_GALLERY_CONTENT_TYPE` - Content type ID (default: `galleryAlbum`)
+- `VITE_TRANSLATION_API_URL` - Translation endpoint (default: `/api/translate`)
+- `LT_URL` - (Optional) External translation service URL for Netlify Function
+
+### Security Notice
+
+**Never commit secrets to Git.** If you accidentally exposed credentials:
+1. Immediately rotate the tokens in Contentful
+2. Update environment variables in Netlify
+3. Remove the exposed values from Git history
 
 ## How can I deploy this project?
 

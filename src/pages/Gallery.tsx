@@ -40,7 +40,8 @@ const Gallery = () => {
       setLoading(true);
       setError(false);
       try {
-        const data = await getGalleryAlbums();
+        const lang = i18n.language === 'ro' ? 'ro' : 'en';
+        const data = await getGalleryAlbums(lang);
         setAlbums(data);
         setFilteredAlbums(data);
       } catch (err) {
@@ -52,7 +53,7 @@ const Gallery = () => {
     };
 
     fetchAlbums();
-  }, []);
+  }, [i18n.language]);
 
   useEffect(() => {
     if (selectedCategory === 'all') {
@@ -192,9 +193,12 @@ const Gallery = () => {
                   >
                     <div className="relative overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow">
                       <img
-                        src={album.coverImageUrl}
+                        src={album.coverImageUrl || '/news-placeholder.jpg'}
                         alt={title}
                         className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                        onError={(e) => {
+                          e.currentTarget.src = '/news-placeholder.jpg';
+                        }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                         <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
@@ -237,9 +241,12 @@ const Gallery = () => {
               {/* Image */}
               <div className="flex-1 relative flex items-center justify-center bg-black">
                 <img
-                  src={selectedAlbum.images[currentImageIndex]}
+                  src={selectedAlbum.images[currentImageIndex] || '/news-placeholder.jpg'}
                   alt={`${i18n.language === 'ro' ? selectedAlbum.albumTitle : selectedAlbum.albumTitleEn} - ${currentImageIndex + 1}`}
                   className="max-w-full max-h-full object-contain"
+                  onError={(e) => {
+                    e.currentTarget.src = '/news-placeholder.jpg';
+                  }}
                 />
 
                 {/* Navigation buttons */}

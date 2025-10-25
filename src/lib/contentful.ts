@@ -1,12 +1,18 @@
 import { createClient } from 'contentful';
-import type { Entry } from 'contentful';
+import type { Asset, Entry } from 'contentful';
 import type { Document } from '@contentful/rich-text-types';
 import { translateText, translateRichText } from './translate';
+
+// Map UI language to Contentful locale
+export const cfLocaleFor = (lang: string): string => {
+  return lang === 'ro' ? 'ro-RO' : 'en-GB';
+};
 
 type ContentfulAsset = {
   fields?: {
     file?: {
       url?: string;
+      [locale: string]: any;
     };
   };
   url?: string;
@@ -32,12 +38,10 @@ function transformExternalImageUrl(url: string): string {
 
     // Handle Google Drive share links
     if (parsed.hostname.includes('drive.google.com')) {
-      // Convert /file/d/FILE_ID/view to direct download URL
       const match = parsed.pathname.match(/\/file\/d\/([^/]+)/);
       if (match?.[1]) {
         return `https://drive.google.com/uc?export=view&id=${match[1]}`;
       }
-      // Also handle uc?id= format
       const idParam = parsed.searchParams.get('id');
       if (idParam) {
         return `https://drive.google.com/uc?export=view&id=${idParam}`;
@@ -70,36 +74,6 @@ function transformExternalImageUrl(url: string): string {
   return trimmed;
 }
 
-interface NewsPostFields {
-  title: string;
-  titleEn?: string;
-  slug: string;
-  category: string;
-  publicationDate: string;
-  featuredImage?: ImageField;
-  featuredImageUrl?: string;
-  excerpt: string;
-  excerptEn?: string;
-  content: Document;
-  contentEn?: Document;
-  additionalImages?: ImageField;
-  facebookLink?: string;
-  published: boolean;
-}
-
-interface GalleryAlbumFields {
-  albumTitle: string;
-  albumTitleEn?: string;
-  category: string;
-  coverImage?: ImageField;
-  coverImageUrl?: string;
-  images?: ImageField;
-  description?: string;
-  descriptionEn?: string;
-  date?: string;
-  published: boolean;
-}
-
 function resolveImageUrl(imageField: ImageField | undefined): string | undefined {
   if (!imageField) return undefined;
 
@@ -114,11 +88,30 @@ function resolveImageUrl(imageField: ImageField | undefined): string | undefined
     return firstUrl;
   }
 
-  const assetUrl = imageField.fields?.file?.url || imageField.url;
-  if (!assetUrl) return undefined;
+  // Handle Contentful Asset with localized file
+  const assetFields = (imageField as any).fields;
+  if (assetFields?.file) {
+    const fileField = assetFields.file;
+    
+    // If file.url exists directly
+    if (typeof fileField.url === 'string') {
+      const normalized = fileField.url.startsWith('//') ? `https:${fileField.url}` : fileField.url;
+      return transformExternalImageUrl(normalized);
+    }
+    
+    // If file is an object keyed by locale
+    if (typeof fileField === 'object') {
+      for (const locale in fileField) {
+        const localeFile = fileField[locale];
+        if (localeFile?.url) {
+          const normalized = localeFile.url.startsWith('//') ? `https:${localeFile.url}` : localeFile.url;
+          return transformExternalImageUrl(normalized);
+        }
+      }
+    }
+  }
 
-  const normalized = assetUrl.startsWith('//') ? `https:${assetUrl}` : assetUrl;
-  return transformExternalImageUrl(normalized);
+  return undefined;
 }
 
 function expandImageField(imageField: ImageField | undefined): ImageValue[] {
@@ -239,27 +232,53 @@ export interface GalleryAlbum {
 }
 
 // Auto-translate Romanian content to English if English fields are empty
-async function autoTranslateNewsPost(item: any): Promise<NewsPost> {
-  const fields = item.fields;
+async function autoTranslateNewsPost(item: Entry<any>, lang: string): Promise<NewsPost> {
+  const fields = item.fields as any;
   
-  // Use existing English translation if available, otherwise auto-translate from Romanian
-  const titleEn = fields.titleEn || await translateText(fields.title);
-  const excerptEn = fields.excerptEn || await translateText(fields.excerpt);
-  const contentEn = fields.contentEn || await translateRichText(fields.content);
+  // For EN UI: try localized EN-GB → legacy *En → RO → translate
+  // For RO UI: use localized RO
+  let title: string;
+  let excerpt: string;
+  let content: Document;
+  let titleEn: string;
+  let excerptEn: string;
+  let contentEn: Document;
+
+  if (lang === 'en') {
+    // EN UI priority: localized EN-GB → legacy → RO → translate
+    title = fields.title || '';
+    titleEn = fields.title || fields.titleEn || (fields.title ? await translateText(fields.title) : '');
+    
+    excerpt = fields.excerpt || '';
+    excerptEn = fields.excerpt || fields.excerptEn || (fields.excerpt ? await translateText(fields.excerpt) : '');
+    
+    content = fields.content || { nodeType: 'document', data: {}, content: [] };
+    contentEn = fields.content || fields.contentEn || (fields.content ? await translateRichText(fields.content) : { nodeType: 'document', data: {}, content: [] });
+  } else {
+    // RO UI: use localized RO
+    title = fields.title || '';
+    titleEn = fields.titleEn || (fields.title ? await translateText(fields.title) : '');
+    
+    excerpt = fields.excerpt || '';
+    excerptEn = fields.excerptEn || (fields.excerpt ? await translateText(fields.excerpt) : '');
+    
+    content = fields.content || { nodeType: 'document', data: {}, content: [] };
+    contentEn = fields.contentEn || (fields.content ? await translateRichText(fields.content) : { nodeType: 'document', data: {}, content: [] });
+  }
 
   return {
     id: item.sys.id,
-    title: fields.title,
+    title,
     titleEn,
     slug: fields.slug,
     category: fields.category,
     publicationDate: fields.publicationDate,
     featuredImageUrl:
       resolveFirstImageUrl(fields.featuredImage, fields.featuredImageUrl) ||
-      '',
-    excerpt: fields.excerpt,
+      '/news-placeholder.jpg',
+    excerpt,
     excerptEn,
-    content: fields.content,
+    content,
     contentEn,
     additionalImages: normalizeImageArray(fields.additionalImages),
     facebookLink: fields.facebookLink,
@@ -267,31 +286,45 @@ async function autoTranslateNewsPost(item: any): Promise<NewsPost> {
   };
 }
 
-async function autoTranslateGalleryAlbum(item: any): Promise<GalleryAlbum> {
-  const fields = item.fields;
+async function autoTranslateGalleryAlbum(item: Entry<any>, lang: string): Promise<GalleryAlbum> {
+  const fields = item.fields as any;
   
-  const albumTitleEn = fields.albumTitleEn || await translateText(fields.albumTitle);
-  const descriptionEn = fields.description
-    ? (fields.descriptionEn || await translateText(fields.description))
-    : undefined;
+  let albumTitle: string;
+  let albumTitleEn: string;
+  let description: string | undefined;
+  let descriptionEn: string | undefined;
+
+  if (lang === 'en') {
+    albumTitle = fields.albumTitle || '';
+    albumTitleEn = fields.albumTitle || fields.albumTitleEn || (fields.albumTitle ? await translateText(fields.albumTitle) : '');
+    
+    description = fields.description;
+    descriptionEn = fields.description || fields.descriptionEn || (fields.description ? await translateText(fields.description) : undefined);
+  } else {
+    albumTitle = fields.albumTitle || '';
+    albumTitleEn = fields.albumTitleEn || (fields.albumTitle ? await translateText(fields.albumTitle) : '');
+    
+    description = fields.description;
+    descriptionEn = fields.descriptionEn || (fields.description ? await translateText(fields.description) : undefined);
+  }
 
   return {
     id: item.sys.id,
-    albumTitle: fields.albumTitle,
+    albumTitle,
     albumTitleEn,
     category: fields.category,
     coverImageUrl:
       resolveFirstImageUrl(fields.coverImage, fields.coverImageUrl) ||
-      '',
+      '/news-placeholder.jpg',
     images: normalizeImageArray(fields.images),
-    description: fields.description,
+    description,
     descriptionEn,
     date: fields.date,
     published: fields.published,
   };
 }
 
-export async function getNewsPosts(): Promise<NewsPost[]> {
+export async function getNewsPosts(lang: string = 'en'): Promise<NewsPost[]> {
   if (!client) {
     console.warn('Contentful credentials not configured');
     return [];
@@ -302,10 +335,12 @@ export async function getNewsPosts(): Promise<NewsPost[]> {
       content_type: newsContentType,
       'fields.published': true,
       order: ['-fields.publicationDate'],
+      locale: cfLocaleFor(lang),
+      include: 2,
     });
 
     return await Promise.all(
-      response.items.map(autoTranslateNewsPost)
+      response.items.map((item) => autoTranslateNewsPost(item, lang))
     );
   } catch (error) {
     logContentfulError('Error fetching news posts', error);
@@ -313,7 +348,7 @@ export async function getNewsPosts(): Promise<NewsPost[]> {
   }
 }
 
-export async function getNewsPostBySlug(slug: string): Promise<NewsPost | null> {
+export async function getNewsPostBySlug(slug: string, lang: string = 'en'): Promise<NewsPost | null> {
   if (!client) {
     console.warn('Contentful credentials not configured');
     return null;
@@ -325,18 +360,20 @@ export async function getNewsPostBySlug(slug: string): Promise<NewsPost | null> 
       'fields.slug': slug,
       'fields.published': true,
       limit: 1,
+      locale: cfLocaleFor(lang),
+      include: 2,
     });
 
     if (response.items.length === 0) return null;
 
-    return await autoTranslateNewsPost(response.items[0]);
+    return await autoTranslateNewsPost(response.items[0], lang);
   } catch (error) {
     logContentfulError('Error fetching news post', error);
     return null;
   }
 }
 
-export async function getGalleryAlbums(): Promise<GalleryAlbum[]> {
+export async function getGalleryAlbums(lang: string = 'en'): Promise<GalleryAlbum[]> {
   if (!client) {
     console.warn('Contentful credentials not configured');
     return [];
@@ -347,10 +384,12 @@ export async function getGalleryAlbums(): Promise<GalleryAlbum[]> {
       content_type: galleryContentType,
       'fields.published': true,
       order: ['-fields.date'],
+      locale: cfLocaleFor(lang),
+      include: 2,
     });
 
     return await Promise.all(
-      response.items.map(autoTranslateGalleryAlbum)
+      response.items.map((item) => autoTranslateGalleryAlbum(item, lang))
     );
   } catch (error) {
     logContentfulError('Error fetching gallery albums', error);

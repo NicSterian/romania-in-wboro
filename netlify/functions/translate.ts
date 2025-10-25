@@ -1,0 +1,73 @@
+import type { Handler } from '@netlify/functions';
+
+const handler: Handler = async (event) => {
+  // CORS headers
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Content-Type': 'application/json',
+  };
+
+  // Handle preflight
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 204, headers, body: '' };
+  }
+
+  if (event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      headers,
+      body: JSON.stringify({ error: 'Method not allowed' }),
+    };
+  }
+
+  try {
+    const { q, source, target } = JSON.parse(event.body || '{}');
+
+    if (!q || !target) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: 'Missing required parameters' }),
+      };
+    }
+
+    // Use environment variable or default endpoint
+    const translationUrl = process.env.LT_URL || 'https://translate.argosopentech.com/translate';
+
+    const response = await fetch(translationUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        q,
+        source: source || 'ro',
+        target,
+        format: 'text',
+      }),
+    });
+
+    if (!response.ok) {
+      return {
+        statusCode: 502,
+        headers,
+        body: JSON.stringify({ error: 'Translation service error' }),
+      };
+    }
+
+    const data = await response.json();
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify(data),
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({ error: 'Internal server error' }),
+    };
+  }
+};
+
+export { handler };

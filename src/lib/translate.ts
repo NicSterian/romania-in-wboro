@@ -1,90 +1,62 @@
-import type { Document, Text as RichTextText, TopLevelBlock } from '@contentful/rich-text-types';
+import type { Document } from '@contentful/rich-text-types';
 import { BLOCKS } from '@contentful/rich-text-types';
 
+// Simple cache using localStorage
 function getCache(key: string): string | null {
-  if (typeof window === 'undefined') return null;
   try {
-    return window.localStorage.getItem(key);
-  } catch (error) {
-    console.warn('Unable to access localStorage for translation cache:', error);
+    return localStorage.getItem(key);
+  } catch {
     return null;
   }
 }
 
 function setCache(key: string, value: string) {
-  if (typeof window === 'undefined') return;
   try {
-    window.localStorage.setItem(key, value);
-  } catch (error) {
-    console.warn('Unable to save translation to cache:', error);
+    localStorage.setItem(key, value);
+  } catch {
+    // Ignore cache errors
   }
 }
 
-function getTranslationEndpoints(): string[] {
-  const configured = import.meta.env.VITE_TRANSLATION_API_URL;
-
-  const defaults = [
-    'https://translate.argosopentech.com/translate',
-    'https://libretranslate.de/translate',
-    'https://libretranslate.com/translate',
-  ];
-
-  const endpoints = configured
-    ? [configured, ...defaults.filter((url) => url !== configured)]
-    : defaults;
-
-  return [...new Set(endpoints)];
+// Get translation API endpoint
+function getTranslationEndpoint(): string {
+  return import.meta.env.VITE_TRANSLATION_API_URL || '/api/translate';
 }
 
 export async function translateText(text: string): Promise<string> {
   if (!text || text.trim() === '') return text;
 
-  const cacheKey = `translation_${text.substring(0, 50)}`;
+  const cacheKey = `translate:${text}`;
   const cached = getCache(cacheKey);
   if (cached) return cached;
 
-  const endpoints = getTranslationEndpoints();
-  let lastError: unknown = null;
+  try {
+    const endpoint = getTranslationEndpoint();
+    
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        q: text,
+        source: 'ro',
+        target: 'en',
+      }),
+    });
 
-  for (const endpoint of endpoints) {
-    try {
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          q: text,
-          source: 'ro',
-          target: 'en',
-          format: 'text',
-        }),
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Translation failed (${response.status}): ${errorText}`);
-      }
-
-      const data = await response.json();
-      const translated = data.translatedText;
-
-      if (typeof translated === 'string' && translated.trim() !== '') {
-        setCache(cacheKey, translated);
-        return translated;
-      }
-
-      throw new Error('Translation API returned empty response');
-    } catch (error) {
-      lastError = error;
-      console.error('Translation error:', error);
-      continue;
+    if (!response.ok) {
+      console.warn('Translation service unavailable, returning original text');
+      return text;
     }
-  }
 
-  if (lastError) {
-    console.error('All translation endpoints failed, returning original text');
+    const data = await response.json();
+    const translated = data.translatedText || text;
+    
+    setCache(cacheKey, translated);
+    return translated;
+  } catch (error) {
+    console.warn('Translation error, returning original text');
+    return text;
   }
-
-  return text;
 }
 
 export async function translateRichText(richTextContent: Document | undefined): Promise<Document> {
@@ -96,15 +68,15 @@ export async function translateRichText(richTextContent: Document | undefined): 
     };
   }
 
-  const translateNode = async (node: any): Promise<any> => {
-    if (node.nodeType === 'text') {
+  async function translateNode(node: any): Promise<any> {
+    if (node.nodeType === 'text' && node.value) {
       return {
         ...node,
         value: await translateText(node.value),
       };
     }
 
-    if ('content' in node && Array.isArray(node.content)) {
+    if (node.content && Array.isArray(node.content)) {
       return {
         ...node,
         content: await Promise.all(node.content.map(translateNode)),
@@ -112,12 +84,7 @@ export async function translateRichText(richTextContent: Document | undefined): 
     }
 
     return node;
-  };
+  }
 
-  const translatedContent = await Promise.all(richTextContent.content.map(translateNode));
-
-  return {
-    ...richTextContent,
-    content: translatedContent as TopLevelBlock[],
-  };
+  return await translateNode(richTextContent);
 }
