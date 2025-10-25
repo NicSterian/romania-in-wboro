@@ -15,6 +15,9 @@ export interface NewsPost {
   additionalImages?: string[];
   facebookLink?: string;
   published: boolean;
+  originalTitleRo?: string;
+  originalExcerptRo?: string;
+  originalContentRo?: Document;
 }
 
 export interface GalleryAlbum {
@@ -28,6 +31,8 @@ export interface GalleryAlbum {
   descriptionEn?: string;
   date?: string;
   published: boolean;
+  originalAlbumTitleRo?: string;
+  originalDescriptionRo?: string;
 }
 
 export async function getNewsPosts(lang: string = 'en'): Promise<NewsPost[]> {
