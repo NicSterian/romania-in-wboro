@@ -60,48 +60,16 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
-## Environment configuration
+## Environment
 
-**IMPORTANT: Contentful credentials are now server-only. Never commit `.env` files.**
+Set only server env vars in Netlify → Environment:
 
-### Local Development
+- `CONTENTFUL_SPACE_ID`
+- `CONTENTFUL_ACCESS_TOKEN` (CDA / Delivery token)
 
-Create a `.env` file in the project root (already in `.gitignore`) with:
+The client calls `/api/translate`, `/api/news`, `/api/gallery` (no secrets).
 
-```
-CONTENTFUL_SPACE_ID=your_space_id_here
-CONTENTFUL_ACCESS_TOKEN=your_cda_token_here
-CONTENTFUL_NEWS_CONTENT_TYPE=newsPost
-CONTENTFUL_GALLERY_CONTENT_TYPE=galleryAlbum
-VITE_TRANSLATION_API_URL=/api/translate
-```
-
-Note: No `VITE_` prefix on Contentful credentials - they stay server-side only.
-
-### Production (Netlify)
-
-**Set these in Netlify Dashboard → Site settings → Environment variables:**
-
-**Required server-only secrets:**
-- `CONTENTFUL_SPACE_ID` - Your Contentful space ID
-- `CONTENTFUL_ACCESS_TOKEN` - Your Contentful Content Delivery API (CDA) token
-
-**Optional server-only:**
-- `CONTENTFUL_NEWS_CONTENT_TYPE` - Content type ID (default: `newsPost`)
-- `CONTENTFUL_GALLERY_CONTENT_TYPE` - Content type ID (default: `galleryAlbum`)
-- `LT_URL` - External translation service URL (default: Argos OpenTech)
-
-**Client-safe (can be VITE_ prefixed):**
-- `VITE_TRANSLATION_API_URL=/api/translate` - Translation API endpoint
-
-### Security Notice
-
-**All Contentful fetching now happens through Netlify Functions.** Client bundle contains no secrets.
-
-If any tokens were previously exposed:
-1. Rotate them immediately in Contentful
-2. Update environment variables in Netlify
-3. Never use `VITE_` prefix for secrets
+Never commit `.env` files.
 
 ## How can I deploy this project?
 

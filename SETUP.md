@@ -2,13 +2,13 @@
 
 For local development, create a `.env` file in the root:
 ```
-VITE_CONTENTFUL_SPACE_ID=your_space_id
-VITE_CONTENTFUL_ACCESS_TOKEN=your_access_token
+CONTENTFUL_SPACE_ID=your_space_id
+CONTENTFUL_ACCESS_TOKEN=your_access_token
 ```
 
 For production (Netlify), add these as environment variables in Netlify dashboard:
 - Site settings → Environment variables
-- Add both `VITE_CONTENTFUL_SPACE_ID` and `VITE_CONTENTFUL_ACCESS_TOKEN`
+- Add both `CONTENTFUL_SPACE_ID` and `CONTENTFUL_ACCESS_TOKEN`
 
 **IMPORTANT: Never commit the .env file to GitHub!** The .env file is already included in .gitignore to prevent accidental commits.
 

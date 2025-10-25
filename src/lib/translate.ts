@@ -20,7 +20,7 @@ function setCache(key: string, value: string) {
 
 // Get translation API endpoint
 function getTranslationEndpoint(): string {
-  return import.meta.env.VITE_TRANSLATION_API_URL || '/api/translate';
+  return '/api/translate';
 }
 
 export async function translateText(text: string): Promise<string> {
