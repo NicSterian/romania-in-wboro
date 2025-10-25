@@ -1,22 +1,36 @@
 [build]
-  functions = "netlify/functions"
+  command = "npm run build"
   publish = "dist"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
 
 [[redirects]]
-  from = "/api/translate"
-  to = "/.netlify/functions/translate"
+  from = "/api/news"
+  to = "/.netlify/functions/contentful-news"
   status = 200
+  force = true
 
 [[redirects]]
   from = "/api/news/*"
   to = "/.netlify/functions/contentful-news"
   status = 200
+  force = true
 
 [[redirects]]
   from = "/api/gallery"
   to = "/.netlify/functions/contentful-gallery"
   status = 200
+  force = true
 
+[[redirects]]
+  from = "/api/translate"
+  to = "/.netlify/functions/translate"
+  status = 200
+  force = true
+
+# keep CSP headers (no secrets here)
 [[headers]]
   for = "/*"
   [headers.values]
