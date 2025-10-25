@@ -30,6 +30,12 @@
   status = 200
   force = true
 
+# --- SPA fallback (must be last) ---
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
 # keep CSP headers (no secrets here)
 [[headers]]
   for = "/*"

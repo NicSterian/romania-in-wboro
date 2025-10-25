@@ -1,13 +1,16 @@
-import { useCallback, useEffect, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS, INLINES } from '@contentful/rich-text-types';
+import type { Document } from '@contentful/rich-text-types';
 import { getNewsPostBySlug, NewsPost } from '@/lib/contentful';
 import { formatDate, getCategoryColor } from '@/lib/utils';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { Button } from '@/components/ui/button';
+import { translateRichText, translateText } from '@/lib/translate';
+import { HERO_MAX_VH } from '@/config/ui';
 
 const NewsPostPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -17,6 +20,8 @@ const NewsPostPage = () => {
   const [error, setError] = useState(false);
   const [lbOpen, setLbOpen] = useState(false);
   const [lbIndex, setLbIndex] = useState(0);
+  const [displayTitle, setDisplayTitle] = useState('');
+  const [displayContent, setDisplayContent] = useState<Document | null>(null);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -42,6 +47,97 @@ const NewsPostPage = () => {
     setLbOpen(false);
     setLbIndex(0);
   }, [post?.id]);
+
+  const emptyDoc = useMemo<Document>(
+    () => ({
+      nodeType: 'document',
+      data: {},
+      content: [],
+    }),
+    []
+  );
+
+  useEffect(() => {
+    if (!post) return;
+
+    let cancelled = false;
+    const lang = i18n.language === 'ro' ? 'ro' : 'en';
+
+    const roTitle = post.originalTitleRo?.trim() ?? post.title?.trim() ?? '';
+    const enTitle = post.titleEn?.trim() ?? '';
+    const roContent = post.originalContentRo ?? post.content ?? emptyDoc;
+    const enContent = post.contentEn ?? emptyDoc;
+
+    const hasContent = (doc?: Document | null) => Boolean(doc && doc.content && doc.content.length > 0);
+
+    const fallbackRoTitle = roTitle || enTitle || post.title || post.titleEn || '';
+    const fallbackRoContent = hasContent(roContent)
+      ? roContent
+      : hasContent(enContent)
+        ? enContent
+        : emptyDoc;
+
+    const fallbackEnTitle = enTitle || roTitle || post.titleEn || post.title || '';
+    const fallbackEnContent = hasContent(enContent)
+      ? enContent
+      : hasContent(roContent)
+        ? roContent
+        : emptyDoc;
+
+    if (lang === 'ro') {
+      setDisplayTitle(fallbackRoTitle);
+      setDisplayContent(fallbackRoContent);
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    setDisplayTitle(fallbackEnTitle);
+    setDisplayContent(fallbackEnContent);
+
+    const resolveForEn = async () => {
+      if (cancelled) return;
+
+      let nextTitle = enTitle;
+      if (!nextTitle && roTitle) {
+        nextTitle = await translateText(roTitle);
+      } else if (!nextTitle && post.title) {
+        nextTitle = await translateText(post.title);
+      }
+
+      let nextContent: Document | null = hasContent(enContent) ? enContent : null;
+      if (!nextContent && hasContent(roContent)) {
+        nextContent = await translateRichText(roContent);
+      }
+
+      if (!cancelled) {
+        setDisplayTitle(nextTitle || fallbackEnTitle);
+        setDisplayContent(nextContent ?? fallbackEnContent);
+      }
+    };
+
+    resolveForEn();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [post, i18n.language, emptyDoc]);
+
+  useEffect(() => {
+    if (!lbOpen || !post?.additionalImages?.length) return;
+
+    const images = post.additionalImages;
+    const len = images.length;
+    const preload = (index: number) => {
+      const src = images[(index + len) % len];
+      if (!src) return;
+      const img = new Image();
+      img.src = src;
+    };
+
+    preload(lbIndex + 1);
+    preload(lbIndex - 1);
+  }, [lbOpen, lbIndex, post?.additionalImages]);
 
   const totalImages = post?.additionalImages?.length ?? 0;
 
@@ -176,8 +272,6 @@ const NewsPostPage = () => {
     );
   }
 
-  const title = i18n.language === 'ro' ? post.title : post.titleEn;
-  const content = i18n.language === 'ro' ? post.content : post.contentEn;
   const lang = i18n.language === 'ro' ? 'ro' : 'en';
 
   return (
@@ -195,16 +289,21 @@ const NewsPostPage = () => {
       </section>
 
       {/* Featured Image */}
-      <section className="relative w-full h-[400px] md:h-[500px]">
-        <img
-          src={post.featuredImageUrl || '/news-placeholder.jpg'}
-          alt={title}
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            e.currentTarget.src = '/news-placeholder.jpg';
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+      <section className="py-8 md:py-10">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-center">
+            <img
+              src={post.featuredImageUrl || '/news-placeholder.jpg'}
+              alt={displayTitle}
+              style={{ maxHeight: `${HERO_MAX_VH}vh` }}
+              className="w-full object-contain mx-auto bg-neutral-100 rounded-xl"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = '/news-placeholder.jpg';
+              }}
+            />
+          </div>
+        </div>
       </section>
 
       {/* Post Content */}
@@ -222,12 +321,12 @@ const NewsPostPage = () => {
 
           {/* Title */}
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8 text-foreground">
-            {title}
+            {displayTitle}
           </h1>
 
           {/* Content */}
           <div className="prose prose-lg max-w-none">
-            {documentToReactComponents(content, richTextOptions)}
+            {documentToReactComponents(displayContent ?? emptyDoc, richTextOptions)}
           </div>
 
           {/* Additional Images */}
@@ -261,52 +360,55 @@ const NewsPostPage = () => {
 
           {lbOpen && post.additionalImages?.length ? (
             <div
-              className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
+              className="fixed inset-0 z-50 bg-black/90 p-4 md:p-10 flex items-center justify-center"
               onClick={closeLightbox}
               role="dialog"
               aria-modal="true"
             >
-              <button
-                className="absolute top-4 right-4 rounded-xl px-3 py-2 bg-white/10 text-white"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  closeLightbox();
-                }}
-              >
-                ✕
-              </button>
+              <div className="relative h-full w-full max-w-5xl mx-auto flex items-center justify-center group">
+                <button
+                  className="absolute top-4 right-4 rounded-full bg-black/70 px-3 py-2 text-white transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:opacity-100 md:opacity-0 md:group-hover:opacity-100"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    closeLightbox();
+                  }}
+                  aria-label={lang === 'ro' ? 'Închide' : 'Close'}
+                >
+                  ✕
+                </button>
 
-              <button
-                className="absolute left-4 md:left-8 rounded-xl px-3 py-2 bg-white/10 text-white"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  prev();
-                }}
-                aria-label="Previous"
-              >
-                ←
-              </button>
+                <button
+                  className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 rounded-full bg-black/70 px-3 py-2 text-white transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:opacity-100 md:opacity-0 md:group-hover:opacity-100"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    prev();
+                  }}
+                  aria-label={lang === 'ro' ? 'Imaginea anterioară' : 'Previous image'}
+                >
+                  ←
+                </button>
 
-              <button
-                className="absolute right-4 md:right-8 rounded-xl px-3 py-2 bg-white/10 text-white"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  next();
-                }}
-                aria-label="Next"
-              >
-                →
-              </button>
+                <button
+                  className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 rounded-full bg-black/70 px-3 py-2 text-white transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:opacity-100 md:opacity-0 md:group-hover:opacity-100"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    next();
+                  }}
+                  aria-label={lang === 'ro' ? 'Imaginea următoare' : 'Next image'}
+                >
+                  →
+                </button>
 
-              <img
-                src={post.additionalImages?.[lbIndex] || '/news-placeholder.jpg'}
-                alt=""
-                className="max-h-[90vh] max-w-[95vw] object-contain"
-                onClick={(e) => e.stopPropagation()}
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).src = '/news-placeholder.jpg';
-                }}
-              />
+                <img
+                  src={post.additionalImages?.[lbIndex] || '/news-placeholder.jpg'}
+                  alt=""
+                  className="max-h-[90vh] w-full max-w-full object-contain"
+                  onClick={(e) => e.stopPropagation()}
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = '/news-placeholder.jpg';
+                  }}
+                />
+              </div>
             </div>
           ) : null}
 
