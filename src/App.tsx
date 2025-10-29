@@ -12,6 +12,11 @@ import NewsPost from "./pages/NewsPost";
 import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsConditions from "./pages/TermsConditions";
+import HealthSafety from "./pages/HealthSafety";
+import EqualityPolicy from "./pages/EqualityPolicy";
+import VolunteerCode from "./pages/VolunteerCode";
 import "./i18n/config";
 
 const queryClient = new QueryClient();
@@ -30,6 +35,11 @@ const App = () => (
           <Route path="/news/:slug" element={<NewsPost />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-conditions" element={<TermsConditions />} />
+          <Route path="/health-safety" element={<HealthSafety />} />
+          <Route path="/equality-policy" element={<EqualityPolicy />} />
+          <Route path="/volunteer-code" element={<VolunteerCode />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>

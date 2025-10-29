@@ -8,15 +8,15 @@
   },
   "home": {
     "hero": {
-      "title": "Welcome to Mihai Eminescu Romanian School Wellingborough",
+      "title": "Welcome to the Romanian Cultural Centre",
       "subtitle": "Keeping Romanian culture and language alive for our children",
-      "description": "Romanian language education for children in Northamptonshire",
+      "description": "Romanian language and cultural education for children in Wellingborough",
       "contactBtn": "Contact Us",
       "learnBtn": "Learn More"
     },
     "about": {
-      "title": "About Our School",
-      "content": "Mihai Eminescu Romanian School in Wellingborough is dedicated to preserving and promoting Romanian language, culture, and traditions for children in the Romanian community of Northamptonshire. We provide quality education in a friendly and inclusive environment.",
+      "title": "About Our Centre",
+      "content": "Centrul de Cultură, Limbă și Tradiție Românească is dedicated to preserving and promoting Romanian language, culture, and traditions for children in the Romanian community of Northamptonshire. We provide quality education in a friendly and inclusive environment.",
       "readMore": "Read More"
     },
     "benefits": {
@@ -43,11 +43,11 @@
       "day": "Day:",
       "dayValue": "Saturdays",
       "time": "Time:",
-      "timeValue": "9:00 AM - 1:00 PM",
+      "timeValue": "10:00 AM - 1:00 PM",
       "age": "Age:",
-      "ageValue": "5-10 years (initially)",
+      "ageValue": "4-15 years",
       "location": "Location:",
-      "locationValue": "Wellingborough, Northamptonshire"
+      "locationValue": "Goldsmith Road, Wellingborough, NN8 3RU"
     },
     "galleryPreview": {
       "title": "Photo Gallery",
@@ -67,40 +67,40 @@
     "hero": "About Us",
     "mission": {
       "title": "Our Mission",
-      "content1": "Mihai Eminescu Romanian School in Wellingborough is dedicated to preserving and promoting Romanian language, culture, and traditions for children in the Romanian community of Northamptonshire.",
-      "content2": "Our mission is to provide quality education in Romanian language, in a friendly and inclusive environment where children can learn and grow together. We believe that maintaining connection with cultural roots is essential for the development of our children's identity."
+      "content1": "Centrul de Cultură, Limbă și Tradiție Românească in Wellingborough is dedicated to preserving and promoting Romanian language, culture, and traditions for children in the Romanian community.",
+      "content2": "Our mission is to provide quality education in Romanian language, in a friendly and inclusive environment where children can learn and grow together. We cultivate identity and build the future."
     },
     "curriculum": {
       "title": "Curriculum & Schedule",
-      "age": "5-10 years (initially, will expand in the future)",
-      "schedule": "Saturdays, 9:00 AM - 1:00 PM",
-      "location": "Wellingborough, Northamptonshire"
+      "age": "4-15 years",
+      "schedule": "Saturdays, 10:00 AM - 1:00 PM",
+      "location": "Goldsmith Road, Wellingborough, NN8 3RU"
     },
     "subjects": {
       "title": "What We Teach",
       "language": {
         "title": "Romanian Language",
-        "desc": "Grammar, vocabulary, reading and writing"
+        "desc": "Grammar, vocabulary, reading, writing and communication"
       },
       "history": {
-        "title": "Romanian History",
+        "title": "History & Geography",
         "desc": "Romanian history and geography"
       },
       "culture": {
         "title": "Culture & Traditions",
-        "desc": "Holidays, customs and Romanian folklore"
+        "desc": "Folklore, crafts, holidays and customs"
       },
       "arts": {
-        "title": "Arts & Music",
-        "desc": "Traditional art and Romanian music"
+        "title": "Sciences",
+        "desc": "Interactive activities developing logical thinking"
       }
     },
     "teacher": {
       "title": "Our Teacher",
       "name": "Laura Nan",
       "role": "Founder & Teacher",
-      "bio1": "Laura Nan is the founder and teacher of Mihai Eminescu Romanian School. With extensive teaching experience gained in Romania, where she taught for many years, Laura dedicates her time and energy to providing Romanian children in the UK with authentic education in Romanian language and culture.",
-      "bio2": "For the past two years, Laura has been teaching at a Romanian school in Northampton, where she strengthened her passion for maintaining the cultural identity of children in the diaspora. Her vision is to create a safe and inspiring space where every child can discover the beauty of the Romanian language and stay connected to their roots.",
+      "bio1": "Laura Nan is the founder and teacher of our cultural centre. With extensive teaching experience gained in Romania, Laura dedicates her time and energy to providing Romanian children in the UK with authentic education in Romanian language and culture.",
+      "bio2": "For the past two years, Laura has been teaching at a Romanian school in Northampton, where she strengthened her passion for maintaining the cultural identity of children in the diaspora.",
       "bio3": "Laura brings not only solid pedagogical knowledge but also a deep love for the Romanian community in the United Kingdom."
     },
     "areas": {
@@ -118,7 +118,7 @@
       "activities": "Activities",
       "holidays": "Holidays"
     },
-    "empty": "News will be published soon! Follow this page for updates about our school's events and activities.",
+    "empty": "News will be published soon! Follow this page for updates about our centre's events and activities.",
     "readMore": "Read More",
     "backToNews": "Back to News",
     "viewOnFacebook": "View on Facebook"
@@ -127,7 +127,7 @@
     "hero": "Photo Gallery",
     "empty": {
       "title": "Our photo gallery will be available soon!",
-      "subtitle": "Here you will find images from our school's events and activities. Follow this page for updates!"
+      "subtitle": "Here you will find images from our centre's events and activities. Follow this page for updates!"
     }
   },
   "contact": {
@@ -156,11 +156,11 @@
       "title": "Contact Information",
       "email": "Email",
       "whatsapp": "WhatsApp",
-      "whatsappValue": "Number available soon",
+      "whatsappValue": "07494673740",
       "location": "Location",
-      "locationValue": "Exact address will be announced soon",
+      "locationValue": "Goldsmith Road, Wellingborough, NN8 3RU",
       "schedule": "Schedule",
-      "scheduleValue": "Saturdays: 9:00 AM - 1:00 PM"
+      "scheduleValue": "Saturdays: 10:00 AM - 1:00 PM"
     },
     "social": {
       "title": "Follow Us on Social Media",
@@ -170,10 +170,146 @@
   "footer": {
     "description": "Keeping Romanian culture and language alive for our children in Northamptonshire.",
     "quickLinks": "Quick Links",
+    "legal": "Policies",
+    "privacy": "Privacy Policy",
+    "terms": "Terms & Conditions",
+    "health": "Health & Safety",
+    "equality": "Equality Policy",
+    "volunteer": "Volunteer Code",
     "contact": "Contact",
-    "copyright": "© 2025 Mihai Eminescu Romanian School Wellingborough. All rights reserved."
+    "copyright": "© 2025 Centrul de Cultură, Limbă și Tradiție Românească. All rights reserved."
   },
   "whatsapp": {
     "tooltip": "Contact us on WhatsApp"
+  },
+  "legal": {
+    "privacy": {
+      "title": "Privacy Policy",
+      "orgName": "Centrul de Cultură, Limbă și Tradiție Românească CIC",
+      "address": "Goldsmith Road, Wellingborough, NN8 3RU, United Kingdom",
+      "effectiveDate": "Effective date: 01/11/2025",
+      "section1Title": "Purpose",
+      "section1Content": "This Privacy Policy explains how we collect, store, and use personal information from parents, children, staff, and volunteers who take part in our activities.",
+      "section2Title": "Information we collect",
+      "section2Content": "We may collect: parent and child names, contact details and emergency contacts; attendance records; photographs or videos (only with written consent); and payment details for trimestrial contributions.",
+      "section3Title": "How we use this information",
+      "section3Content": "We use personal data to organise classes and cultural events; communicate with parents and volunteers; keep attendance and safeguarding records; manage payments and receipts; and promote our activities (only with consent for photos).",
+      "section4Title": "Legal basis",
+      "section4Content": "We process personal data under the UK GDPR and the Data Protection Act 2018. We rely on legitimate interest to run our educational activities and on explicit consent for photography and promotional use.",
+      "section5Title": "Data storage and sharing",
+      "section5Content": "Data is stored securely on password-protected devices or in locked files. We do not share personal data with third parties except when required by law or to protect vital interests.",
+      "section6Title": "Data retention",
+      "section6Content": "We retain personal data only as long as necessary for educational, financial, or legal purposes, after which it is securely deleted or anonymised.",
+      "section7Title": "Your rights",
+      "section7Content": "You may request access, correction, deletion, or restriction of your personal data.",
+      "section8Title": "Contact",
+      "section8Content": "Questions about this policy or data access requests can be sent to lauranan@yahoo.com or in writing to the address above."
+    },
+    "terms": {
+      "title": "Terms & Conditions",
+      "orgName": "Centrul de Cultură, Limbă și Tradiție Românească CIC",
+      "address": "Goldsmith Road, Wellingborough, NN8 3RU, United Kingdom",
+      "effectiveDate": "Effective date: 10/01/2026",
+      "section1Title": "Enrolment",
+      "section1Content": "Registration is required before attending classes. Parents must provide accurate contact details and inform the centre of any changes.",
+      "section2Title": "Attendance",
+      "section2Content": "Regular attendance helps children benefit fully from lessons. Please notify us in advance if your child cannot attend.",
+      "section3Title": "Fees",
+      "section3Content": "Families may choose to pay either a trimestrial contribution or a pay-as-you-go option. All payments support the running costs of the Centre. Fees are non-refundable once a class has started, except where the Centre cancels a full session or term.",
+      "section4Title": "Conduct",
+      "section4Content": "We expect respectful behaviour from children, parents, and volunteers. Disruptive or unsafe conduct may lead to temporary or permanent exclusion to protect others.",
+      "section5Title": "Safeguarding",
+      "section5Content": "We are committed to maintaining a safe environment. Staff and volunteers follow safeguarding procedures and report concerns immediately. Parents must provide accurate emergency contacts and relevant medical information.",
+      "section6Title": "Photography and Media",
+      "section6Content": "Photos and videos may be taken for promotional use only with written parental consent. Consent can be withdrawn at any time by email.",
+      "section7Title": "Data Protection",
+      "section7Content": "Personal data is managed according to our Privacy Policy, compliant with the UK GDPR.",
+      "section8Title": "Communication",
+      "section8Content": "Official updates will be sent via email, WhatsApp, or printed notices. Parents are encouraged to keep contact details up to date.",
+      "section9Title": "Liability",
+      "section9Content": "We take reasonable care to ensure the safety of children. The centre cannot accept responsibility for loss of personal property or for accidents arising from failure to follow staff instructions.",
+      "section10Title": "Changes to these Terms",
+      "section10Content": "We may update these Terms & Conditions to reflect legal or operational changes. The latest version will be available on request."
+    },
+    "health": {
+      "title": "Health & Safety Policy",
+      "orgName": "Centrul de Cultură, Limbă și Tradiție Românească CIC",
+      "address": "Goldsmith Road, Wellingborough, NN8 3RU, United Kingdom",
+      "effectiveDate": "Effective date: 10 January 2026",
+      "section1Title": "Purpose and Commitment",
+      "section1Content": "The Centre is committed to ensuring the health, safety, and welfare of all children, staff, volunteers, and visitors who participate in our activities.",
+      "section2Title": "Responsible Person",
+      "section2Content": "The Health & Safety Officer for the Centre is Laura Nan. She is responsible for overseeing health and safety measures.",
+      "section3Title": "Legal Framework",
+      "section3Content": "This policy complies with the Health and Safety at Work Act 1974 and relevant UK guidance for community and educational settings.",
+      "section4Title": "Risk Assessment",
+      "section4Content": "Risk assessments will be carried out for all activities, venues, and equipment. Identified risks will be recorded and managed appropriately.",
+      "section5Title": "Premises and Equipment",
+      "section5Content": "All facilities and equipment must be safe, well-maintained, and suitable for children. Any hazard should be reported immediately.",
+      "section6Title": "First Aid and Medical Emergencies",
+      "section6Content": "A first aid kit will be available during all classes. At least one trained adult will be present. Parents must provide relevant medical information.",
+      "section7Title": "Fire Safety and Evacuation",
+      "section7Content": "Fire exits must be clearly marked. Staff and volunteers must guide children to safety following evacuation procedures.",
+      "section8Title": "Supervision of Children",
+      "section8Content": "Children must be supervised at all times by authorised staff or volunteers.",
+      "section9Title": "Reporting Accidents and Incidents",
+      "section9Content": "All accidents must be recorded in an accident log and reported to the Health & Safety Officer.",
+      "section10Title": "Hygiene and Infection Control",
+      "section10Content": "All areas will be kept clean and hygienic. Handwashing facilities and cleaning supplies will be available.",
+      "section11Title": "Review and Monitoring",
+      "section11Content": "This policy will be reviewed annually. Next review: January 2027."
+    },
+    "equality": {
+      "title": "Equality, Diversity & Inclusion Policy",
+      "orgName": "Centrul de Cultură, Limbă și Tradiție Românească CIC",
+      "address": "Goldsmith Road, Wellingborough, NN8 3RU, United Kingdom",
+      "effectiveDate": "Effective date: 10 January 2026",
+      "section1Title": "Purpose and Commitment",
+      "section1Content": "The Centre is committed to promoting equality, celebrating diversity, and ensuring inclusion across all its activities.",
+      "section2Title": "Legal Framework",
+      "section2Content": "This policy aligns with the Equality Act 2010 and other relevant UK legislation.",
+      "section3Title": "Our Values",
+      "section3Content": "We believe that equality and inclusion enrich our community. Our approach is based on respect, fairness, empathy, and collaboration.",
+      "section4Title": "Responsibilities",
+      "section4Content": "The Centre's leadership, led by Laura Nan, is responsible for implementing this policy.",
+      "section5Title": "Equal Opportunities",
+      "section5Content": "All participants will have equal access to our classes and events regardless of background.",
+      "section6Title": "Preventing Discrimination and Harassment",
+      "section6Content": "Any form of bullying, exclusion, or discriminatory behaviour will not be tolerated.",
+      "section7Title": "Inclusive Education and Language",
+      "section7Content": "Our lessons will reflect diversity and promote understanding of different cultures and beliefs.",
+      "section8Title": "Accessibility and Support",
+      "section8Content": "We aim to make our activities accessible to everyone with reasonable adjustments where needed.",
+      "section9Title": "Monitoring and Review",
+      "section9Content": "This policy will be reviewed annually. Feedback is always welcome.",
+      "section10Title": "Review Date",
+      "section10Content": "Next scheduled review: January 2027."
+    },
+    "volunteer": {
+      "title": "Volunteer Code of Conduct",
+      "orgName": "Centrul de Cultură, Limbă și Tradiție Românească CIC",
+      "address": "Goldsmith Road, Wellingborough, NN8 3RU, United Kingdom",
+      "effectiveDate": "Effective date: 10 January 2026",
+      "section1Title": "Purpose and Scope",
+      "section1Content": "This Code outlines expected standards of behaviour for all volunteers supporting the Centre's activities.",
+      "section2Title": "Core Values",
+      "section2Content": "Volunteers are expected to act with respect, honesty, and kindness at all times.",
+      "section3Title": "Responsibilities and Professional Behaviour",
+      "section3Content": "Volunteers must arrive on time, follow instructions, and maintain a positive example for children.",
+      "section4Title": "Safeguarding Children",
+      "section4Content": "All volunteers must prioritise the welfare and safety of children. Any concern must be reported immediately to Laura Nan.",
+      "section5Title": "Communication and Confidentiality",
+      "section5Content": "Volunteers must communicate respectfully. Private information must not be disclosed to others.",
+      "section6Title": "Health and Safety",
+      "section6Content": "Volunteers must follow all health and safety instructions. Any hazards must be reported to Laura Nan.",
+      "section7Title": "Boundaries and Relationships",
+      "section7Content": "Volunteers should maintain clear boundaries with children and families.",
+      "section8Title": "Reporting Concerns or Misconduct",
+      "section8Content": "If a volunteer witnesses behaviour that breaches this Code, they must report it immediately.",
+      "section9Title": "Disciplinary Action",
+      "section9Content": "Failure to follow this Code may result in a warning or removal from volunteering duties.",
+      "section10Title": "Review Date",
+      "section10Content": "Next scheduled review: January 2027."
+    }
   }
 }

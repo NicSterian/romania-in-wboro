@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Mail, Facebook, Instagram } from 'lucide-react';
-import logo from '@/assets/logo.jpg';
+import logo from '@/assets/logo.png';
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -14,19 +14,27 @@ const Footer = () => {
     { key: 'contact', path: '/contact' },
   ];
 
+  const legalItems = [
+    { key: 'privacy', path: '/privacy-policy' },
+    { key: 'terms', path: '/terms-conditions' },
+    { key: 'health', path: '/health-safety' },
+    { key: 'equality', path: '/equality-policy' },
+    { key: 'volunteer', path: '/volunteer-code' },
+  ];
+
   return (
     <footer className="bg-card border-t border-border mt-auto">
       {/* Romanian Flag Accent */}
       <div className="flag-gradient h-1 w-full"></div>
 
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About Column with Logo */}
           <div>
             <Link to="/" className="inline-block mb-4">
               <img 
                 src={logo} 
-                alt="Școala Românească Mihai Eminescu" 
+                alt="Centrul de Cultură, Limbă și Tradiție Românească" 
                 className="h-16 w-auto"
               />
             </Link>
@@ -77,19 +85,38 @@ const Footer = () => {
             </h3>
             <div className="space-y-3">
               <a
-                href="mailto:scoalaromaneascamihaieminescuw@gmail.com"
+                href="mailto:ccltrwellingborough@gmail.com"
                 className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
               >
                 <Mail className="h-4 w-4" />
-                <span className="break-all">scoalaromaneascamihaieminescuw@gmail.com</span>
+                <span className="break-all">ccltrwellingborough@gmail.com</span>
               </a>
               <p className="text-sm text-muted-foreground">
-                📍 Wellingborough, Northamptonshire
+                📍 Goldsmith Road, Wellingborough, NN8 3RU
               </p>
               <p className="text-sm text-muted-foreground">
                 ⏰ {t('contact.info.scheduleValue')}
               </p>
             </div>
+          </div>
+
+          {/* Legal Column */}
+          <div>
+            <h3 className="text-lg font-semibold text-foreground mb-4">
+              {t('footer.legal')}
+            </h3>
+            <ul className="space-y-2">
+              {legalItems.map((item) => (
+                <li key={item.key}>
+                  <Link
+                    to={item.path}
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    {t(`footer.${item.key}`)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 

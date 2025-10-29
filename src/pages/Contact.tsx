@@ -211,10 +211,10 @@ const Contact = () => {
                           {t('contact.info.email')}
                         </h3>
                         <a
-                          href="mailto:scoalaromaneascamihaieminescuw@gmail.com"
+                          href="mailto:ccltrwellingborough@gmail.com"
                           className="text-sm text-muted-foreground hover:text-primary transition-colors break-all"
                         >
-                          scoalaromaneascamihaieminescuw@gmail.com
+                          ccltrwellingborough@gmail.com
                         </a>
                       </div>
                     </div>
