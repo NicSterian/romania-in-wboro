@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import logo from '@/assets/logo.jpg';
+import logo from '@/assets/logo.png';
 import flagRo from '@/assets/flag-romania.png';
 import flagUk from '@/assets/flag-uk.png';
 
@@ -36,7 +36,7 @@ const Header = () => {
             <Link to="/" className="flex items-center">
               <img 
                 src={logo} 
-                alt="Școala Românească Mihai Eminescu Wellingborough" 
+                alt="Centrul de Cultură, Limbă și Tradiție Românească" 
                 className="h-20 w-auto"
               />
             </Link>
@@ -111,7 +111,7 @@ const Header = () => {
           <Link to="/" className="flex items-center">
             <img 
               src={logo} 
-              alt="Școala Românească Mihai Eminescu" 
+              alt="Centrul de Cultură, Limbă și Tradiție Românească" 
               className="h-12 w-auto"
             />
           </Link>

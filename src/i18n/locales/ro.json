@@ -8,15 +8,15 @@
   },
   "home": {
     "hero": {
-      "title": "Bun venit la Școala Românească Mihai Eminescu Wellingborough",
+      "title": "Bun venit la Centrul de Cultură, Limbă și Tradiție Românească",
       "subtitle": "Păstrăm vie cultura și limba română pentru copiii noștri",
-      "description": "Educație în limba română pentru copii în Northamptonshire",
+      "description": "Educație în limba română și cultură pentru copii din Wellingborough",
       "contactBtn": "Contactează-ne",
       "learnBtn": "Află mai multe"
     },
     "about": {
-      "title": "Despre Școala Noastră",
-      "content": "Școala Românească Mihai Eminescu din Wellingborough este dedicată păstrării și promovării limbii, culturii și tradițiilor românești pentru copiii din comunitatea română din Northamptonshire. Oferim o educație de calitate într-un mediu prietenos și incluziv.",
+      "title": "Despre Centrul Nostru",
+      "content": "Centrul de Cultură, Limbă și Tradiție Românească din Wellingborough este dedicat păstrării și promovării limbii, culturii și tradițiilor românești pentru copiii din comunitatea română din Northamptonshire. Oferim o educație de calitate într-un mediu prietenos și incluziv.",
       "readMore": "Citește mai mult"
     },
     "benefits": {
@@ -43,11 +43,11 @@
       "day": "Zi:",
       "dayValue": "Sâmbăta",
       "time": "Orar:",
-      "timeValue": "9:00 - 13:00",
+      "timeValue": "10:00 - 13:00",
       "age": "Vârsta:",
-      "ageValue": "5-10 ani (inițial)",
+      "ageValue": "4-15 ani",
       "location": "Locație:",
-      "locationValue": "Wellingborough, Northamptonshire"
+      "locationValue": "Goldsmith Road, Wellingborough, NN8 3RU"
     },
     "galleryPreview": {
       "title": "Galerie Foto",
@@ -67,41 +67,41 @@
     "hero": "Despre Noi",
     "mission": {
       "title": "Misiunea Noastră",
-      "content1": "Școala Românească Mihai Eminescu din Wellingborough este dedicată păstrării și promovării limbii, culturii și tradițiilor românești pentru copiii din comunitatea română din Northamptonshire.",
-      "content2": "Misiunea noastră este să oferim o educație de calitate în limba română, într-un mediu prietenos și incluziv, unde copiii pot învăța și crește împreună. Credem că menținerea legăturii cu rădăcinile culturale este esențială pentru dezvoltarea identității copiilor noștri."
+      "content1": "Centrul de Cultură, Limbă și Tradiție Românească din Wellingborough este dedicat păstrării și promovării limbii, culturii și tradițiilor românești pentru copiii din comunitatea română.",
+      "content2": "Misiunea noastră este să oferim o educație de calitate în limba română, într-un mediu prietenos și incluziv, unde copiii pot învăța și crește împreună. Cultivăm identitatea și construim viitorul."
     },
     "curriculum": {
       "title": "Curriculum și Program",
-      "age": "5-10 ani (inițial, vom extinde în viitor)",
-      "schedule": "Sâmbăta, 9:00 - 13:00",
-      "location": "Wellingborough, Northamptonshire"
+      "age": "4-15 ani",
+      "schedule": "Sâmbăta, 10:00 - 13:00",
+      "location": "Goldsmith Road, Wellingborough, NN8 3RU"
     },
     "subjects": {
       "title": "Ce Predăm",
       "language": {
         "title": "Limba Română",
-        "desc": "Gramatică, vocabular, citit și scris"
+        "desc": "Gramatică, vocabular, citit, scris și comunicare"
       },
       "history": {
-        "title": "Istorie Românească",
+        "title": "Istorie și Geografie",
         "desc": "Istoria și geografia României"
       },
       "culture": {
         "title": "Cultură și Tradiții",
-        "desc": "Sărbători, obiceiuri și folclor românesc"
+        "desc": "Folclor, meșteșuguri, sărbători și obiceiuri"
       },
       "arts": {
-        "title": "Arte și Muzică",
-        "desc": "Artă tradițională și muzică românească"
+        "title": "Științe",
+        "desc": "Activități interactive pentru dezvoltarea gândirii logice"
       }
     },
     "teacher": {
       "title": "Profesoara Noastră",
       "name": "Laura Nan",
       "role": "Fondator și Profesor",
-      "bio1": "Laura Nan este fondatoarea și profesoara Școlii Românești Mihai Eminescu. Cu o experiență bogată în predare, dobândită în România, unde a fost profesoară timp de mai mulți ani, Laura își dedică timpul și energia pentru a oferi copiilor români din Marea Britanie o educație autentică în limba și cultura română.",
-      "bio2": "În ultimii doi ani, Laura a predat la o școală românească din Northampton, unde și-a consolidat pasiunea pentru menținerea identității culturale a copiilor din diaspora. Viziunea ei este de a crea un spațiu sigur și inspirațional unde fiecare copil poate descoperi frumusețea limbii române și poate rămâne conectat la rădăcinile sale.",
-      "bio3": "Laura aduce cu sine nu doar cunoștințe pedagogice solide, ci și o dragoste profundă pentru comunitatea românească din Marea Britanie."
+      "bio1": "Laura Nan este fondatoarea și profesoara centrului nostru cultural. Cu o experiență bogată în predare dobândită în România, Laura își dedică timpul și energia pentru a oferi copiilor români din Marea Britanie o educație autentică în limba și cultura română.",
+      "bio2": "În ultimii doi ani, Laura a predat la o școală românească din Northampton, unde și-a consolidat pasiunea pentru menținerea identității culturale a copiilor din diaspora.",
+      "bio3": "Laura aduce cu sine nu doar cunoștințe pedagogice solide, ci și o dragoste profundă pentru comunitatea românească din Regatul Unit."
     },
     "areas": {
       "title": "Servim Comunitățile Din",
@@ -156,11 +156,11 @@
       "title": "Informații de Contact",
       "email": "Email",
       "whatsapp": "WhatsApp",
-      "whatsappValue": "Număr disponibil în curând",
+      "whatsappValue": "07494673740",
       "location": "Locație",
-      "locationValue": "Adresa exactă va fi anunțată în curând",
+      "locationValue": "Goldsmith Road, Wellingborough, NN8 3RU",
       "schedule": "Program",
-      "scheduleValue": "Sâmbăta: 9:00 - 13:00"
+      "scheduleValue": "Sâmbăta: 10:00 - 13:00"
     },
     "social": {
       "title": "Urmărește-ne pe Rețelele Sociale",
