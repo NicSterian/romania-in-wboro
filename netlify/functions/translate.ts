@@ -35,6 +35,7 @@ const handler: Handler = async (event) => {
 
     // Use environment variable or default to LibreTranslate (reliable free service)
     const translationUrl = process.env.LT_URL || 'https://libretranslate.com/translate';
+    console.log('[DEBUG] Translation URL:', translationUrl); // Temporary debug log
 
     const response = await fetch(translationUrl, {
       method: 'POST',
