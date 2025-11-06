@@ -42,8 +42,18 @@ const News = () => {
       try {
         const lang = i18n.language === 'ro' ? 'ro' : 'en';
         const data = await getNewsPosts(lang);
-        setPosts(data);
-        setFilteredPosts(data);
+
+        // Deduplicate posts by slug (in case Sanity has duplicate documents)
+        const uniquePosts = data.reduce((acc: NewsPost[], post: NewsPost) => {
+          const exists = acc.some(p => p.slug === post.slug);
+          if (!exists) {
+            acc.push(post);
+          }
+          return acc;
+        }, []);
+
+        setPosts(uniquePosts);
+        setFilteredPosts(uniquePosts);
       } catch (err) {
         console.error('Error fetching news posts:', err);
         setError(true);
