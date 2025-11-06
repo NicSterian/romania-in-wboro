@@ -13,8 +13,8 @@
   force = true
 
 [build.environment]
-  # Tell the secrets scanner to ignore these variables, as they are client-side config
-  SECRETS_SCAN_OMIT_KEYS = "SANITY_STUDIO_PROJECT_ID, SANITY_STUDIO_DATASET"
+  # Tell the secrets scanner to ignore ALL client-side config IDs and Datasets
+  SECRETS_SCAN_OMIT_KEYS = "SANITY_STUDIO_PROJECT_ID, SANITY_STUDIO_DATASET, SANITY_PROJECT_ID, SANITY_DATASET"
 
 [[redirects]]
   from = "/api/news/*"
