@@ -33,19 +33,14 @@ const handler: Handler = async (event) => {
       };
     }
 
-    // Use environment variable or default to LibreTranslate (reliable free service)
-    const translationUrl = process.env.LT_URL || 'https://libretranslate.com/translate';
+    // MyMemory API endpoint
+    const sourceCode = source || 'ro';
+    const targetCode = target || 'en';
+    const text = encodeURIComponent(q);
 
-    const response = await fetch(translationUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        q,
-        source: source || 'ro',
-        target,
-        format: 'text',
-      }),
-    });
+    const url = `https://api.mymemory.translated.net/get?q=${text}&langpair=${sourceCode}|${targetCode}`;
+
+    const response = await fetch(url);
 
     if (!response.ok) {
       return {
@@ -56,12 +51,17 @@ const handler: Handler = async (event) => {
     }
 
     const data = await response.json();
+
+    // MyMemory returns: { responseData: { translatedText: "..." } }
+    const translatedText = data?.responseData?.translatedText || q;
+
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify(data),
+      body: JSON.stringify({ translatedText }),
     };
   } catch (error) {
+    console.error('Translation error:', error);
     return {
       statusCode: 500,
       headers,
