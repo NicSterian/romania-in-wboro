@@ -1,11 +1,11 @@
 import { defineType, defineField } from 'sanity';
-import { NewspaperIcon } from '@sanity/icons';
+import { BookIcon } from '@sanity/icons';
 
 export default defineType({
   name: 'newsPost',
   title: 'News Post',
   type: 'document',
-  icon: NewspaperIcon,
+  icon: BookIcon,
   fields: [
     // Slug (URL identifier)
     defineField({

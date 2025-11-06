@@ -5,7 +5,7 @@ import { schemaTypes } from './sanity/schemas';
 
 export default defineConfig({
   name: 'default',
-  title: 'Scoala Romaneasca Mihai Eminescu',
+  title: 'CCLTRWellingborough',
 
   projectId: process.env.SANITY_STUDIO_PROJECT_ID || 'c58hn16z',
   dataset: process.env.SANITY_STUDIO_DATASET || 'production',
