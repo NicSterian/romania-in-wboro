@@ -17,6 +17,7 @@ import TermsConditions from "./pages/TermsConditions";
 import HealthSafety from "./pages/HealthSafety";
 import EqualityPolicy from "./pages/EqualityPolicy";
 import VolunteerCode from "./pages/VolunteerCode";
+import Enrolment from "./pages/Enrolment";
 import "./i18n/config";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/news/:slug" element={<NewsPost />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/enrolment" element={<Enrolment />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-conditions" element={<TermsConditions />} />
           <Route path="/health-safety" element={<HealthSafety />} />

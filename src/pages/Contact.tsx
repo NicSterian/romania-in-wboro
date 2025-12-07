@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Mail, MessageCircle, MapPin, Clock, Facebook, Instagram } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import logo from '@/assets/logo.jpg';
+import logo from '@/assets/logo.png';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import {
@@ -51,15 +52,33 @@ const Contact = () => {
     },
   });
 
+  const encode = (data: Record<string, string>) =>
+    Object.keys(data)
+      .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+      .join('&');
+
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
     
     try {
-      // Placeholder for Web3Forms integration
-      console.log('Form submitted:', data);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const body = encode({
+        'form-name': 'contact',
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        method: data.method,
+        message: data.message,
+      });
+
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body,
+      });
+
+      if (!response.ok) {
+        throw new Error('Network error');
+      }
       
       toast.success(t('contact.form.success'));
       form.reset();
@@ -77,7 +96,7 @@ const Contact = () => {
         <div className="container mx-auto px-4 text-center">
           <img 
             src={logo} 
-            alt="Școala Românească Mihai Eminescu" 
+            alt="Centrul de Cultură, Limbă și Tradiție Românească Wellingborough" 
             className="h-24 w-auto mx-auto mb-6"
           />
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
@@ -86,6 +105,13 @@ const Contact = () => {
           <p className="text-lg md:text-xl opacity-90">
             {t('contact.subtitle')}
           </p>
+          <div className="mt-6">
+            <Button asChild variant="secondary">
+              <Link to="/enrolment">
+                {t('home.cta.contactBtn')}
+              </Link>
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -101,7 +127,14 @@ const Contact = () => {
               <Card>
                 <CardContent className="p-6">
                   <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <form
+                      name="contact"
+                      data-netlify="true"
+                      netlify-honeypot="bot-field"
+                      onSubmit={form.handleSubmit(onSubmit)}
+                      className="space-y-6"
+                    >
+                      <input type="hidden" name="form-name" value="contact" />
                       <FormField
                         control={form.control}
                         name="name"
@@ -283,7 +316,7 @@ const Contact = () => {
           <div className="max-w-5xl mx-auto">
             <div className="aspect-video rounded-lg overflow-hidden shadow-lg">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d38858.89392945717!2d-0.7194299999999999!3d52.30273!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48770e78b1b4e4d5%3A0x3b8e3e3e3e3e3e3e!2sWellingborough%2C%20UK!5e0!3m2!1sen!2s!4v1234567890"
+                src="https://maps.google.com/maps?q=Glamis+Hall,+Goldsmith+Rd,+Wellingborough+NN8+3RU&t=&z=15&ie=UTF8&iwloc=&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

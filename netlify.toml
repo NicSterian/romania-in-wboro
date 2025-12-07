@@ -44,4 +44,4 @@
 [[headers]]
   for = "/*"
   [headers.values]
-    Content-Security-Policy = "default-src 'self'; img-src 'self' data: https://cdn.sanity.io; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://cdn.sanity.io"
+    Content-Security-Policy = "default-src 'self'; img-src 'self' data: https://cdn.sanity.io; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://cdn.sanity.io; frame-src 'self' https://form.jotform.com https://maps.google.com https://www.google.com"

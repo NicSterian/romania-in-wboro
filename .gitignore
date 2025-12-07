@@ -30,3 +30,6 @@ public/favicon-16.png
 public/favicon-32.png
 public/favicon-192.png
 public/favicon.ico
+
+# Local Netlify folder
+.netlify

@@ -7,7 +7,7 @@
 1. Go to: https://www.sanity.io/get-started
 2. Sign up (use Google/GitHub)
 3. Create project:
-   - Name: "Scoala Romaneasca Mihai Eminescu"
+   - Name: "Scoala Romaneasca Wellingborough"
    - Schema: **"Clean project with no predefined schemas"**
    - Dataset: `production`
 4. **Save your Project ID** (looks like: `abc123xyz`)

@@ -110,9 +110,9 @@ export const handler: Handler = async (event) => {
   const slug = event.path.split('/').pop();
 
   try {
-    // If path has a slug (not just /api/gallery), fetch single album
+    // If path has a slug (not just /api/gallery), fetch single published (non-draft) album
     if (slug && slug !== 'gallery' && !event.path.endsWith('/api/gallery')) {
-      const query = `*[_type == "galleryAlbum" && slug.current == $slug && published == true][0]{
+      const query = `*[_type == "galleryAlbum" && slug.current == $slug && published == true && !(_id in path("drafts.**"))][0]{
         _id,
         titleRo,
         titleEn,
@@ -144,8 +144,8 @@ export const handler: Handler = async (event) => {
       };
     }
 
-    // Fetch all published albums
-    const query = `*[_type == "galleryAlbum" && published == true] | order(eventDate desc){
+    // Fetch all published (non-draft) albums
+    const query = `*[_type == "galleryAlbum" && published == true && !(_id in path("drafts.**"))] | order(eventDate desc){
       _id,
       titleRo,
       titleEn,

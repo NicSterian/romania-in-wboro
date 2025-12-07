@@ -2,6 +2,7 @@
   "nav": {
     "home": "Acasă",
     "about": "Despre Noi",
+    "enrolment": "Înscrieri",
     "news": "Noutăți",
     "gallery": "Galerie",
     "contact": "Contact"
@@ -47,7 +48,7 @@
       "age": "Vârsta:",
       "ageValue": "4-15 ani",
       "location": "Locație:",
-      "locationValue": "Goldsmith Road, Wellingborough, NN8 3RU"
+      "locationValue": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU"
     },
     "galleryPreview": {
       "title": "Galerie Foto",
@@ -58,9 +59,9 @@
       "coming": "Mărturiile părinților vor fi adăugate în curând!"
     },
     "cta": {
-      "title": "Înscrie-ți copilul astăzi!",
-      "subtitle": "Alătură-te comunității noastre și oferă-i copilului tău șansa de a învăța limba și cultura română.",
-      "contactBtn": "Contactează-ne"
+      "title": "Înscrie-ți copilul pentru ianuarie 2026!",
+      "subtitle": "Alătură-te comunității noastre și oferă-i copilului tău șansa de a învăța limba și cultura română într-un mediu prietenos.",
+      "contactBtn": "Detalii înscriere"
     }
   },
   "about": {
@@ -74,7 +75,7 @@
       "title": "Curriculum și Program",
       "age": "4-15 ani",
       "schedule": "Sâmbăta, 10:00 - 13:00",
-      "location": "Goldsmith Road, Wellingborough, NN8 3RU"
+      "location": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU"
     },
     "subjects": {
       "title": "Ce Predăm",
@@ -106,6 +107,43 @@
     "areas": {
       "title": "Servim Comunitățile Din",
       "contactBtn": "Contactează-ne"
+    }
+  },
+  "enrolment": {
+    "hero": {
+      "title": "Înscrieri Școala Românească Wellingborough",
+      "subtitle": "Completează formularul de înscriere pentru a rezerva locul copilului tău din ianuarie 2026."
+    },
+    "steps": {
+      "title": "Cum funcționează înscrierea",
+      "form": {
+        "title": "1. Completezi formularul online",
+        "desc": "Completează cu atenție toate câmpurile din formularul Jotform pentru fiecare copil în parte."
+      },
+      "child": {
+        "title": "2. Confirmăm locul copilului",
+        "desc": "Te contactăm prin e-mail sau telefon pentru a confirma înscrierea și a clarifica eventuale întrebări."
+      },
+      "start": {
+        "title": "3. Începem cursurile în ianuarie 2026",
+        "desc": "Cursurile se desfășoară sâmbăta, între orele 10:00–13:00, la Glamis Hall, Wellingborough."
+      }
+    },
+    "note": "Te rugăm să completezi formularul în întregime și să folosești o adresă de e-mail pe care o verifici frecvent.",
+    "ctaButton": "Deschide formularul de înscriere",
+    "form": {
+      "title": "Formular de înscriere",
+      "disclaimer": "Formularul este găzduit în siguranță pe platforma Jotform. Datele tale sunt folosite doar pentru gestionarea înscrierilor la Școala Românească Wellingborough."
+    },
+    "faq": {
+      "title": "Întrebări frecvente",
+      "q1": "De la ce vârstă pot înscrie copilul?",
+      "a1": "Acceptăm copii cu vârste aproximative între 4 și 15 ani. Dacă nu ești sigur dacă vârsta copilului se potrivește, te rugăm să ne contactezi.",
+      "q2": "Copilul meu nu vorbește bine românește. Este o problemă?",
+      "a2": "Nu. Avem copii cu niveluri foarte diferite de limbă. Important este să existe interes și susținere din partea familiei pentru a exersa limba română.",
+      "q3": "Pot vizita școala înainte de a decide?",
+      "a3": "Da. Ne poți scrie prin pagina de Contact pentru a stabili o vizită sau o discuție înainte de începerea cursurilor.",
+      "contactLink": "Ai alte întrebări? Contactează-ne"
     }
   },
   "news": {
@@ -158,7 +196,7 @@
       "whatsapp": "WhatsApp",
       "whatsappValue": "07494673740",
       "location": "Locație",
-      "locationValue": "Goldsmith Road, Wellingborough, NN8 3RU",
+      "locationValue": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU",
       "schedule": "Program",
       "scheduleValue": "Sâmbăta: 10:00 - 13:00"
     },
@@ -186,7 +224,7 @@
     "privacy": {
       "title": "Politica de Confidențialitate",
       "orgName": "Centrul de Cultură, Limbă și Tradiție Românească CIC",
-      "address": "Goldsmith Road, Wellingborough, NN8 3RU, Regatul Unit",
+      "address": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU, Regatul Unit",
       "effectiveDate": "Data intrării în vigoare: 01/11/2025",
       "section1Title": "Scop",
       "section1Content": "Această Politică de Confidențialitate explică modul în care colectăm, stocăm și utilizăm informațiile personale de la părinți, copii, personal și voluntari care participă la activitățile noastre.",
@@ -208,7 +246,7 @@
     "terms": {
       "title": "Termeni și Condiții",
       "orgName": "Centrul de Cultură, Limbă și Tradiție Românească CIC",
-      "address": "Goldsmith Road, Wellingborough, NN8 3RU, Regatul Unit",
+      "address": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU, Regatul Unit",
       "effectiveDate": "Data intrării în vigoare: 10/01/2026",
       "section1Title": "Înscriere",
       "section1Content": "Înregistrarea este obligatorie înainte de a participa la cursuri. Părinții trebuie să furnizeze detalii de contact exacte și să informeze centrul despre orice modificări.",
@@ -234,7 +272,7 @@
     "health": {
       "title": "Politica de Sănătate și Siguranță",
       "orgName": "Centrul de Cultură, Limbă și Tradiție Românească CIC",
-      "address": "Goldsmith Road, Wellingborough, NN8 3RU, Regatul Unit",
+      "address": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU, Regatul Unit",
       "effectiveDate": "Data intrării în vigoare: 10 ianuarie 2026",
       "section1Title": "Scop și Angajament",
       "section1Content": "Centrul se angajează să asigure sănătatea, siguranța și bunăstarea tuturor copiilor, personalului, voluntarilor și vizitatorilor care participă la activitățile noastre.",
@@ -262,7 +300,7 @@
     "equality": {
       "title": "Politica de Egalitate, Diversitate și Incluziune",
       "orgName": "Centrul de Cultură, Limbă și Tradiție Românească CIC",
-      "address": "Goldsmith Road, Wellingborough, NN8 3RU, Regatul Unit",
+      "address": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU, Regatul Unit",
       "effectiveDate": "Data intrării în vigoare: 10 ianuarie 2026",
       "section1Title": "Scop și Angajament",
       "section1Content": "Centrul se angajează să promoveze egalitatea, să celebreze diversitatea și să asigure incluziunea în toate activitățile sale.",
@@ -288,7 +326,7 @@
     "volunteer": {
       "title": "Codul de Conduită al Voluntarilor",
       "orgName": "Centrul de Cultură, Limbă și Tradiție Românească CIC",
-      "address": "Goldsmith Road, Wellingborough, NN8 3RU, Regatul Unit",
+      "address": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU, Regatul Unit",
       "effectiveDate": "Data intrării în vigoare: 10 ianuarie 2026",
       "section1Title": "Scop și Domeniu de Aplicare",
       "section1Content": "Acest Cod prezintă standardele așteptate de comportament pentru toți voluntarii care sprijină activitățile Centrului.",

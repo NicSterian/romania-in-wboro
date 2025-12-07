@@ -49,7 +49,7 @@ const Home = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg" variant="secondary" className="text-base font-semibold">
-                <Link to="/contact">{t('home.hero.contactBtn')}</Link>
+                <Link to="/enrolment">{t('home.hero.contactBtn')}</Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="text-base font-semibold bg-white/10 hover:bg-white/20 border-white/30 text-white">
                 <Link to="/about">{t('home.hero.learnBtn')}</Link>
@@ -220,7 +220,7 @@ const Home = () => {
               {t('home.cta.subtitle')}
             </p>
             <Button asChild size="lg" variant="secondary" className="text-base font-semibold">
-              <Link to="/contact">{t('home.cta.contactBtn')}</Link>
+              <Link to="/enrolment">{t('home.cta.contactBtn')}</Link>
             </Button>
           </div>
         </div>

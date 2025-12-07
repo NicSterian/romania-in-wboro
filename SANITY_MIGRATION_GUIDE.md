@@ -32,7 +32,7 @@ Before you begin, make sure you have:
 2. Sign up with Google or GitHub (easiest)
 3. Click **"Create new project"**
 4. Fill in:
-   - **Project name**: "Scoala Romaneasca Mihai Eminescu" (or your choice)
+   - **Project name**: "Scoala Romaneasca Wellingborough" (or your choice)
    - **Use schema**: Choose **"Clean project with no predefined schemas"**
    - **Dataset**: `production`
 

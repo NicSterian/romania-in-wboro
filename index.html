@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Centrul de Cultură, Limbă și Tradiție Românească | Romanian Cultural Centre Wellingborough</title>
-    <meta name="description" content="Romanian cultural centre for children in Wellingborough. Quality education in Romanian language, culture, and traditions. Saturdays 10:00-13:00 at Goldsmith Road." />
+    <meta name="description" content="Romanian cultural centre for children in Wellingborough. Quality education in Romanian language, culture, and traditions. Saturdays 10:00-13:00 at Glamis Hall, Goldsmith Road." />
     <meta name="author" content="Centrul de Cultură, Limbă și Tradiție Românească" />
     <meta name="keywords" content="Romanian centre, Romanian culture, Romanian language, Wellingborough, Northamptonshire, Romanian education, children, culture, traditions, cultural centre" />
 
@@ -24,6 +24,15 @@
   </head>
 
   <body>
+    <!-- Hidden Netlify form definition so Netlify can detect the contact form -->
+    <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <input type="text" name="method" />
+      <textarea name="message"></textarea>
+    </form>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

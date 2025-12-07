@@ -9,6 +9,7 @@ const Footer = () => {
   const navItems = [
     { key: 'home', path: '/' },
     { key: 'about', path: '/about' },
+    { key: 'enrolment', path: '/enrolment' },
     { key: 'news', path: '/news' },
     { key: 'gallery', path: '/gallery' },
     { key: 'contact', path: '/contact' },
@@ -92,7 +93,7 @@ const Footer = () => {
                 <span className="break-all">ccltrwellingborough@gmail.com</span>
               </a>
               <p className="text-sm text-muted-foreground">
-                📍 Goldsmith Road, Wellingborough, NN8 3RU
+                📍 Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU
               </p>
               <p className="text-sm text-muted-foreground">
                 ⏰ {t('contact.info.scheduleValue')}

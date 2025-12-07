@@ -228,9 +228,9 @@ export const handler: Handler = async (event) => {
   const slug = event.path.split('/').pop();
 
   try {
-    // If path has a slug (not just /api/news), fetch single post
+    // If path has a slug (not just /api/news), fetch single published (non-draft) post
     if (slug && slug !== 'news' && !event.path.endsWith('/api/news')) {
-      const query = `*[_type == "newsPost" && slug.current == $slug && published == true][0]{
+      const query = `*[_type == "newsPost" && slug.current == $slug && published == true && !(_id in path("drafts.**"))][0]{
         _id,
         titleRo,
         titleEn,
@@ -265,8 +265,8 @@ export const handler: Handler = async (event) => {
       };
     }
 
-    // Fetch all published posts
-    const query = `*[_type == "newsPost" && published == true] | order(publicationDate desc){
+    // Fetch all published (non-draft) posts
+    const query = `*[_type == "newsPost" && published == true && !(_id in path("drafts.**"))] | order(publicationDate desc){
       _id,
       titleRo,
       titleEn,
