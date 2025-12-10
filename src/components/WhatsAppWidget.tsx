@@ -9,11 +9,19 @@ import {
 } from '@/components/ui/tooltip';
 
 const WhatsAppWidget = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const handleWhatsAppClick = () => {
-    // Placeholder - will be configured with actual WhatsApp number
-    console.log('WhatsApp widget clicked - number to be configured');
+    const phone = '447494673740'; // UK format without +
+    const messageRo =
+      'Bună ziua! Aș dori mai multe informații despre Școala Românească Wellingborough.';
+    const messageEn =
+      'Hello! I would like more information about Scoala Romaneasca Wellingborough.';
+
+    const text = i18n.language === 'ro' ? messageRo : messageEn;
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+
+    window.open(url, '_blank');
   };
 
   return (
