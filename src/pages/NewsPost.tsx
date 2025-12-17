@@ -5,16 +5,18 @@ import { ArrowLeft, ExternalLink } from 'lucide-react';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS, INLINES } from '@contentful/rich-text-types';
 import type { Document } from '@contentful/rich-text-types';
-import { getNewsPostBySlug, NewsPost } from '@/lib/contentful';
+import { getNewsPostBySlug, NewsPost } from '@/lib/api';
 import { formatDate, getCategoryColor } from '@/lib/utils';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { Button } from '@/components/ui/button';
 import { translateRichText, translateText } from '@/lib/translate';
 import { HERO_MAX_VH } from '@/config/ui';
+import { usePageTitle } from '@/lib/usePageTitle';
 
 const NewsPostPage = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language === 'ro' ? 'ro' : 'en';
   const [post, setPost] = useState<NewsPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -22,6 +24,7 @@ const NewsPostPage = () => {
   const [lbIndex, setLbIndex] = useState(0);
   const [displayTitle, setDisplayTitle] = useState('');
   const [displayContent, setDisplayContent] = useState<Document | null>(null);
+  usePageTitle(displayTitle || t('nav.news'), { lang });
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -271,8 +274,6 @@ const NewsPostPage = () => {
       </div>
     );
   }
-
-  const lang = i18n.language === 'ro' ? 'ro' : 'en';
 
   return (
     <div className="min-h-screen">

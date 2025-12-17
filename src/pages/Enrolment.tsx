@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, FileText, Users, Calendar, HelpCircle } from 'lucide-react';
+import { usePageTitle } from '@/lib/usePageTitle';
 
 const Enrolment = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language === 'ro' ? 'ro' : 'en';
+  usePageTitle(t('nav.enrolment'), { lang });
 
   const steps = [
     {
@@ -37,6 +40,10 @@ const Enrolment = () => {
     {
       question: t('enrolment.faq.q3'),
       answer: t('enrolment.faq.a3'),
+    },
+    {
+      question: t('enrolment.faq.q4'),
+      answer: t('enrolment.faq.a4'),
     },
   ];
 
@@ -93,7 +100,7 @@ const Enrolment = () => {
                 </div>
                 <Button asChild size="lg" className="w-full md:w-auto">
                   <a
-                    href="https://form.jotform.com/253403821347049"
+                    href="https://form.jotform.com/253456383649065"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -101,6 +108,20 @@ const Enrolment = () => {
                   </a>
                 </Button>
               </div>
+
+              <Card className="mt-6 hover-lift border-primary/20">
+                <CardContent className="p-6">
+                  <h3 className="font-semibold text-foreground mb-2">
+                    {t('enrolment.afterSubmit.title')}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {t('enrolment.afterSubmit.content')}
+                  </p>
+                  <p className="mt-3 text-xs text-muted-foreground">
+                    {t('enrolment.afterSubmit.ageNote')}
+                  </p>
+                </CardContent>
+              </Card>
             </div>
 
             {/* Embedded form */}
@@ -112,7 +133,7 @@ const Enrolment = () => {
                 <CardContent className="p-0">
                   <div className="aspect-[3/4] w-full">
                     <iframe
-                      src="https://form.jotform.com/253403821347049"
+                      src="https://form.jotform.com/253456383649065"
                       title="Formular de înscriere"
                       className="w-full h-full border-0"
                       loading="lazy"
@@ -164,4 +185,3 @@ const Enrolment = () => {
 };
 
 export default Enrolment;
-

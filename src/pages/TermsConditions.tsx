@@ -1,8 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/card';
+import { usePageTitle } from '@/lib/usePageTitle';
 
 const TermsConditions = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language === 'ro' ? 'ro' : 'en';
+  usePageTitle(t('legal.terms.title'), { lang });
 
   return (
     <div className="container mx-auto px-4 py-16 max-w-4xl">

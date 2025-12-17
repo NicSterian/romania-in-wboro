@@ -7,13 +7,52 @@
     "gallery": "Galerie",
     "contact": "Contact"
   },
+  "brand": {
+    "primary": "Școala Românească Wellingborough",
+    "primaryWeekend": "Școala Românească de Weekend, Wellingborough",
+    "secondary": "Centrul de Cultură, Limbă și Tradiție Românească",
+    "legal": "Scoala Romaneasca Wellingborough CIC"
+  },
   "home": {
     "hero": {
-      "title": "Bun venit la Centrul de Cultură, Limbă și Tradiție Românească",
-      "subtitle": "Păstrăm vie cultura și limba română pentru copiii noștri",
-      "description": "Educație în limba română și cultură pentru copii din Wellingborough",
-      "contactBtn": "Contactează-ne",
-      "learnBtn": "Află mai multe"
+      "title": "Școala Românească Wellingborough",
+      "subtitle": "Școală de limba română pentru copii (4–15 ani) — sâmbăta, la Glamis Hall.",
+      "description": "Învățăm limba română, cultură și tradiții într-un mediu cald și sigur, pentru familiile românești din Wellingborough și împrejurimi.",
+      "contactBtn": "Înscriere",
+      "learnBtn": "Află mai multe",
+      "scheduleBtn": "Program & locație"
+    },
+    "facts": {
+      "title": "Informații pe scurt",
+      "ageLabel": "Vârste",
+      "scheduleLabel": "Program",
+      "locationLabel": "Locație",
+      "startLabel": "Începem",
+      "startValue": "Ianuarie 2026",
+      "contactLabel": "Contact",
+      "contactValue": "Detalii & întrebări"
+    },
+    "what": {
+      "title": "Ce facem la școală",
+      "content": "Activități structurate, adaptate pe grupe de vârstă, care dezvoltă limba română și identitatea culturală.",
+      "point1Title": "Limba română",
+      "point1Desc": "Citit, scris, vocabular și comunicare, pe niveluri.",
+      "point2Title": "Cultură și tradiții",
+      "point2Desc": "Obiceiuri, sărbători și proiecte creative inspirate din România.",
+      "point3Title": "Comunitate",
+      "point3Desc": "Un spațiu în care copiii se simt acasă și își fac prieteni."
+    },
+    "founder": {
+      "title": "Fondator și coordonator",
+      "name": "Laura Nan",
+      "preview": "Cadru didactic cu peste 18 ani de experiență, dedicată educației copiilor români din diaspora.",
+      "button": "Despre Laura Nan"
+    },
+    "news": {
+      "title": "Noutăți",
+      "viewAll": "Vezi toate",
+      "empty": "Primele noutăți vor fi publicate în curând.",
+      "readMore": "Citește"
     },
     "about": {
       "title": "Despre Centrul Nostru",
@@ -48,7 +87,15 @@
       "age": "Vârsta:",
       "ageValue": "4-15 ani",
       "location": "Locație:",
-      "locationValue": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU"
+      "locationValue": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU",
+      "calendarNote": "Calendar: Urmăm structura anului școlar din UK (ședințe în timpul săptămânilor de școală, cu pauze în perioadele de vacanță).",
+      "paymentNote": "Plată: înainte de începerea ședinței (transfer bancar în contul școlii sau cash)."
+    },
+    "fees": {
+      "title": "Costuri / Fees",
+      "cost": "Cost: £15 / ședință individuală.",
+      "payment": "Plată: înainte de începerea ședinței (transfer bancar în contul școlii sau cash).",
+      "stop": "Întrerupere participare: vă rugăm să anunțați cu minimum 7 zile înainte dacă doriți să opriți participarea copilului."
     },
     "galleryPreview": {
       "title": "Galerie Foto",
@@ -56,7 +103,7 @@
     },
     "testimonials": {
       "title": "Ce spun părinții",
-      "coming": "Mărturiile părinților vor fi adăugate în curând!"
+      "coming": "Testimonialele părinților vor fi adăugate în curând!"
     },
     "cta": {
       "title": "Înscrie-ți copilul pentru ianuarie 2026!",
@@ -68,14 +115,23 @@
     "hero": "Despre Noi",
     "mission": {
       "title": "Misiunea Noastră",
-      "content1": "Centrul de Cultură, Limbă și Tradiție Românească din Wellingborough este dedicat păstrării și promovării limbii, culturii și tradițiilor românești pentru copiii din comunitatea română.",
+      "content1": "Școala Românească Wellingborough este o școală de weekend dedicată păstrării și promovării limbii române, culturii și tradițiilor pentru copiii din comunitatea română din Northamptonshire.",
       "content2": "Misiunea noastră este să oferim o educație de calitate în limba română, într-un mediu prietenos și incluziv, unde copiii pot învăța și crește împreună. Cultivăm identitatea și construim viitorul."
+    },
+    "identity": {
+      "title": "Două nume, aceeași misiune",
+      "content1": "Școala Românească Wellingborough este numele sub care părinții ne găsesc cel mai ușor și care descrie clar ce facem: o școală de weekend pentru copiii vorbitori de română.",
+      "content2": "Centrul de Cultură, Limbă și Tradiție Românească este identitatea-umbrelă pe care o păstrăm pentru proiecte culturale viitoare; în prezent, școala funcționează sub denumirea legală Scoala Romaneasca Wellingborough CIC."
     },
     "curriculum": {
       "title": "Curriculum și Program",
+      "ageLabel": "Grupa de vârstă",
       "age": "4-15 ani",
+      "scheduleLabel": "Program",
       "schedule": "Sâmbăta, 10:00 - 13:00",
-      "location": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU"
+      "locationLabel": "Locație",
+      "location": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU",
+      "calendarNote": "Calendar: Urmăm structura anului școlar din UK (ședințe în timpul săptămânilor de școală, cu pauze în perioadele de vacanță)."
     },
     "subjects": {
       "title": "Ce Predăm",
@@ -104,6 +160,28 @@
       "bio2": "În ultimii doi ani, Laura a predat la o școală românească din Northampton, unde și-a consolidat pasiunea pentru menținerea identității culturale a copiilor din diaspora.",
       "bio3": "Laura aduce cu sine nu doar cunoștințe pedagogice solide, ci și o dragoste profundă pentru comunitatea românească din Regatul Unit."
     },
+    "founder": {
+      "sectionTitle": "Fondator și coordonator",
+      "name": "Laura Nan",
+      "role": "Fondator și coordonator",
+      "p1": "Școala Românească de Weekend din Wellingborough a fost fondată și este coordonată de Laura Nan, cadru didactic cu o experiență solidă în sistemul de învățământ românesc și cu o dedicare constantă față de educația copiilor români din diaspora.",
+      "p2": "Cu o experiență de peste 18 ani în domeniul educației, Laura Nan deține diplome acreditate în România pentru învățământul preșcolar și primar. Este formator și metodist (grad didactic II), contribuind la formarea și dezvoltarea educațională a numeroase generații de copii.",
+      "p3": "A coordonat Centrul Metodic, îndrumând cadre didactice și implementând practici educaționale moderne. A inițiat și coordonat proiecte didactice aliniate curriculumului național românesc, adaptate pe grupe de vârstă și nevoile individuale ale copiilor.",
+      "principlesTitle": "Principii educaționale",
+      "principle1": "învățarea activă și participativă",
+      "principle2": "stimularea creativității",
+      "principle3": "dezvoltarea armonioasă a copilului",
+      "p4": "Totul se desfășoară într-un mediu sigur, empatic și stimulant, care susține atât progresul academic, cât și dezvoltarea emoțională.",
+      "visionTitle": "Viziune și leadership educațional",
+      "vision": "În prezent, Laura Nan este Governor al unei Academii din Wellingborough și urmează programul de Master MBA Business, îmbinând expertiza pedagogică cu competențe moderne de management și leadership educațional.",
+      "offerTitle": "Ce oferim",
+      "offer1": "activități construite în acord cu curriculumul românesc",
+      "offer2": "activități adaptate fiecărei grupe de vârstă",
+      "offer3": "învățare personalizată în funcție de ritmul și stilul fiecărui copil",
+      "p5": "Întregul proces educațional se desfășoară într-un mediu care promovează comunicarea, respectul reciproc, încrederea și bucuria de a învăța în limba română.",
+      "closing1": "Bine ați venit ACASĂ!",
+      "closing2": "Bine ați venit în limba română!"
+    },
     "areas": {
       "title": "Servim Comunitățile Din",
       "contactBtn": "Contactează-ne"
@@ -130,6 +208,11 @@
       }
     },
     "note": "Te rugăm să completezi formularul în întregime și să folosești o adresă de e-mail pe care o verifici frecvent.",
+    "afterSubmit": {
+      "title": "Ce se întâmplă după ce trimiți formularul?",
+      "content": "Îți confirmăm primirea și te contactăm pentru a valida detaliile și pentru a confirma locul copilului. Vei primi apoi informațiile despre pașii următori (program, taxe și materiale).",
+      "ageNote": "Vârstă orientativă: 4–15 ani. Dacă nu ești sigur(ă) pentru grupa potrivită, scrie-ne."
+    },
     "ctaButton": "Deschide formularul de înscriere",
     "form": {
       "title": "Formular de înscriere",
@@ -143,6 +226,8 @@
       "a2": "Nu. Avem copii cu niveluri foarte diferite de limbă. Important este să existe interes și susținere din partea familiei pentru a exersa limba română.",
       "q3": "Pot vizita școala înainte de a decide?",
       "a3": "Da. Ne poți scrie prin pagina de Contact pentru a stabili o vizită sau o discuție înainte de începerea cursurilor.",
+      "q4": "Care este costul și cum se face plata?",
+      "a4": "Costul este £15 / ședință individuală. Plata se face înainte de începerea ședinței (transfer bancar în contul școlii sau cash). Dacă doriți să opriți participarea copilului, vă rugăm să anunțați cu minimum 7 zile înainte.",
       "contactLink": "Ai alte întrebări? Contactează-ne"
     }
   },
@@ -198,7 +283,9 @@
       "location": "Locație",
       "locationValue": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU",
       "schedule": "Program",
-      "scheduleValue": "Sâmbăta: 10:00 - 13:00"
+      "scheduleValue": "Sâmbăta: 10:00 - 13:00",
+      "calendarNote": "Calendar: Urmăm structura anului școlar din UK (ședințe în timpul săptămânilor de școală, cu pauze în perioadele de vacanță).",
+      "paymentNote": "Plată: înainte de începerea ședinței (transfer bancar în contul școlii sau cash)."
     },
     "social": {
       "title": "Urmărește-ne pe Rețelele Sociale",
@@ -206,7 +293,7 @@
     }
   },
   "footer": {
-    "description": "Păstrăm vie cultura și limba română pentru copiii noștri din Northamptonshire.",
+    "description": "Școala Românească de weekend din Wellingborough — limba română, cultură și tradiții pentru copii (4–15 ani).",
     "quickLinks": "Link-uri Rapide",
     "legal": "Legal",
     "privacy": "Confidențialitate",
@@ -215,7 +302,7 @@
     "equality": "Egalitate",
     "volunteer": "Cod Voluntari",
     "contact": "Contact",
-    "copyright": "© 2025 Centrul de Cultură, Limbă și Tradiție Românească. Toate drepturile rezervate."
+    "copyright": "© 2025 Scoala Romaneasca Wellingborough CIC. Toate drepturile rezervate."
   },
   "whatsapp": {
     "tooltip": "Contactează-ne pe WhatsApp"
@@ -223,7 +310,7 @@
   "legal": {
     "privacy": {
       "title": "Politica de Confidențialitate",
-      "orgName": "Centrul de Cultură, Limbă și Tradiție Românească CIC",
+      "orgName": "Scoala Romaneasca Wellingborough CIC",
       "address": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU, Regatul Unit",
       "effectiveDate": "Data intrării în vigoare: 01/11/2025",
       "section1Title": "Scop",
@@ -245,7 +332,7 @@
     },
     "terms": {
       "title": "Termeni și Condiții",
-      "orgName": "Centrul de Cultură, Limbă și Tradiție Românească CIC",
+      "orgName": "Scoala Romaneasca Wellingborough CIC",
       "address": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU, Regatul Unit",
       "effectiveDate": "Data intrării în vigoare: 10/01/2026",
       "section1Title": "Înscriere",
@@ -271,7 +358,7 @@
     },
     "health": {
       "title": "Politica de Sănătate și Siguranță",
-      "orgName": "Centrul de Cultură, Limbă și Tradiție Românească CIC",
+      "orgName": "Scoala Romaneasca Wellingborough CIC",
       "address": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU, Regatul Unit",
       "effectiveDate": "Data intrării în vigoare: 10 ianuarie 2026",
       "section1Title": "Scop și Angajament",
@@ -299,7 +386,7 @@
     },
     "equality": {
       "title": "Politica de Egalitate, Diversitate și Incluziune",
-      "orgName": "Centrul de Cultură, Limbă și Tradiție Românească CIC",
+      "orgName": "Scoala Romaneasca Wellingborough CIC",
       "address": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU, Regatul Unit",
       "effectiveDate": "Data intrării în vigoare: 10 ianuarie 2026",
       "section1Title": "Scop și Angajament",
@@ -325,7 +412,7 @@
     },
     "volunteer": {
       "title": "Codul de Conduită al Voluntarilor",
-      "orgName": "Centrul de Cultură, Limbă și Tradiție Românească CIC",
+      "orgName": "Scoala Romaneasca Wellingborough CIC",
       "address": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU, Regatul Unit",
       "effectiveDate": "Data intrării în vigoare: 10 ianuarie 2026",
       "section1Title": "Scop și Domeniu de Aplicare",

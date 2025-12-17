@@ -8,6 +8,7 @@ import { Mail, MessageCircle, MapPin, Clock, Facebook, Instagram } from 'lucide-
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import logo from '@/assets/logo.png';
+import { usePageTitle } from '@/lib/usePageTitle';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import {
@@ -28,7 +29,9 @@ import {
 import { toast } from 'sonner';
 
 const Contact = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language === 'ro' ? 'ro' : 'en';
+  usePageTitle(t('nav.contact'), { lang });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const formSchema = z.object({
@@ -96,7 +99,7 @@ const Contact = () => {
         <div className="container mx-auto px-4 text-center">
           <img 
             src={logo} 
-            alt="Centrul de Cultură, Limbă și Tradiție Românească Wellingborough" 
+            alt={t('brand.primary')}
             className="h-24 w-auto mx-auto mb-6"
           />
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
@@ -297,9 +300,17 @@ const Contact = () => {
                         <h3 className="font-semibold text-foreground mb-2">
                           {t('contact.info.schedule')}
                         </h3>
-                        <p className="text-sm text-muted-foreground">
-                          {t('contact.info.scheduleValue')}
-                        </p>
+                        <div className="space-y-2">
+                          <p className="text-sm text-muted-foreground">
+                            {t('contact.info.scheduleValue')}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {t('contact.info.calendarNote')}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {t('contact.info.paymentNote')}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </CardContent>

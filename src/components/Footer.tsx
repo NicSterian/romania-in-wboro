@@ -5,6 +5,9 @@ import logo from '@/assets/logo.png';
 
 const Footer = () => {
   const { t } = useTranslation();
+  const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU"
+  )}`;
 
   const navItems = [
     { key: 'home', path: '/' },
@@ -35,10 +38,16 @@ const Footer = () => {
             <Link to="/" className="inline-block mb-4">
               <img 
                 src={logo} 
-                alt="Centrul de Cultură, Limbă și Tradiție Românească" 
+                alt={t('brand.primary')}
                 className="h-16 w-auto"
               />
             </Link>
+            <p className="text-sm font-semibold text-foreground leading-tight">
+              {t('brand.primary')}
+            </p>
+            <p className="text-xs text-muted-foreground mb-3">
+              {t('brand.secondary')}
+            </p>
             <p className="text-sm text-muted-foreground mb-4">
               {t('footer.description')}
             </p>
@@ -93,7 +102,14 @@ const Footer = () => {
                 <span className="break-all">ccltrwellingborough@gmail.com</span>
               </a>
               <p className="text-sm text-muted-foreground">
-                📍 Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU
+                <a
+                  href={mapsHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-primary transition-colors"
+                >
+                  📍 Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU
+                </a>
               </p>
               <p className="text-sm text-muted-foreground">
                 ⏰ {t('contact.info.scheduleValue')}

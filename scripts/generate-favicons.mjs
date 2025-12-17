@@ -2,7 +2,7 @@ import { promises as fs } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import sharp from 'sharp';
 
-const sourcePath = resolve('src/assets/logo.jpg');
+const sourcePath = resolve('src/assets/logo.png');
 const publicDir = resolve('public');
 
 const targets = [

@@ -1,12 +1,42 @@
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { BookOpen, GraduationCap, Heart, Users, Calendar, Clock, MapPin, User } from 'lucide-react';
+import { BookOpen, GraduationCap, Heart, Users, Calendar, Clock, MapPin, User, Newspaper } from 'lucide-react';
 import logo from '@/assets/logo.png';
+import { usePageTitle } from '@/lib/usePageTitle';
+import { getNewsPosts, type NewsPost } from '@/lib/api';
+import { formatDate, getCategoryColor } from '@/lib/utils';
 
 const Home = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language === 'ro' ? 'ro' : 'en';
+  usePageTitle(undefined, { lang, includeTagline: true });
+
+  const [latestPosts, setLatestPosts] = useState<NewsPost[]>([]);
+  const [newsLoading, setNewsLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const fetchLatestNews = async () => {
+      setNewsLoading(true);
+      try {
+        const posts = await getNewsPosts(lang);
+        const top = posts.filter((p) => p.published !== false).slice(0, 3);
+        if (!cancelled) setLatestPosts(top);
+      } finally {
+        if (!cancelled) setNewsLoading(false);
+      }
+    };
+
+    fetchLatestNews();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [lang]);
 
   const benefits = [
     {
@@ -41,44 +71,133 @@ const Home = () => {
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
               {t('home.hero.title')}
             </h1>
-            <p className="text-xl md:text-2xl mb-4 font-semibold text-secondary">
+            <p className="text-lg md:text-xl mb-3 opacity-95">
               {t('home.hero.subtitle')}
             </p>
-            <p className="text-lg md:text-xl mb-8 opacity-90">
+            <p className="text-base md:text-lg mb-6 text-secondary font-semibold">
+              {t('brand.secondary')}
+            </p>
+            <p className="text-lg md:text-xl mb-8 opacity-90 max-w-3xl mx-auto">
               {t('home.hero.description')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg" variant="secondary" className="text-base font-semibold">
                 <Link to="/enrolment">{t('home.hero.contactBtn')}</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="text-base font-semibold bg-white/10 hover:bg-white/20 border-white/30 text-white">
-                <Link to="/about">{t('home.hero.learnBtn')}</Link>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="text-base font-semibold bg-white/10 hover:bg-white/20 border-white/30 text-white"
+              >
+                <a href="#program">{t('home.hero.scheduleBtn')}</a>
               </Button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* About Preview Section */}
-      <section className="py-16 md:py-24 bg-section-bg">
+      {/* Quick Facts */}
+      <section className="py-10 md:py-14 bg-section-bg">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-xl md:text-2xl font-bold text-primary text-center mb-8">
+              {t('home.facts.title')}
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+              {[
+                {
+                  icon: User,
+                  label: t('home.facts.ageLabel'),
+                  value: t('home.schedule.ageValue'),
+                },
+                {
+                  icon: Clock,
+                  label: t('home.facts.scheduleLabel'),
+                  value: `${t('home.schedule.dayValue')} · ${t('home.schedule.timeValue')}`,
+                },
+                {
+                  icon: MapPin,
+                  label: t('home.facts.locationLabel'),
+                  value: t('home.schedule.locationValue'),
+                },
+                {
+                  icon: Calendar,
+                  label: t('home.facts.startLabel'),
+                  value: t('home.facts.startValue'),
+                },
+                {
+                  icon: Users,
+                  label: t('home.facts.contactLabel'),
+                  value: t('home.facts.contactValue'),
+                  href: '/contact',
+                },
+              ].map((item, index) => {
+                const Icon = item.icon;
+                const content = (
+                  <Card className="hover-lift h-full">
+                    <CardContent className="p-5">
+                      <div className="flex items-start gap-3">
+                        <div className="mt-0.5">
+                          <Icon className="h-6 w-6 text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-semibold text-foreground">
+                            {item.label}
+                          </p>
+                          <p className="text-sm text-muted-foreground leading-snug">
+                            {item.value}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+
+                return item.href ? (
+                  <Link key={index} to={item.href} className="block">
+                    {content}
+                  </Link>
+                ) : (
+                  <div key={index}>{content}</div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* What we do */}
+      <section className="py-16 md:py-24 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
-              {t('home.about.title')}
+              {t('home.what.title')}
             </h2>
             <div className="section-divider"></div>
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-              {t('home.about.content')}
+              {t('home.what.content')}
             </p>
-            <Button asChild variant="outline" size="lg">
-              <Link to="/about">{t('home.about.readMore')}</Link>
-            </Button>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+              {[1, 2, 3].map((n) => (
+                <Card key={n} className="hover-lift">
+                  <CardContent className="p-6">
+                    <p className="font-semibold text-foreground mb-2">
+                      {t(`home.what.point${n}Title`)}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {t(`home.what.point${n}Desc`)}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Benefits Section */}
-      <section className="py-16 md:py-24 bg-muted/30">
+      <section className="py-16 md:py-24 bg-section-bg">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-primary text-center mb-12">
             {t('home.benefits.title')}
@@ -122,7 +241,7 @@ const Home = () => {
       </section>
 
       {/* Schedule Section */}
-      <section className="py-16 md:py-24 bg-section-bg">
+      <section id="program" className="py-16 md:py-24 bg-muted/30 scroll-mt-24">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-primary text-center mb-12">
             {t('home.schedule.title')}
@@ -165,11 +284,138 @@ const Home = () => {
               </CardContent>
             </Card>
           </div>
+          <div className="max-w-4xl mx-auto mt-8 text-center space-y-2">
+            <p className="text-sm text-muted-foreground">{t('home.schedule.calendarNote')}</p>
+            <p className="text-sm text-muted-foreground">{t('home.schedule.paymentNote')}</p>
+          </div>
+
+          <div className="max-w-4xl mx-auto mt-10">
+            <Card className="hover-lift">
+              <CardContent className="p-6">
+                <h3 className="text-xl font-bold text-foreground mb-3 text-center">
+                  {t('home.fees.title')}
+                </h3>
+                <div className="space-y-2 text-sm text-muted-foreground">
+                  <p>{t('home.fees.cost')}</p>
+                  <p>{t('home.fees.payment')}</p>
+                  <p>{t('home.fees.stop')}</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Founder preview */}
+      <section className="py-16 md:py-24 bg-section-bg">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <Card className="overflow-hidden">
+              <CardContent className="p-8 md:p-12">
+                <div className="flex flex-col md:flex-row gap-8 items-center">
+                  <div className="flex-shrink-0">
+                    <div className="w-28 h-28 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center border-4 border-primary/20">
+                      <User className="h-14 w-14 text-primary" />
+                    </div>
+                  </div>
+                  <div className="flex-1 text-center md:text-left">
+                    <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
+                      {t('home.founder.title')}
+                    </h2>
+                    <p className="text-primary font-semibold mb-4">
+                      {t('home.founder.name')}
+                    </p>
+                    <p className="text-muted-foreground leading-relaxed mb-6">
+                      {t('home.founder.preview')}
+                    </p>
+                    <Button asChild variant="outline">
+                      <Link to="/about">{t('home.founder.button')}</Link>
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Latest News */}
+      <section className="py-16 md:py-24 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex items-center justify-between gap-4 mb-10">
+              <h2 className="text-3xl md:text-4xl font-bold text-primary">
+                {t('home.news.title')}
+              </h2>
+              <Button asChild variant="outline">
+                <Link to="/news">{t('home.news.viewAll')}</Link>
+              </Button>
+            </div>
+
+            {newsLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[1, 2, 3].map((n) => (
+                  <Card key={n} className="hover-lift">
+                    <CardContent className="p-6">
+                      <div className="h-4 bg-muted rounded w-2/3 mb-3" />
+                      <div className="h-4 bg-muted rounded w-1/2 mb-6" />
+                      <div className="h-3 bg-muted rounded w-full mb-2" />
+                      <div className="h-3 bg-muted rounded w-5/6" />
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : latestPosts.length === 0 ? (
+              <div className="max-w-2xl mx-auto text-center">
+                <div className="w-20 h-20 mx-auto mb-5 bg-primary/10 rounded-full flex items-center justify-center">
+                  <Newspaper className="h-10 w-10 text-primary" />
+                </div>
+                <p className="text-muted-foreground">
+                  {t('home.news.empty')}
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {latestPosts.map((post) => {
+                  const roTitle = post.originalTitleRo?.trim() || post.title?.trim() || post.titleEn?.trim() || '';
+                  const roExcerpt = post.originalExcerptRo?.trim() || post.excerpt?.trim() || post.excerptEn?.trim() || '';
+                  const title = lang === 'ro' ? roTitle : (post.titleEn?.trim() || roTitle);
+                  const excerpt = lang === 'ro' ? roExcerpt : (post.excerptEn?.trim() || roExcerpt);
+
+                  return (
+                    <Card key={post.id} className="hover-lift overflow-hidden">
+                      <CardContent className="p-6">
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${getCategoryColor(post.category)}`}>
+                            {post.category}
+                          </span>
+                          <span className="text-xs text-muted-foreground">
+                            {formatDate(post.publicationDate, lang)}
+                          </span>
+                        </div>
+                        <h3 className="text-lg font-bold text-foreground mb-2 line-clamp-2">
+                          {title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                          {excerpt}
+                        </p>
+                        <Button asChild size="sm">
+                          <Link to={`/news/${post.slug}`}>
+                            {t('home.news.readMore')}
+                          </Link>
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
       {/* Gallery Preview Section */}
-      <section className="py-16 md:py-24 bg-muted/30">
+      <section className="py-16 md:py-24 bg-section-bg">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-primary text-center mb-12">
             {t('home.galleryPreview.title')}
@@ -197,7 +443,7 @@ const Home = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 md:py-24 bg-section-bg">
+      <section className="py-16 md:py-24 bg-muted/30">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-primary text-center mb-8">
             {t('home.testimonials.title')}
@@ -209,8 +455,9 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-24 flag-gradient text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
+      <section className="py-16 md:py-24 hero-gradient text-primary-foreground relative overflow-hidden">
+        <div className="flag-gradient h-1 w-full absolute top-0 left-0 right-0" />
+        <div className="absolute inset-0 bg-black/10"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">

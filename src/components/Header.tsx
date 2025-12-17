@@ -34,12 +34,20 @@ const Header = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             {/* Logo - Left */}
-            <Link to="/" className="flex items-center">
+            <Link to="/" className="flex items-center gap-4">
               <img 
                 src={logo} 
-                alt="Centrul de Cultură, Limbă și Tradiție Românească" 
+                alt={t('brand.primary')}
                 className="h-20 w-auto"
               />
+              <div className="hidden lg:block leading-tight">
+                <p className="text-base font-bold text-foreground">
+                  {t('brand.primary')}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {t('brand.secondary')}
+                </p>
+              </div>
             </Link>
 
             {/* Navigation - Center */}
@@ -107,25 +115,77 @@ const Header = () => {
 
       {/* Mobile Header */}
       <div className="md:hidden">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-3">
           {/* Logo - Left */}
-          <Link to="/" className="flex items-center">
+          <Link to="/" className="flex items-center gap-3">
             <img 
               src={logo} 
-              alt="Centrul de Cultură, Limbă și Tradiție Românească" 
+              alt={t('brand.primary')}
               className="h-12 w-auto"
             />
+            <div className="leading-tight hidden sm:block">
+              <p className="text-sm font-bold text-foreground">
+                {t('brand.primary')}
+              </p>
+              <p className="text-[10px] text-muted-foreground hidden sm:block">
+                {t('brand.secondary')}
+              </p>
+            </div>
           </Link>
 
-          {/* Hamburger Menu - Right */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="text-primary"
-          >
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </Button>
+          <div className="flex items-center gap-2">
+            {/* Language Switcher - Mobile (always visible) */}
+            <div className="flex items-center gap-1 border border-border rounded-lg overflow-hidden">
+              <button
+                onClick={() => changeLanguage('ro')}
+                aria-label="Change language to Romanian"
+                className={`relative px-2.5 py-2 text-[11px] font-bold transition-all ${
+                  i18n.language === 'ro' 
+                    ? 'text-white' 
+                    : 'text-foreground/60 hover:text-foreground'
+                }`}
+                style={{
+                  backgroundImage: `url(${flagRo})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+              >
+                <span className="relative z-10 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">RO</span>
+                {i18n.language !== 'ro' && (
+                  <div className="absolute inset-0 bg-card/60 backdrop-blur-[2px]" />
+                )}
+              </button>
+              <button
+                onClick={() => changeLanguage('en')}
+                aria-label="Change language to English"
+                className={`relative px-2.5 py-2 text-[11px] font-bold transition-all ${
+                  i18n.language === 'en' 
+                    ? 'text-white' 
+                    : 'text-foreground/60 hover:text-foreground'
+                }`}
+                style={{
+                  backgroundImage: `url(${flagUk})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+              >
+                <span className="relative z-10 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">EN</span>
+                {i18n.language !== 'en' && (
+                  <div className="absolute inset-0 bg-card/60 backdrop-blur-[2px]" />
+                )}
+              </button>
+            </div>
+
+            {/* Hamburger Menu - Right */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="text-primary"
+            >
+              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </Button>
+          </div>
         </div>
 
         {/* Mobile Menu */}

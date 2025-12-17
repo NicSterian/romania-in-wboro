@@ -7,13 +7,52 @@
     "gallery": "Gallery",
     "contact": "Contact"
   },
+  "brand": {
+    "primary": "Școala Românească Wellingborough",
+    "primaryWeekend": "Școala Românească (Weekend School), Wellingborough",
+    "secondary": "Centrul de Cultură, Limbă și Tradiție Românească",
+    "legal": "Scoala Romaneasca Wellingborough CIC"
+  },
   "home": {
     "hero": {
-      "title": "Welcome to the Romanian Cultural Centre",
-      "subtitle": "Keeping Romanian culture and language alive for our children",
-      "description": "Romanian language and cultural education for children in Wellingborough",
-      "contactBtn": "Contact Us",
-      "learnBtn": "Learn More"
+      "title": "Școala Românească Wellingborough",
+      "subtitle": "Romanian language school for children (4–15) — Saturdays at Glamis Hall.",
+      "description": "Romanian language, culture and traditions in a safe, friendly environment for families in Wellingborough and nearby towns.",
+      "contactBtn": "Enrolment",
+      "learnBtn": "Learn More",
+      "scheduleBtn": "Schedule & location"
+    },
+    "facts": {
+      "title": "Quick facts",
+      "ageLabel": "Ages",
+      "scheduleLabel": "Schedule",
+      "locationLabel": "Location",
+      "startLabel": "Starts",
+      "startValue": "January 2026",
+      "contactLabel": "Contact",
+      "contactValue": "Details & questions"
+    },
+    "what": {
+      "title": "What we do at school",
+      "content": "Structured, age-grouped activities that build Romanian language skills and cultural identity.",
+      "point1Title": "Romanian language",
+      "point1Desc": "Reading, writing, vocabulary and communication at the right level.",
+      "point2Title": "Culture & traditions",
+      "point2Desc": "Customs, celebrations and creative projects inspired by Romania.",
+      "point3Title": "Community",
+      "point3Desc": "A place where children feel at home and make friends."
+    },
+    "founder": {
+      "title": "Founder & Coordinator",
+      "name": "Laura Nan",
+      "preview": "A qualified teacher with over 18 years of experience, dedicated to supporting Romanian children growing up abroad.",
+      "button": "About Laura Nan"
+    },
+    "news": {
+      "title": "Latest news",
+      "viewAll": "View all",
+      "empty": "News will be published soon.",
+      "readMore": "Read more"
     },
     "about": {
       "title": "About Our Centre",
@@ -48,7 +87,15 @@
       "age": "Age:",
       "ageValue": "4-15 years",
       "location": "Location:",
-      "locationValue": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU"
+      "locationValue": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU",
+      "calendarNote": "School calendar: We follow the UK school-term structure, with sessions during school weeks and breaks during holidays.",
+      "paymentNote": "Payment: required before the session begins (bank transfer to the school account or cash)."
+    },
+    "fees": {
+      "title": "Costuri / Fees",
+      "cost": "Cost: £15 per single session.",
+      "payment": "Payment: required before the session begins (bank transfer to the school account or cash).",
+      "stop": "Stopping attendance: please notify us at least 7 days in advance if you need to stop attending."
     },
     "galleryPreview": {
       "title": "Photo Gallery",
@@ -68,14 +115,23 @@
     "hero": "About Us",
     "mission": {
       "title": "Our Mission",
-      "content1": "Centrul de Cultură, Limbă și Tradiție Românească in Wellingborough is dedicated to preserving and promoting Romanian language, culture, and traditions for children in the Romanian community.",
+      "content1": "Școala Românească Wellingborough is a weekend school dedicated to preserving and promoting Romanian language, culture and traditions for children in the Romanian community of Northamptonshire.",
       "content2": "Our mission is to provide quality education in Romanian language, in a friendly and inclusive environment where children can learn and grow together. We cultivate identity and build the future."
+    },
+    "identity": {
+      "title": "Two names, one mission",
+      "content1": "Școala Românească Wellingborough is the name parents search for and the clearest description of what we do: a Romanian weekend school for children in Wellingborough.",
+      "content2": "Centrul de Cultură, Limbă și Tradiție Românească is an umbrella identity we keep for future cultural projects; the school currently operates under the legal name Scoala Romaneasca Wellingborough CIC."
     },
     "curriculum": {
       "title": "Curriculum & Schedule",
+      "ageLabel": "Age group",
       "age": "4-15 years",
+      "scheduleLabel": "Schedule",
       "schedule": "Saturdays, 10:00 AM - 1:00 PM",
-      "location": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU"
+      "locationLabel": "Location",
+      "location": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU",
+      "calendarNote": "School calendar: We follow the UK school-term structure, with sessions during school weeks and breaks during holidays."
     },
     "subjects": {
       "title": "What We Teach",
@@ -104,6 +160,28 @@
       "bio2": "For the past two years, Laura has been teaching at a Romanian school in Northampton, where she strengthened her passion for maintaining the cultural identity of children in the diaspora.",
       "bio3": "Laura brings not only solid pedagogical knowledge but also a deep love for the Romanian community in the United Kingdom."
     },
+    "founder": {
+      "sectionTitle": "Founder and Coordinator: Laura Nan",
+      "name": "Laura Nan",
+      "role": "Founder and Coordinator",
+      "p1": "The Romanian Weekend School in Wellingborough was founded and is coordinated by Laura Nan, an experienced teacher with a strong background in the Romanian education system and a long-standing commitment to supporting Romanian children growing up in the diaspora.",
+      "p2": "With over 18 years of experience in education, Laura holds Romanian-accredited qualifications in early years and primary education. She is also a trainer and teaching mentor, holds Grade II teaching certification, and has supported the learning and development of many generations of children, helping them build a strong foundation in Romanian language and culture.",
+      "p3": "During her career, she coordinated a Methodology Centre, where she guided teaching staff and helped implement modern educational practices. She has initiated and led educational projects aligned with the Romanian national curriculum, carefully adapted to each age group and to children’s individual needs.",
+      "principlesTitle": "Educational principles",
+      "principle1": "Active and participatory learning",
+      "principle2": "Encouraging creativity",
+      "principle3": "Supporting children’s balanced development",
+      "p4": "All of this takes place in a safe, empathetic and stimulating environment that supports both academic progress and emotional wellbeing.",
+      "visionTitle": "Vision and educational leadership",
+      "vision": "Laura is currently a School Governor at an academy in Wellingborough and is studying for an MBA, combining pedagogical expertise with modern leadership and management skills.",
+      "offerTitle": "What we offer",
+      "offer1": "Aligned with the Romanian curriculum",
+      "offer2": "Adapted to each age group",
+      "offer3": "Personalised to each child’s learning pace and style",
+      "p5": "We promote communication, mutual respect, confidence, and the joy of learning in Romanian.",
+      "closing1": "Welcome home.",
+      "closing2": "Welcome to the Romanian language."
+    },
     "areas": {
       "title": "Serving Communities In",
       "contactBtn": "Contact Us"
@@ -111,7 +189,7 @@
   },
   "enrolment": {
     "hero": {
-      "title": "Enrol at Scoala Romaneasca Wellingborough",
+      "title": "Enrol at Școala Românească Wellingborough",
       "subtitle": "Fill in the enrolment form to reserve your child’s place from January 2026."
     },
     "steps": {
@@ -130,10 +208,15 @@
       }
     },
     "note": "Please complete the form in full and use an email address that you check regularly.",
+    "afterSubmit": {
+      "title": "What happens after you submit?",
+      "content": "We’ll confirm receipt and contact you to verify details and confirm your child’s place. Then we’ll share the next steps (schedule, fees and materials).",
+      "ageNote": "Typical age range: 4–15. If you’re unsure about the right group, message us."
+    },
     "ctaButton": "Open enrolment form",
     "form": {
       "title": "Enrolment form",
-      "disclaimer": "The form is securely hosted on the Jotform platform. Your details are used only to manage enrolments for Scoala Romaneasca Wellingborough."
+      "disclaimer": "The form is securely hosted on the Jotform platform. Your details are used only to manage enrolments for Școala Românească Wellingborough."
     },
     "faq": {
       "title": "Frequently asked questions",
@@ -143,6 +226,8 @@
       "a2": "No. We have children with very different language levels. The most important thing is interest and support from the family to practise Romanian.",
       "q3": "Can we visit the school before deciding?",
       "a3": "Yes. You can write to us via the Contact page to arrange a visit or a conversation before classes begin.",
+      "q4": "What are the fees and how do we pay?",
+      "a4": "The cost is £15 per single session. Payment is required before the session begins (bank transfer to the school account or cash). If you need to stop attending, please notify us at least 7 days in advance.",
       "contactLink": "More questions? Get in touch"
     }
   },
@@ -198,7 +283,9 @@
       "location": "Location",
       "locationValue": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU",
       "schedule": "Schedule",
-      "scheduleValue": "Saturdays: 10:00 AM - 1:00 PM"
+      "scheduleValue": "Saturdays: 10:00 AM - 1:00 PM",
+      "calendarNote": "School calendar: We follow the UK school-term structure, with sessions during school weeks and breaks during holidays.",
+      "paymentNote": "Payment: required before the session begins (bank transfer to the school account or cash)."
     },
     "social": {
       "title": "Follow Us on Social Media",
@@ -206,7 +293,7 @@
     }
   },
   "footer": {
-    "description": "Keeping Romanian culture and language alive for our children in Northamptonshire.",
+    "description": "Școala Românească Wellingborough — Romanian language, culture and traditions for children (4–15).",
     "quickLinks": "Quick Links",
     "legal": "Legal",
     "privacy": "Privacy",
@@ -215,7 +302,7 @@
     "equality": "Equality",
     "volunteer": "Volunteer Code",
     "contact": "Contact",
-    "copyright": "© 2025 Centrul de Cultură, Limbă și Tradiție Românească. All rights reserved."
+    "copyright": "© 2025 Scoala Romaneasca Wellingborough CIC. All rights reserved."
   },
   "whatsapp": {
     "tooltip": "Contact us on WhatsApp"
@@ -223,7 +310,7 @@
   "legal": {
     "privacy": {
       "title": "Privacy Policy",
-      "orgName": "Centrul de Cultură, Limbă și Tradiție Românească CIC",
+      "orgName": "Scoala Romaneasca Wellingborough CIC",
       "address": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU, United Kingdom",
       "effectiveDate": "Effective date: 01/11/2025",
       "section1Title": "Purpose",
@@ -245,7 +332,7 @@
     },
     "terms": {
       "title": "Terms & Conditions",
-      "orgName": "Centrul de Cultură, Limbă și Tradiție Românească CIC",
+      "orgName": "Scoala Romaneasca Wellingborough CIC",
       "address": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU, United Kingdom",
       "effectiveDate": "Effective date: 10/01/2026",
       "section1Title": "Enrolment",
@@ -271,7 +358,7 @@
     },
     "health": {
       "title": "Health & Safety Policy",
-      "orgName": "Centrul de Cultură, Limbă și Tradiție Românească CIC",
+      "orgName": "Scoala Romaneasca Wellingborough CIC",
       "address": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU, United Kingdom",
       "effectiveDate": "Effective date: 10 January 2026",
       "section1Title": "Purpose and Commitment",
@@ -299,7 +386,7 @@
     },
     "equality": {
       "title": "Equality, Diversity & Inclusion Policy",
-      "orgName": "Centrul de Cultură, Limbă și Tradiție Românească CIC",
+      "orgName": "Scoala Romaneasca Wellingborough CIC",
       "address": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU, United Kingdom",
       "effectiveDate": "Effective date: 10 January 2026",
       "section1Title": "Purpose and Commitment",
@@ -325,7 +412,7 @@
     },
     "volunteer": {
       "title": "Volunteer Code of Conduct",
-      "orgName": "Centrul de Cultură, Limbă și Tradiție Românească CIC",
+      "orgName": "Scoala Romaneasca Wellingborough CIC",
       "address": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU, United Kingdom",
       "effectiveDate": "Effective date: 10 January 2026",
       "section1Title": "Purpose and Scope",

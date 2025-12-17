@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { BookOpen, Landmark, Heart, Palette, Calendar, Clock, MapPin, User } from 'lucide-react';
+import { usePageTitle } from '@/lib/usePageTitle';
 
 const About = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language === 'ro' ? 'ro' : 'en';
+  usePageTitle(t('nav.about'), { lang });
 
   const subjects = [
     {
@@ -70,8 +73,24 @@ const About = () => {
         </div>
       </section>
 
-      {/* Curriculum Section */}
+      {/* Name / Identity Section */}
       <section className="py-16 md:py-24 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6 text-center">
+              {t('about.identity.title')}
+            </h2>
+            <div className="section-divider"></div>
+            <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
+              <p>{t('about.identity.content1')}</p>
+              <p>{t('about.identity.content2')}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Curriculum Section */}
+      <section className="py-16 md:py-24 bg-section-bg">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-primary text-center mb-12">
             {t('about.curriculum.title')}
@@ -80,25 +99,28 @@ const About = () => {
             <Card className="hover-lift">
               <CardContent className="p-6 text-center">
                 <User className="h-12 w-12 text-primary mx-auto mb-4" />
-                <h3 className="font-semibold text-foreground mb-2">Grupa de Vârstă / Age Group</h3>
+                <h3 className="font-semibold text-foreground mb-2">{t('about.curriculum.ageLabel')}</h3>
                 <p className="text-muted-foreground">{t('about.curriculum.age')}</p>
               </CardContent>
             </Card>
             <Card className="hover-lift">
               <CardContent className="p-6 text-center">
                 <Clock className="h-12 w-12 text-primary mx-auto mb-4" />
-                <h3 className="font-semibold text-foreground mb-2">Program / Schedule</h3>
+                <h3 className="font-semibold text-foreground mb-2">{t('about.curriculum.scheduleLabel')}</h3>
                 <p className="text-muted-foreground">{t('about.curriculum.schedule')}</p>
               </CardContent>
             </Card>
             <Card className="hover-lift">
               <CardContent className="p-6 text-center">
                 <MapPin className="h-12 w-12 text-primary mx-auto mb-4" />
-                <h3 className="font-semibold text-foreground mb-2">Locație / Location</h3>
+                <h3 className="font-semibold text-foreground mb-2">{t('about.curriculum.locationLabel')}</h3>
                 <p className="text-muted-foreground">{t('about.curriculum.location')}</p>
               </CardContent>
             </Card>
           </div>
+          <p className="max-w-3xl mx-auto mt-8 text-center text-sm text-muted-foreground">
+            {t('about.curriculum.calendarNote')}
+          </p>
         </div>
       </section>
 
@@ -129,11 +151,11 @@ const About = () => {
         </div>
       </section>
 
-      {/* Teacher Section */}
+      {/* Founder Section */}
       <section className="py-16 md:py-24 bg-muted/30">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-primary text-center mb-12">
-            {t('about.teacher.title')}
+            {t('about.founder.sectionTitle')}
           </h2>
           <div className="max-w-4xl mx-auto">
             <Card className="overflow-hidden">
@@ -145,18 +167,56 @@ const About = () => {
                       <User className="h-24 w-24 text-primary" />
                     </div>
                   </div>
-                  {/* Bio */}
+                  {/* Content */}
                   <div className="flex-1">
                     <h3 className="text-2xl font-bold text-foreground mb-2">
-                      {t('about.teacher.name')}
+                      {t('about.founder.name')}
                     </h3>
                     <p className="text-primary font-semibold mb-6">
-                      {t('about.teacher.role')}
+                      {t('about.founder.role')}
                     </p>
                     <div className="space-y-4 text-muted-foreground leading-relaxed">
-                      <p>{t('about.teacher.bio1')}</p>
-                      <p>{t('about.teacher.bio2')}</p>
-                      <p>{t('about.teacher.bio3')}</p>
+                      <p>{t('about.founder.p1')}</p>
+                      <p>{t('about.founder.p2')}</p>
+                      <p>{t('about.founder.p3')}</p>
+
+                      <div className="pt-2">
+                        <p className="font-semibold text-foreground mb-2">
+                          {t('about.founder.principlesTitle')}
+                        </p>
+                        <ul className="list-disc pl-5 space-y-1">
+                          <li>{t('about.founder.principle1')}</li>
+                          <li>{t('about.founder.principle2')}</li>
+                          <li>{t('about.founder.principle3')}</li>
+                        </ul>
+                      </div>
+
+                      <p>{t('about.founder.p4')}</p>
+
+                      <div className="pt-2">
+                        <p className="font-semibold text-foreground mb-2">
+                          {t('about.founder.visionTitle')}
+                        </p>
+                        <p>{t('about.founder.vision')}</p>
+                      </div>
+
+                      <div className="pt-2">
+                        <p className="font-semibold text-foreground mb-2">
+                          {t('about.founder.offerTitle')}
+                        </p>
+                        <ul className="list-disc pl-5 space-y-1">
+                          <li>{t('about.founder.offer1')}</li>
+                          <li>{t('about.founder.offer2')}</li>
+                          <li>{t('about.founder.offer3')}</li>
+                        </ul>
+                      </div>
+
+                      {t('about.founder.p5') ? <p>{t('about.founder.p5')}</p> : null}
+
+                      <div className="pt-2 text-foreground">
+                        <p className="font-semibold">{t('about.founder.closing1')}</p>
+                        <p className="font-semibold">{t('about.founder.closing2')}</p>
+                      </div>
                     </div>
                   </div>
                 </div>

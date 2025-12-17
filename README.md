@@ -1,84 +1,119 @@
-# Welcome to your Lovable project
+# Școala Românească Wellingborough
 
-## Project info
+Bilingual (RO/EN) website for **Școala Românească Wellingborough** (Romanian weekend school in Wellingborough), deployed on Netlify and powered by Sanity CMS for News + Gallery.
 
-**URL**: https://lovable.dev/projects/be45ff6a-1537-4ec9-af7a-37953bfe94b0
+## Tech stack
 
-## How can I edit this code?
+- Vite + React + TypeScript
+- Tailwind CSS + shadcn/ui (Radix UI primitives)
+- React Router
+- `react-i18next` (single-site bilingual UI; no separate `/en` routes)
+- Netlify Functions (server-side API + translation proxy)
+- Sanity Studio (content editing)
 
-There are several ways of editing your application.
+## Getting started
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/be45ff6a-1537-4ec9-af7a-37953bfe94b0) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+### 1) Install dependencies
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+npm install
+```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### 2) Environment variables
 
-# Step 3: Install the necessary dependencies.
-npm i
+Copy `.env.example` to `.env` for local development (never commit `.env` files).
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+Required for Netlify Functions (News/Gallery):
+- `SANITY_PROJECT_ID`
+- `SANITY_DATASET`
+- `SANITY_API_TOKEN`
+
+Required for Sanity Studio:
+- `SANITY_STUDIO_PROJECT_ID`
+- `SANITY_STUDIO_DATASET`
+
+Optional:
+- `LT_URL` (translation endpoint used by `/api/translate`)
+
+### 3) Run locally
+
+Frontend only:
+```sh
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Full-stack local dev (recommended, includes Netlify Functions + redirects):
+```sh
+netlify dev
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Sanity Studio (content editor):
+```sh
+npm run studio
+```
 
-**Use GitHub Codespaces**
+Build:
+```sh
+npm run build
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Where things live (project map)
 
-## What technologies are used for this project?
+### App entry + routing
+- `index.html` – base HTML + default meta tags + Netlify contact form definition
+- `src/main.tsx` – React entry point
+- `src/App.tsx` – providers + routes + i18n init (`src/i18n/config.ts`)
 
-This project is built with:
+### Pages (routes)
+- `src/pages/Home.tsx` – parents-first homepage (quick facts, schedule, fees, latest news preview)
+- `src/pages/About.tsx` – mission, “two names” explanation, founder section (Laura Nan)
+- `src/pages/Enrolment.tsx` – enrolment steps + embedded Jotform + FAQ
+- `src/pages/News.tsx` / `src/pages/NewsPost.tsx` – news listing + post detail (Sanity via API)
+- `src/pages/Gallery.tsx` – albums + lightbox (Sanity via API)
+- `src/pages/Contact.tsx` – Netlify form + map embed
+- `src/pages/*Policy.tsx` – legal/policy pages
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Shared layout/components
+- `src/components/Layout.tsx` – header/footer wrapper
+- `src/components/Header.tsx` – navigation + language switcher (desktop + improved mobile UX)
+- `src/components/Footer.tsx` – footer + clickable Google Maps address link
+- `src/components/ui/*` – shadcn/ui primitives used across the site
 
-## Environment
+### i18n (RO/EN)
+- `src/i18n/config.ts` – i18next setup + language detection
+- `src/i18n/locales/ro.json` / `src/i18n/locales/en.json` – translations
+  - Branding keys: `brand.primary`, `brand.secondary`, `brand.legal`
 
-Set only server env vars in Netlify → Environment:
+### SEO (titles)
+- `src/lib/seo.ts` – site title helpers
+- `src/lib/usePageTitle.ts` – per-page `document.title` + `<html lang>` helper
 
-- `CONTENTFUL_SPACE_ID`
-- `CONTENTFUL_ACCESS_TOKEN` (CDA / Delivery token)
+### Content + translation API
+The client calls:
+- `/api/news` and `/api/news/:slug`
+- `/api/gallery` and `/api/gallery/:slug`
+- `/api/translate`
 
-The client calls `/api/translate`, `/api/news`, `/api/gallery` (no secrets).
+Implementation:
+- `netlify/functions/sanity-news.ts` – Sanity → News API (mapped to Rich Text)
+- `netlify/functions/sanity-gallery.ts` – Sanity → Gallery API
+- `netlify/functions/translate.ts` – translation proxy used for on-the-fly EN translation
+- `netlify.toml` – routes `/api/*` to Netlify Functions + SPA redirect + CSP headers
 
-Never commit `.env` files.
+Client fetch wrappers:
+- `src/lib/api.ts` – client-side fetch wrappers for `/api/news` + `/api/gallery` (endpoints are backed by Sanity via `netlify.toml` redirects)
+- `src/lib/translate.ts` – calls `/api/translate`
 
-## How can I deploy this project?
+### Sanity Studio
+- `sanity.config.ts` / `sanity.cli.ts` – studio config (uses `SANITY_STUDIO_*` env vars)
+- `sanity/schemas/*` – content schemas (News posts + Gallery albums)
 
-Simply open [Lovable](https://lovable.dev/projects/be45ff6a-1537-4ec9-af7a-37953bfe94b0) and click on Share -> Publish.
+## Content editing workflow
 
-## Can I connect a custom domain to my Lovable project?
+- Use `npm run studio` to add/edit News posts and Gallery albums.
+- The website reads published content through Netlify Functions.
 
-Yes, you can!
+## Notes
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- Enrolment form is a Jotform embed inside `src/pages/Enrolment.tsx` (update the URL there if the form changes).
+- CSP is set in `netlify.toml`; if you embed new third-party content (e.g. another form/map provider), update `frame-src` accordingly.

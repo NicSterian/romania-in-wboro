@@ -2,15 +2,18 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Newspaper } from 'lucide-react';
-import { getNewsPosts, NewsPost } from '@/lib/contentful';
+import { getNewsPosts, NewsPost } from '@/lib/api';
 import { formatDate, getCategoryColor } from '@/lib/utils';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { NewsCardSkeleton } from '@/components/NewsCardSkeleton';
 import { Button } from '@/components/ui/button';
 import { translateText } from '@/lib/translate';
+import { usePageTitle } from '@/lib/usePageTitle';
 
 const News = () => {
   const { t, i18n } = useTranslation();
+  const lang = i18n.language === 'ro' ? 'ro' : 'en';
+  usePageTitle(t('nav.news'), { lang });
   const [posts, setPosts] = useState<NewsPost[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<NewsPost[]>([]);
   const [loading, setLoading] = useState(true);

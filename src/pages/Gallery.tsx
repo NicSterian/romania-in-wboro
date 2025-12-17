@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Camera, X, ChevronLeft, ChevronRight } from 'lucide-react';
-import { getGalleryAlbums, GalleryAlbum } from '@/lib/contentful';
+import { getGalleryAlbums, GalleryAlbum } from '@/lib/api';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { translateText } from '@/lib/translate';
+import { usePageTitle } from '@/lib/usePageTitle';
 
 const Gallery = () => {
   const { t, i18n } = useTranslation();
+  const lang = i18n.language === 'ro' ? 'ro' : 'en';
+  usePageTitle(t('nav.gallery'), { lang });
   const [albums, setAlbums] = useState<GalleryAlbum[]>([]);
   const [filteredAlbums, setFilteredAlbums] = useState<GalleryAlbum[]>([]);
   const [loading, setLoading] = useState(true);
