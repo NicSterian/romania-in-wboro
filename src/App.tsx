@@ -10,6 +10,7 @@ import About from "./pages/About";
 import News from "./pages/News";
 import NewsPost from "./pages/NewsPost";
 import Gallery from "./pages/Gallery";
+import GalleryAlbum from "./pages/GalleryAlbum";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/news" element={<News />} />
           <Route path="/news/:slug" element={<NewsPost />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/gallery/:slug" element={<GalleryAlbum />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/enrolment" element={<Enrolment />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />

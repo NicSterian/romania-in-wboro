@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Camera, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Camera } from 'lucide-react';
 import { getGalleryAlbums, GalleryAlbum } from '@/lib/api';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { translateText } from '@/lib/translate';
 import { usePageTitle } from '@/lib/usePageTitle';
 
@@ -17,8 +17,6 @@ const Gallery = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedAlbum, setSelectedAlbum] = useState<GalleryAlbum | null>(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [translations, setTranslations] = useState<Record<string, { title?: string; description?: string }>>({});
 
   const categories = i18n.language === 'ro'
@@ -126,32 +124,6 @@ const Gallery = () => {
     setSelectedCategory(mappedCategory);
   };
 
-  const openLightbox = (album: GalleryAlbum, imageIndex = 0) => {
-    setSelectedAlbum(album);
-    setCurrentImageIndex(imageIndex);
-  };
-
-  const closeLightbox = () => {
-    setSelectedAlbum(null);
-    setCurrentImageIndex(0);
-  };
-
-  const nextImage = () => {
-    if (selectedAlbum) {
-      setCurrentImageIndex((prev) => 
-        prev === selectedAlbum.images.length - 1 ? 0 : prev + 1
-      );
-    }
-  };
-
-  const prevImage = () => {
-    if (selectedAlbum) {
-      setCurrentImageIndex((prev) => 
-        prev === 0 ? selectedAlbum.images.length - 1 : prev - 1
-      );
-    }
-  };
-
   if (error) {
     return (
       <div className="min-h-screen">
@@ -249,12 +221,13 @@ const Gallery = () => {
                 const description = i18n.language === 'ro'
                   ? roDescription
                   : (override?.description?.trim() || album.descriptionEn?.trim() || roDescription);
+                const albumHref = album.slug ? `/gallery/${album.slug}` : '/gallery';
 
                 return (
-                  <div
+                  <Link
                     key={album.id}
-                    className="group cursor-pointer"
-                    onClick={() => openLightbox(album)}
+                    to={albumHref}
+                    className="group block"
                   >
                     <div className="relative overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow">
                       <img
@@ -265,14 +238,6 @@ const Gallery = () => {
                           e.currentTarget.src = '/news-placeholder.jpg';
                         }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                        <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                          <h3 className="font-bold text-lg mb-1">{title}</h3>
-                          <p className="text-sm">
-                            {album.images.length} {i18n.language === 'ro' ? 'fotografii' : 'photos'}
-                          </p>
-                        </div>
-                      </div>
                     </div>
                     <div className="mt-3">
                       <h3 className="font-semibold text-foreground">{title}</h3>
@@ -282,81 +247,13 @@ const Gallery = () => {
                         </p>
                       )}
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
           )}
         </div>
       </section>
-
-      {/* Lightbox */}
-      <Dialog open={!!selectedAlbum} onOpenChange={closeLightbox}>
-        <DialogContent className="max-w-7xl w-full h-[90vh] p-0">
-          {selectedAlbum && (() => {
-            const translationOverride = translations[selectedAlbum.id];
-            const lightboxTitle = i18n.language === 'ro'
-              ? (selectedAlbum.originalAlbumTitleRo || selectedAlbum.albumTitle)
-              : (translationOverride?.title?.trim() || selectedAlbum.albumTitleEn || selectedAlbum.albumTitle);
-            const lightboxDescription = i18n.language === 'ro'
-              ? (selectedAlbum.originalDescriptionRo || selectedAlbum.description)
-              : (translationOverride?.description?.trim() || selectedAlbum.descriptionEn || selectedAlbum.description);
-
-            return (
-              <div className="relative w-full h-full flex flex-col">
-                {/* Close button */}
-                <button
-                  onClick={closeLightbox}
-                  className="absolute top-4 right-4 z-50 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 transition-colors"
-                >
-                  <X className="h-6 w-6" />
-                </button>
-
-                {/* Image */}
-                <div className="flex-1 relative flex items-center justify-center bg-black">
-                  <img
-                    src={selectedAlbum.images[currentImageIndex] || '/news-placeholder.jpg'}
-                    alt={`${lightboxTitle} - ${currentImageIndex + 1}`}
-                    className="max-w-full max-h-full object-contain"
-                    onError={(e) => {
-                      e.currentTarget.src = '/news-placeholder.jpg';
-                    }}
-                  />
-
-                  {/* Navigation buttons */}
-                  {selectedAlbum.images.length > 1 && (
-                    <>
-                      <button
-                        onClick={prevImage}
-                        className="absolute left-4 bg-black/50 hover:bg-black/70 text-white rounded-full p-3 transition-colors"
-                      >
-                        <ChevronLeft className="h-6 w-6" />
-                      </button>
-                      <button
-                        onClick={nextImage}
-                        className="absolute right-4 bg-black/50 hover:bg-black/70 text-white rounded-full p-3 transition-colors"
-                      >
-                        <ChevronRight className="h-6 w-6" />
-                      </button>
-                    </>
-                  )}
-                </div>
-
-                {/* Info bar */}
-                <div className="bg-background p-4 border-t">
-                  <h3 className="font-bold text-lg">{lightboxTitle}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {currentImageIndex + 1} / {selectedAlbum.images.length}
-                  </p>
-                  {lightboxDescription && (
-                    <p className="text-sm text-muted-foreground mt-2">{lightboxDescription}</p>
-                  )}
-                </div>
-              </div>
-            );
-          })()}
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
