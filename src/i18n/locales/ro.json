@@ -22,6 +22,15 @@
       "learnBtn": "Află mai multe",
       "scheduleBtn": "Program & locație"
     },
+    "openingBanner": {
+      "title": "Am deschis porțile!",
+      "body": "Școala Românească Wellingborough este acum deschisă. Vă așteptăm cu drag!",
+      "cta": "Citește anunțul"
+    },
+    "facebookCta": {
+      "text": "Ne găsești și pe Facebook pentru noutăți zilnice.",
+      "button": "Facebook"
+    },
     "facts": {
       "title": "Informații pe scurt",
       "ageLabel": "Vârste",
@@ -106,8 +115,8 @@
       "coming": "Testimonialele părinților vor fi adăugate în curând!"
     },
     "cta": {
-      "title": "Înscrie-ți copilul pentru ianuarie 2026!",
-      "subtitle": "Alătură-te comunității noastre și oferă-i copilului tău șansa de a învăța limba și cultura română într-un mediu prietenos.",
+      "title": "Înscrie-ți copilul la școala noastră",
+      "subtitle": "Alătură-te comunității noastre și oferă-i copilului șansa de a învăța limba română și de a descoperi cultura și tradițiile într-un mediu prietenos.",
       "contactBtn": "Detalii înscriere"
     }
   },
@@ -289,7 +298,7 @@
     },
     "social": {
       "title": "Urmărește-ne pe Rețelele Sociale",
-      "coming": "Paginile noastre de social media vor fi disponibile în curând!"
+      "coming": "Urmărește-ne pe Facebook pentru noutăți și anunțuri."
     }
   },
   "footer": {

@@ -6,8 +6,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import { BookOpen, GraduationCap, Heart, Users, Calendar, Clock, MapPin, User, Newspaper } from 'lucide-react';
 import logo from '@/assets/logo.png';
 import { usePageTitle } from '@/lib/usePageTitle';
-import { getNewsPosts, type NewsPost } from '@/lib/api';
+import { getGalleryAlbums, getNewsPosts, type GalleryAlbum, type NewsPost } from '@/lib/api';
 import { formatDate, getCategoryColor } from '@/lib/utils';
+
+const SHOW_OPENING_BANNER = true;
 
 const Home = () => {
   const { t, i18n } = useTranslation();
@@ -16,6 +18,8 @@ const Home = () => {
 
   const [latestPosts, setLatestPosts] = useState<NewsPost[]>([]);
   const [newsLoading, setNewsLoading] = useState(true);
+  const [latestAlbums, setLatestAlbums] = useState<GalleryAlbum[]>([]);
+  const [galleryLoading, setGalleryLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -32,6 +36,27 @@ const Home = () => {
     };
 
     fetchLatestNews();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [lang]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const fetchLatestAlbums = async () => {
+      setGalleryLoading(true);
+      try {
+        const albums = await getGalleryAlbums(lang);
+        const top = albums.filter((album) => album.published !== false).slice(0, 3);
+        if (!cancelled) setLatestAlbums(top);
+      } finally {
+        if (!cancelled) setGalleryLoading(false);
+      }
+    };
+
+    fetchLatestAlbums();
 
     return () => {
       cancelled = true;
@@ -93,6 +118,47 @@ const Home = () => {
                 <a href="#program">{t('home.hero.scheduleBtn')}</a>
               </Button>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {SHOW_OPENING_BANNER ? (
+        <section className="py-8 md:py-10 bg-section-bg">
+          <div className="container mx-auto px-4">
+            <Card className="border-primary/30 bg-primary/5">
+              <CardContent className="p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                  <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2">
+                    {t('home.openingBanner.title')}
+                  </h2>
+                  <p className="text-sm md:text-base text-muted-foreground">
+                    {t('home.openingBanner.body')}
+                  </p>
+                </div>
+                <Button asChild variant="outline" size="sm" className="self-start md:self-auto">
+                  <Link to="/news">{t('home.openingBanner.cta')}</Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      ) : null}
+
+      <section className="pb-6 bg-section-bg">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border border-border bg-background/80 px-4 py-3">
+            <p className="text-sm text-muted-foreground">
+              {t('home.facebookCta.text')}
+            </p>
+            <Button asChild size="sm" variant="outline">
+              <a
+                href="https://www.facebook.com/scoalaromaneascawellingborough"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t('home.facebookCta.button')}
+              </a>
+            </Button>
           </div>
         </div>
       </section>
@@ -421,18 +487,53 @@ const Home = () => {
             {t('home.galleryPreview.title')}
           </h2>
           <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-              {[1, 2, 3].map((i) => (
-                <div
-                  key={i}
-                  className="aspect-square bg-muted rounded-lg overflow-hidden hover-lift"
-                >
-                  <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                    <span className="text-6xl">📸</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+            {galleryLoading ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                {[1, 2, 3].map((i) => (
+                  <div
+                    key={i}
+                    className="aspect-square bg-muted/60 rounded-lg animate-pulse"
+                  />
+                ))}
+              </div>
+            ) : latestAlbums.length === 0 ? (
+              <div className="mb-8 text-center">
+                <p className="text-muted-foreground">
+                  {t('gallery.empty.title')}
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                {latestAlbums.map((album) => {
+                  const roTitle = album.originalAlbumTitleRo?.trim() || album.albumTitle?.trim() || album.albumTitleEn?.trim() || '';
+                  const title = lang === 'ro' ? roTitle : (album.albumTitleEn?.trim() || roTitle);
+                  const fallbackTitle = title || t('home.galleryPreview.title');
+                  const cover = album.coverImageUrl || '/news-placeholder.jpg';
+
+                  return (
+                    <Link
+                      key={album.id}
+                      to="/gallery"
+                      className="group block"
+                    >
+                      <div className="aspect-square bg-muted rounded-lg overflow-hidden hover-lift">
+                        <img
+                          src={cover}
+                          alt={fallbackTitle}
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          onError={(event) => {
+                            event.currentTarget.src = '/news-placeholder.jpg';
+                          }}
+                        />
+                      </div>
+                      <p className="mt-3 text-sm font-semibold text-foreground line-clamp-2">
+                        {fallbackTitle}
+                      </p>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
             <div className="text-center">
               <Button asChild variant="outline" size="lg">
                 <Link to="/gallery">{t('home.galleryPreview.viewBtn')}</Link>

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Mail, MessageCircle, MapPin, Clock, Facebook, Instagram } from 'lucide-react';
+import { Mail, MessageCircle, MapPin, Clock, Facebook } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import logo from '@/assets/logo.png';
@@ -352,12 +352,15 @@ const Contact = () => {
               {t('contact.social.coming')}
             </p>
             <div className="flex justify-center gap-6">
-              <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center opacity-50 cursor-not-allowed">
-                <Facebook className="h-8 w-8 text-muted-foreground" />
-              </div>
-              <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center opacity-50 cursor-not-allowed">
-                <Instagram className="h-8 w-8 text-muted-foreground" />
-              </div>
+              <a
+                href="https://www.facebook.com/scoalaromaneascawellingborough"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-16 h-16 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-muted/80 transition-colors"
+                aria-label="Facebook"
+              >
+                <Facebook className="h-8 w-8" />
+              </a>
             </div>
           </div>
         </div>

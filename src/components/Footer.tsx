@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Mail, Facebook, Instagram } from 'lucide-react';
+import { Mail, Facebook } from 'lucide-react';
 import logo from '@/assets/logo.png';
 
 const Footer = () => {
@@ -53,18 +53,13 @@ const Footer = () => {
             </p>
             <div className="flex gap-4">
               <a
-                href="#"
-                className="text-muted-foreground hover:text-primary transition-colors opacity-50 cursor-not-allowed"
-                title="Coming soon"
+                href="https://www.facebook.com/scoalaromaneascawellingborough"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors"
+                aria-label="Facebook"
               >
                 <Facebook className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
-                className="text-muted-foreground hover:text-primary transition-colors opacity-50 cursor-not-allowed"
-                title="Coming soon"
-              >
-                <Instagram className="h-5 w-5" />
               </a>
             </div>
           </div>
