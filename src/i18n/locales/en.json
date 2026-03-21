@@ -16,7 +16,7 @@
   "home": {
     "hero": {
       "title": "Școala Românească Wellingborough",
-      "subtitle": "Romanian language school for children (4–15) — Saturdays at Glamis Hall.",
+      "subtitle": "Romanian language school for children (4–15) — Saturdays at Victoria Centre.",
       "description": "Romanian language, culture and traditions in a safe, friendly environment for families in Wellingborough and nearby towns.",
       "contactBtn": "Enrolment",
       "learnBtn": "Learn More",
@@ -36,7 +36,7 @@
       "ageLabel": "Ages",
       "scheduleLabel": "Schedule",
       "locationLabel": "Location",
-      "startLabel": "Starts",
+      "startLabel": "Started",
       "startValue": "January 2026",
       "contactLabel": "Contact",
       "contactValue": "Details & questions"
@@ -92,11 +92,11 @@
       "day": "Day:",
       "dayValue": "Saturdays",
       "time": "Time:",
-      "timeValue": "10:00 AM - 1:00 PM",
+      "timeValue": "10:00 AM - 12:30 PM",
       "age": "Age:",
       "ageValue": "4-15 years",
       "location": "Location:",
-      "locationValue": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU",
+      "locationValue": "Victoria Centre, 46-50 Palk Road, Wellingborough, NN8 1HR",
       "calendarNote": "School calendar: We follow the UK school-term structure, with sessions during school weeks and breaks during holidays.",
       "paymentNote": "Payment: required before the session begins (bank transfer to the school account or cash)."
     },
@@ -137,9 +137,9 @@
       "ageLabel": "Age group",
       "age": "4-15 years",
       "scheduleLabel": "Schedule",
-      "schedule": "Saturdays, 10:00 AM - 1:00 PM",
+      "schedule": "Saturdays, 10:00 AM - 12:30 PM",
       "locationLabel": "Location",
-      "location": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU",
+      "location": "Victoria Centre, 46-50 Palk Road, Wellingborough, NN8 1HR",
       "calendarNote": "School calendar: We follow the UK school-term structure, with sessions during school weeks and breaks during holidays."
     },
     "subjects": {
@@ -199,7 +199,7 @@
   "enrolment": {
     "hero": {
       "title": "Enrol at Școala Românească Wellingborough",
-      "subtitle": "Fill in the enrolment form to reserve your child’s place from January 2026."
+      "subtitle": "Fill in the enrolment form to reserve your child’s place in our Saturday classes."
     },
     "steps": {
       "title": "How the enrolment works",
@@ -212,8 +212,8 @@
         "desc": "We will contact you by email or phone to confirm the enrolment and answer any questions."
       },
       "start": {
-        "title": "3. Classes start in January 2026",
-        "desc": "Lessons take place on Saturdays, 10:00 AM–1:00 PM, at Glamis Hall, Wellingborough."
+        "title": "3. Your child starts classes",
+        "desc": "Lessons take place on Saturdays, 10:00 AM-12:30 PM, at Victoria Centre, 46-50 Palk Road, Wellingborough, NN8 1HR."
       }
     },
     "note": "Please complete the form in full and use an email address that you check regularly.",
@@ -234,7 +234,7 @@
       "q2": "My child doesn’t speak Romanian very well. Is that a problem?",
       "a2": "No. We have children with very different language levels. The most important thing is interest and support from the family to practise Romanian.",
       "q3": "Can we visit the school before deciding?",
-      "a3": "Yes. You can write to us via the Contact page to arrange a visit or a conversation before classes begin.",
+      "a3": "Yes. You can write to us via the Contact page to arrange a visit or a conversation before joining classes.",
       "q4": "What are the fees and how do we pay?",
       "a4": "The cost is £15 per single session. Payment is required before the session begins (bank transfer to the school account or cash). If you need to stop attending, please notify us at least 7 days in advance.",
       "contactLink": "More questions? Get in touch"
@@ -290,9 +290,9 @@
       "whatsapp": "WhatsApp",
       "whatsappValue": "07494673740",
       "location": "Location",
-      "locationValue": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU",
+      "locationValue": "Victoria Centre, 46-50 Palk Road, Wellingborough, NN8 1HR",
       "schedule": "Schedule",
-      "scheduleValue": "Saturdays: 10:00 AM - 1:00 PM",
+      "scheduleValue": "Saturdays: 10:00 AM - 12:30 PM",
       "calendarNote": "School calendar: We follow the UK school-term structure, with sessions during school weeks and breaks during holidays.",
       "paymentNote": "Payment: required before the session begins (bank transfer to the school account or cash)."
     },
@@ -320,7 +320,7 @@
     "privacy": {
       "title": "Privacy Policy",
       "orgName": "Scoala Romaneasca Wellingborough CIC",
-      "address": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU, United Kingdom",
+      "address": "Victoria Centre, 46-50 Palk Road, Wellingborough, NN8 1HR, United Kingdom",
       "effectiveDate": "Effective date: 01/11/2025",
       "section1Title": "Purpose",
       "section1Content": "This Privacy Policy explains how we collect, store, and use personal information from parents, children, staff, and volunteers who take part in our activities.",
@@ -342,7 +342,7 @@
     "terms": {
       "title": "Terms & Conditions",
       "orgName": "Scoala Romaneasca Wellingborough CIC",
-      "address": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU, United Kingdom",
+      "address": "Victoria Centre, 46-50 Palk Road, Wellingborough, NN8 1HR, United Kingdom",
       "effectiveDate": "Effective date: 10/01/2026",
       "section1Title": "Enrolment",
       "section1Content": "Registration is required before attending classes. Parents must provide accurate contact details and inform the centre of any changes.",
@@ -368,7 +368,7 @@
     "health": {
       "title": "Health & Safety Policy",
       "orgName": "Scoala Romaneasca Wellingborough CIC",
-      "address": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU, United Kingdom",
+      "address": "Victoria Centre, 46-50 Palk Road, Wellingborough, NN8 1HR, United Kingdom",
       "effectiveDate": "Effective date: 10 January 2026",
       "section1Title": "Purpose and Commitment",
       "section1Content": "The Centre is committed to ensuring the health, safety, and welfare of all children, staff, volunteers, and visitors who participate in our activities.",
@@ -396,7 +396,7 @@
     "equality": {
       "title": "Equality, Diversity & Inclusion Policy",
       "orgName": "Scoala Romaneasca Wellingborough CIC",
-      "address": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU, United Kingdom",
+      "address": "Victoria Centre, 46-50 Palk Road, Wellingborough, NN8 1HR, United Kingdom",
       "effectiveDate": "Effective date: 10 January 2026",
       "section1Title": "Purpose and Commitment",
       "section1Content": "The Centre is committed to promoting equality, celebrating diversity, and ensuring inclusion across all its activities.",
@@ -422,7 +422,7 @@
     "volunteer": {
       "title": "Volunteer Code of Conduct",
       "orgName": "Scoala Romaneasca Wellingborough CIC",
-      "address": "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU, United Kingdom",
+      "address": "Victoria Centre, 46-50 Palk Road, Wellingborough, NN8 1HR, United Kingdom",
       "effectiveDate": "Effective date: 10 January 2026",
       "section1Title": "Purpose and Scope",
       "section1Content": "This Code outlines expected standards of behaviour for all volunteers supporting the Centre's activities.",

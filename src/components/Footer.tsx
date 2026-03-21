@@ -5,9 +5,8 @@ import logo from '@/assets/logo.png';
 
 const Footer = () => {
   const { t } = useTranslation();
-  const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-    "Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU"
-  )}`;
+  const mapsQuery = 'Victoria Centre, 46-50 Palk Road, Wellingborough, NN8 1HR';
+  const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapsQuery)}`;
 
   const navItems = [
     { key: 'home', path: '/' },
@@ -103,7 +102,7 @@ const Footer = () => {
                   rel="noreferrer"
                   className="hover:text-primary transition-colors"
                 >
-                  📍 Glamis Hall, Goldsmith Road, Wellingborough, NN8 3RU
+                  📍 {t('contact.info.locationValue')}
                 </a>
               </p>
               <p className="text-sm text-muted-foreground">

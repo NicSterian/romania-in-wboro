@@ -31,6 +31,7 @@ import { toast } from 'sonner';
 const Contact = () => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language === 'ro' ? 'ro' : 'en';
+  const mapQuery = encodeURIComponent('Victoria Centre, 46-50 Palk Road, Wellingborough, NN8 1HR');
   usePageTitle(t('nav.contact'), { lang });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -282,7 +283,7 @@ const Contact = () => {
                           {t('contact.info.location')}
                         </h3>
                         <p className="text-sm text-muted-foreground mb-1">
-                          Wellingborough, Northamptonshire
+                          Victoria Centre, Wellingborough
                         </p>
                         <p className="text-xs text-muted-foreground italic">
                           {t('contact.info.locationValue')}
@@ -327,7 +328,7 @@ const Contact = () => {
           <div className="max-w-5xl mx-auto">
             <div className="aspect-video rounded-lg overflow-hidden shadow-lg">
               <iframe
-                src="https://maps.google.com/maps?q=Glamis+Hall,+Goldsmith+Rd,+Wellingborough+NN8+3RU&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                src={`https://maps.google.com/maps?q=${mapQuery}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
